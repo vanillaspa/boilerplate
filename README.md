@@ -22,10 +22,10 @@ on top of <a title="Vite" href="https://vitejs.dev"><img height="20" alt="Vitejs
 
 ### Getting started
 
-Running Vanilla SPA is as easy as cloning the current repository.
+Running Vanilla SPA is as easy as cloning the boilerplate repository.
 ```bash
-  git clone https://github.com/vanillaspa/vanillaspa.git
-  cd vanillaspa
+  git clone https://github.com/vanillaspa/boilerplate.git
+  cd boilerplate
   npm install
 ```
 and then simply 
