@@ -46,9 +46,7 @@ To quickly start a vanillaspa project just remove the comment in the bottom of t
 
 You will be using dedicated `.html` files to create your Single File Components (SFCs). Just implement your SFCs à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.html` file.
 
-Just put your custom elements in the [./src/components/](https://github.com/vanillaspa/vanillaspa/src/components) folder. A `/src/components/index.js` file with a map of your components is automagically generated each time you run `npm run dev`.
-
-You just have to stick to (custom elements naming conventions)[https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name].
+Just put your custom elements in the [./src/components/](https://github.com/vanillaspa/vanillaspa/src/components) folder. All the files under `/src/components` are automagically defined in the customElements registry. You just have to stick to (custom elements naming conventions)[https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name].
 
 After having imported the `web-components` module, your custom elements can be instantiated immediately.
 
