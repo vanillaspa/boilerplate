@@ -1,5 +1,5 @@
 # boilerplate
-This is the boilerplate for vanillaspa with web-components, event-bus and sqlite-database.
+This is a boilerplate project for Vanilla SPA with the latest web-components, event-bus and sqlite-database module.
 
 ## Hi there 👋
 
