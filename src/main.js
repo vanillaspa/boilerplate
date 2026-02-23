@@ -1,6 +1,6 @@
 import('@vanillaspa/web-components');
 
-customElements.whenDefined("router-app").then(() => {
+customElements.whenDefined("app-start").then(() => {
     Promise.all([
         import('@vanillaspa/event-bus'),
         import('@vanillaspa/sqlite-database')
@@ -13,6 +13,6 @@ customElements.whenDefined("router-app").then(() => {
         });
     }).finally(() => {
         const root = document.getElementsByTagName('body')[0];
-        root.innerHTML = '<router-app></router-app>';
+        root.innerHTML = '<app-start></app-start>';
     });
 })
