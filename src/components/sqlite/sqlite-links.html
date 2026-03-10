@@ -4,15 +4,15 @@
 
 <script>
     let { createDB, executeQuery } = sqlite;
-    const { message } = createDB("links");
+    const message = await createDB("links");
 
     console.log(message);
 
-    export function query(sql, values) {
+    function query(sql, values) {
         return executeQuery({ sql, values }, 'links');
     }
 
-    await executeQuery({
+    let res = await executeQuery({
         "sql": `
 CREATE TABLE IF NOT EXISTS Links (
 	id INTEGER NOT NULL,
@@ -24,19 +24,19 @@ INSERT OR REPLACE INTO links(id, text, uri) VALUES
 (2, 'Test2', 'data:application/json;base64,eyJ0eXBlIjoibW9kYWwiLCJjb250ZW50IjoiVGVzdDIifQ==')`
     }, 'links');
 
-    export function insertLink({ text, uri }) {
+    function insertLink({ text, uri }) {
         return executeQuery({
             sql: "INSERT INTO links(text, uri) VALUES ($1,$2) RETURNING id;",
             values: [text, uri],
         }, 'links');
     }
-    export function deleteLink(id) {
+    function deleteLink(id) {
         return executeQuery({
             sql: "DELETE FROM links WHERE id=$1;",
             values: [id],
         }, 'links');
     }
-    export function getLinks(id) {
+    function getLinks(id) {
         if (id)
             return executeQuery({
                 sql: "SELECT * FROM links WHERE id=$1;",

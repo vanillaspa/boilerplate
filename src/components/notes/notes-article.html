@@ -1,4 +1,5 @@
 <script>
+    let state = JSON.parse(shadowDocument.host.dataset.state);
     const article = { id: state[0], title: state[1], note: state[2], createdAt: state[3], updatedAt: state[4] }
     const h1 = shadowDocument.querySelector("h1");
     h1.innerHTML = article.title;

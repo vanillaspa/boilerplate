@@ -1,11 +1,15 @@
+<template>
+    <article id="parent"></article>
+</template>
+
 <script>
     let { createDB, executeQuery } = sqlite;
 
-    const { message } = createDB("notes");
+    const message = await createDB("notes");
 
     console.log(message);
 
-    export function query(sql, values) {
+    function query(sql, values) {
         return executeQuery({ sql, values }, 'notes');
     }
 
@@ -22,19 +26,19 @@ INSERT OR REPLACE INTO notes(id, title, note) VALUES
 (7, 'Memory Usage', 'Estimate disk & memory usage of Tribute to Jah');`
     }, 'notes');
 
-    export function insertNote({ title, note }) {
+    function insertNote({ title, note }) {
         return executeQuery({
             sql: "INSERT INTO notes(title, note) VALUES ($1,$2) RETURNING id;",
             values: [title, note],
         }, 'notes');
     }
-    export function deleteNote(id) {
+    function deleteNote(id) {
         return executeQuery({
             sql: "DELETE FROM notes WHERE id=$1;",
             values: [id],
         }, 'notes');
     }
-    export function getNotes(id) {
+    function getNotes(id) {
         if (id)
             return executeQuery({
                 sql: "SELECT * FROM notes WHERE id=$1;",
@@ -45,4 +49,29 @@ INSERT OR REPLACE INTO notes(id, title, note) VALUES
                 sql: "SELECT * FROM notes ORDER BY id DESC;",
             }, 'notes');
     }
+
+    const notes = await getNotes();
+
+    if (notes.length != 0) {
+        const parentArticle = shadowDocument.querySelector("#parent");
+        notes.forEach(element => {
+            let article = document.createElement("notes-article")
+            article.dataset.state = JSON.stringify(element);
+            parentArticle.appendChild(article);
+        });
+    }
 </script>
+
+<style>
+    article {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 20px;
+    }
+
+    @media only screen and (min-width: 600px) {
+        article {
+            flex-flow: row wrap;
+        }
+    }
+</style>
