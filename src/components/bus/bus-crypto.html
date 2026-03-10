@@ -1,0 +1,68 @@
+<template>
+    <p>
+        Sichere Hashing-Algorithmen sind kryptografische Funktionen, die Daten beliebiger Länge in einen Hashwert fester
+        Länge umwandeln. Diese Hashwerte dienen dazu, die Datenintegrität zu überprüfen und werden oft für Passwörter,
+        digitale Signaturen und andere Sicherheitsanwendungen verwendet.
+        Es gibt verschiedene sichere Hashing-Algorithmen, darunter:
+    <ul>
+        <li>
+            SHA-256:
+            Ein weit verbreiteter Algorithmus, der einen 256-Bit-Hashwert erzeugt und als sicher gilt.
+        </li>
+        <li>
+            SHA-512:
+            Eine weitere Variante der SHA-2 Familie, die einen 512-Bit-Hashwert erzeugt und für risikoreiche Anwendungen
+            empfohlen wird.
+        </li>
+        <li>bcrypt:
+            Ein Algorithmus, der speziell für das Hashing von Passwörtern entwickelt wurde und gut getestet ist.</li>
+        <li>scrypt:
+            Ein speicherintensiver Algorithmus, der Angriffe mit spezialisierter Hardware erschwert.</li>
+        <li>Argon2:
+            Der Gewinner der Password Hashing Competition und gilt als moderner Standard, insbesondere die Variante
+            Argon2id.</li>
+    </ul>
+    Wichtige Eigenschaften sicherer Hashing-Algorithmen:
+    <ul>
+        <li> Kollisionssicherheit:
+            Es soll praktisch unmöglich sein, zwei verschiedene Eingaben zu finden, die denselben Hashwert erzeugen.
+        </li>
+        <li> Einwegfunktion:
+            Es soll nicht möglich sein, aus dem Hashwert die ursprüngliche Eingabe wiederherzustellen.
+        <li>Auswirkungen von Änderungen:
+            Selbst eine kleine Änderung der Eingabedaten sollte zu einem drastisch unterschiedlichen Hashwert führen.
+        </li>
+    </ul>
+    Zusätzliche Maßnahmen zur Erhöhung der Sicherheit:
+    <ul>
+        <li>
+            Salting:
+            Dem Passwort wird eine zufällige Zeichenkette (Salt) hinzugefügt, bevor es gehasht wird.
+        </li>
+        <li>Pepper:
+            Eine systemweit einheitliche Zeichenkette (Pepper) wird zusätzlich zum Passwort verwendet und nicht in der
+            Datenbank gespeichert.
+        </li>
+    </ul>
+    Beispiele für die Anwendung:
+    <ul>
+        <li>
+            Passwort-Hashing:
+            Hashing wird verwendet, um Passwörter sicher zu speichern, so dass selbst bei einem Datenleck der
+            Passwortwert nicht direkt lesbar ist.
+        </li>
+        <li>
+            Datenintegritätsprüfung:
+            Hashing wird verwendet, um sicherzustellen, dass Dateien oder Downloads nicht verändert wurden.
+
+        </li>
+        <li>Digitale Signaturen:
+            Hashing spielt eine Rolle bei der Erstellung digitaler Signaturen, um die Authentizität von Dokumenten zu
+            überprüfen.
+        </li>
+        <li>Blockchain-Technologie:
+            Hashing wird verwendet, um Transaktionen in der Blockchain zu sichern und unveränderlich zu machen.</li>
+    </ul>
+
+    </p>
+</template>

@@ -1,0 +1,15 @@
+<template>
+<p>Print <span class="x">x</span>,<span class="y">y</span> of mouseclick event.</p>
+</template>
+
+<script>
+    const x = shadowDocument.querySelector(".x");
+    const y = shadowDocument.querySelector(".y");
+    
+    x.innerHTML = shadowDocument.host.state.offsetX;
+    y.innerHTML = shadowDocument.host.state.offsetY;
+</script>
+
+<style>
+
+</style>

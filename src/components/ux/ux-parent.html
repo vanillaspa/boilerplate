@@ -1,0 +1,92 @@
+<script>
+    // shadowDocument.host.onCustom =
+
+    // shadowDocument.host.addEventListener('drag', (event) => {
+    //     // event.stopPropagation();
+    //     // shadowDocument.host.dataset.test = "Test1";
+    //     // shadotDocument.host.trigger(event);
+    //     // console.log("Drag", dragged)
+    //     // console.log("Drag", dragged);
+    //     const data = event.dataTransfer.getData('text');
+    //     console.log("data in parent", data);
+    // });
+
+    const target = shadowDocument.getElementById("drop-target");
+    target.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        target.classList.toggle('hover');
+        e.preventDefault();
+        // event.stopPropagation();
+    });
+
+    target.addEventListener("drop", (event) => {
+        event.preventDefault();
+        console.log("parent:drop", event.dataTransfer.getData('text'));
+        // move dragged element to the selected drop target
+        // if (event.target.className === "dropzone") {
+        //     dragged.parentNode.removeChild(dragged);
+        //     event.target.appendChild(dragged);
+        // }
+
+        e.preventDefault();
+        
+        const itemId = e.dataTransfer.getData('text/plain');
+        const itemHTML = e.dataTransfer.getData('text/html');
+        
+        // Create new element from the dragged item
+        const newItem = document.createElement('div');
+        newItem.innerHTML = itemHTML;
+        const draggedItem = newItem.firstChild;
+        
+        target.appendChild(draggedItem);
+        
+        console.log(`Item ${itemId} dropped in ${this.id}`);
+    });
+</script>
+
+<template>
+    <section>
+        <h1>Drag the elements below!</h1>
+        <div class="container">
+            <div class="dropzone" id="drop-target"></div>
+            <ux-draggable>Drag Me</ux-draggable>
+            <ux-draggable style="top: 250px; left: 200px;">Another One</ux-draggable>
+        </div>
+    </section>
+</template>
+
+<style>
+    section {
+        font-family: 'Inter', sans-serif;
+        background-color: #f0f4f8;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        height: 500px;
+        border: 2px dashed #9ca3af;
+        border-radius: 12px;
+        position: relative;
+        background-color: #ffffff;
+        overflow: hidden;
+    }
+
+    .dropzone {
+        background-color: rosybrown;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.hover {
+            background-color: skyblue;
+            pointer-events: none;
+        }
+    }
+</style>

@@ -1,0 +1,14 @@
+<script>
+    function openModal(modal) {
+        var sesaModal = document.createElement("sesa-modal");
+        sesaModal.state = modal;
+        shadowDocument.appendChild(sesaModal);
+    }
+    shadowDocument.host.addEventListener('openModal', (e) => {
+        openModal(e.detail);
+    })
+</script>
+
+<template>
+    <sesa-nav></sesa-nav>
+</template>

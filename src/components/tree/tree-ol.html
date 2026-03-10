@@ -1,0 +1,46 @@
+<template>
+  <ol>
+    <!-- <tree-ol v-if="getSubitems(key) && isOpen(key)" :items="getSubitems(key)"></tree-ol> -->
+  </ol>
+</template>
+<script>
+  const ol = shadowDocument.querySelector("ol");
+  const tree = JSON.parse(shadowDocument.host.dataset.subtree);
+  let currentLevel = tree[0];
+  let subtree = tree.splice(1);
+
+  function open(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.target.classList.add("open");
+    history.pushState(event.target.dataset.element, null, event.target.href)
+  }
+
+  function renderSubTree() {
+    // let newCurrentLevel = currentLevel.find((el) => el[location.pathname]);
+    let treeOl = document.createElement("tree-ol");
+    treeOl.dataset.subtree = JSON.stringify(subtree);
+    ol.appendChild(treeOl);
+  }
+
+  if (currentLevel) {
+    for (let link of currentLevel) {
+      let li = document.createElement("li");
+      let a = document.createElement("a");
+      let mapping = Object.keys(link)[0];
+      a.href = mapping;
+      a.dataset.element = link[mapping].element;
+      a.innerHTML = link[mapping].title;
+      a.addEventListener("click", open);
+
+      li.appendChild(a);
+      ol.appendChild(li);
+
+      if (location.pathname.startsWith(mapping)) {
+        a.classList.add("open");
+        renderSubTree();
+      }
+    }
+  }
+</script>
+<style></style>

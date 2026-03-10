@@ -1,0 +1,58 @@
+<script>
+    const article = { id: state[0], title: state[1], note: state[2], createdAt: state[3], updatedAt: state[4] }
+    const h1 = shadowDocument.querySelector("h1");
+    h1.innerHTML = article.title;
+    const p = shadowDocument.querySelector("p");
+    p.innerHTML = article.note;
+</script>
+
+<template>
+    <article>
+        <h1></h1>
+        <p></p>
+        <span>note</span>
+    </article>
+</template>
+
+<style>
+    :host {
+        flex: 1 1 calc(50% - 5px);
+    }
+
+    article {
+        background: radial-gradient(circle, rgba(255, 255, 0, .8) 0%, rgba(255, 215, 0, .8) 100%);
+        box-shadow: 2px 2px 10px #ffd700;
+        border-radius: 4px;
+        height: 100%;
+        padding: 8px;
+        margin: 8px 0 !important;
+
+        h1 {
+            color: #144000;
+            display: block;
+            padding-bottom: 4px;
+        }
+
+        p {
+            color: #144000;
+            padding-bottom: 16px;
+
+            a {
+                color: blue;
+            }
+        }
+
+        span {
+            background-color: darkslategray;
+            border-radius: 4px;
+            color: antiquewhite;
+            padding: 4px;
+        }
+    }
+
+    @media only screen and (min-width: 600px) {
+        :host {
+            flex: 1 1 calc(50% - 10px);
+        }
+    }
+</style>

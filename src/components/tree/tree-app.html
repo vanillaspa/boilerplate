@@ -1,0 +1,29 @@
+<template>
+    <nav>
+        <navigation-links></navigation-links>
+    </nav>
+    <main></main>
+</template>
+
+<script>
+    if (!sitemap) {
+        throw new Error("No Sitemap.");
+    }
+    const main = shadowDocument.querySelector("main");
+
+    function loadContent(pathname = location.pathname) {
+        let mapping = router.getMapping(pathname);
+        let mainElement = document.createElement(mapping.template);
+        main.replaceChildren(mainElement);
+    }
+
+    router.register(loadContent)
+
+    // let treeOl = document.createElement("tree-ol");
+    // treeOl.dataset.subtree = JSON.stringify(subtree);
+    // shadowDocument.host.appendChild(treeOl);
+</script>
+
+<style>
+
+</style>

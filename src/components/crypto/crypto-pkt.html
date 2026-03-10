@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Key Management Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e1e8ed;
+        }
+
+        .control-group h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin: 5px;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        select, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input[type="file"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .keys-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .key-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e1e8ed;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .key-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .key-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .key-type {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .key-id {
+            font-family: monospace;
+            color: #7f8c8d;
+            font-size: 12px;
+        }
+
+        .key-details {
+            margin-bottom: 15px;
+        }
+
+        .key-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .key-detail strong {
+            color: #2c3e50;
+        }
+
+        .key-fingerprint {
+            font-family: monospace;
+            font-size: 11px;
+            word-break: break-all;
+            color: #7f8c8d;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+
+        .key-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .key-actions .btn {
+            font-size: 12px;
+            padding: 8px 12px;
+            margin: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80%;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+
+        .modal-header h2 {
+            color: #2c3e50;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+            padding: 0;
+        }
+
+        .close-btn:hover {
+            color: #e74c3c;
+        }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            resize: vertical;
+            margin-bottom: 15px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+        }
+
+        .status.error {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            opacity: 0.3;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .keys-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Public Key Manager</h1>
+            <p>Generate, import, and manage cryptographic key pairs securely</p>
+        </div>
+        
+        <div class="main-content">
+            <key-manager></key-manager>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="exportModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Export Key</h2>
+                <button class="close-btn" onclick="closeModal('exportModal')">&times;</button>
+            </div>
+            <div id="exportContent">
+                <textarea id="exportText" readonly></textarea>
+                <button class="btn" onclick="copyToClipboard()">Copy to Clipboard</button>
+                <button class="btn btn-secondary" onclick="downloadKey()">Download as File</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class KeyManager extends HTMLElement {
+            constructor() {
+                super();
+                this.keys = [];
+                this.currentExportData = null;
+                this.init();
+            }
+
+            init() {
+                this.loadKeys();
+                this.render();
+            }
+
+            loadKeys() {
+                try {
+                    const saved = JSON.parse(window.keyStorage || '[]');
+                    this.keys = saved;
+                } catch (e) {
+                    this.keys = [];
+                }
+            }
+
+            saveKeys() {
+                window.keyStorage = JSON.stringify(this.keys);
+            }
+
+            async generateKeyPair(algorithm, keySize) {
+                try {
+                    let keyPair;
+                    const timestamp = new Date().toISOString();
+                    
+                    if (algorithm === 'RSA') {
+                        keyPair = await window.crypto.subtle.generateKey(
+                            {
+                                name: 'RSA-PSS',
+                                modulusLength: parseInt(keySize),
+                                publicExponent: new Uint8Array([1, 0, 1]),
+                                hash: 'SHA-256',
+                            },
+                            true,
+                            ['sign', 'verify']
+                        );
+                    } else if (algorithm === 'ECDSA') {
+                        keyPair = await window.crypto.subtle.generateKey(
+                            {
+                                name: 'ECDSA',
+                                namedCurve: keySize,
+                            },
+                            true,
+                            ['sign', 'verify']
+                        );
+                    } else if (algorithm === 'ECDH') {
+                        keyPair = await window.crypto.subtle.generateKey(
+                            {
+                                name: 'ECDH',
+                                namedCurve: keySize,
+                            },
+                            true,
+                            ['deriveKey', 'deriveBits']
+                        );
+                    }
+
+                    const publicKey = await window.crypto.subtle.exportKey('spki', keyPair.publicKey);
+                    const privateKey = await window.crypto.subtle.exportKey('pkcs8', keyPair.privateKey);
+                    
+                    const fingerprint = await this.generateFingerprint(publicKey);
+                    
+                    const keyData = {
+                        id: crypto.randomUUID(),
+                        algorithm,
+                        keySize,
+                        publicKey: this.arrayBufferToBase64(publicKey),
+                        privateKey: this.arrayBufferToBase64(privateKey),
+                        fingerprint,
+                        created: timestamp,
+                        name: `${algorithm}-${keySize}-${timestamp.split('T')[0]}`
+                    };
+
+                    this.keys.push(keyData);
+                    this.saveKeys();
+                    this.showStatus('Key pair generated successfully!', 'success');
+                    this.render();
+                } catch (error) {
+                    this.showStatus(`Error generating key pair: ${error.message}`, 'error');
+                }
+            }
+
+            async generateFingerprint(publicKeyBuffer) {
+                const hash = await window.crypto.subtle.digest('SHA-256', publicKeyBuffer);
+                const hashArray = new Uint8Array(hash);
+                return Array.from(hashArray, byte => byte.toString(16).padStart(2, '0')).join(':').toUpperCase();
+            }
+
+            arrayBufferToBase64(buffer) {
+                const bytes = new Uint8Array(buffer);
+                let binary = '';
+                for (let i = 0; i < bytes.byteLength; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return btoa(binary);
+            }
+
+            base64ToArrayBuffer(base64) {
+                const binary = atob(base64);
+                const bytes = new Uint8Array(binary.length);
+                for (let i = 0; i < binary.length; i++) {
+                    bytes[i] = binary.charCodeAt(i);
+                }
+                return bytes.buffer;
+            }
+
+            formatKeyForExport(key, type) {
+                const keyData = type === 'public' ? key.publicKey : key.privateKey;
+                const keyType = type === 'public' ? 'PUBLIC KEY' : 'PRIVATE KEY';
+                
+                let formatted = `-----BEGIN ${keyType}-----\n`;
+                const base64 = keyData;
+                for (let i = 0; i < base64.length; i += 64) {
+                    formatted += base64.substr(i, 64) + '\n';
+                }
+                formatted += `-----END ${keyType}-----`;
+                
+                return formatted;
+            }
+
+            exportKey(keyId, type) {
+                const key = this.keys.find(k => k.id === keyId);
+                if (!key) return;
+
+                const exportData = {
+                    key,
+                    type,
+                    content: this.formatKeyForExport(key, type),
+                    filename: `${key.name}-${type}.pem`
+                };
+
+                this.currentExportData = exportData;
+                document.getElementById('exportText').value = exportData.content;
+                document.getElementById('exportModal').style.display = 'flex';
+            }
+
+            deleteKey(keyId) {
+                if (confirm('Are you sure you want to delete this key pair? This action cannot be undone.')) {
+                    this.keys = this.keys.filter(k => k.id !== keyId);
+                    this.saveKeys();
+                    this.showStatus('Key pair deleted successfully!', 'success');
+                    this.render();
+                }
+            }
+
+            async importKey(file) {
+                try {
+                    const content = await file.text();
+                    
+                    // Simple PEM parser
+                    const publicKeyMatch = content.match(/-----BEGIN PUBLIC KEY-----([\s\S]*?)-----END PUBLIC KEY-----/);
+                    const privateKeyMatch = content.match(/-----BEGIN PRIVATE KEY-----([\s\S]*?)-----END PRIVATE KEY-----/);
+                    
+                    if (!publicKeyMatch && !privateKeyMatch) {
+                        throw new Error('Invalid key format. Expected PEM format.');
+                    }
+
+                    const timestamp = new Date().toISOString();
+                    let keyData = {
+                        id: crypto.randomUUID(),
+                        algorithm: 'Imported',
+                        keySize: 'Unknown',
+                        created: timestamp,
+                        name: `Imported-${file.name.split('.')[0]}-${timestamp.split('T')[0]}`
+                    };
+
+                    if (publicKeyMatch) {
+                        const publicKeyBase64 = publicKeyMatch[1].replace(/\s/g, '');
+                        const publicKeyBuffer = this.base64ToArrayBuffer(publicKeyBase64);
+                        keyData.publicKey = publicKeyBase64;
+                        keyData.fingerprint = await this.generateFingerprint(publicKeyBuffer);
+                    }
+
+                    if (privateKeyMatch) {
+                        keyData.privateKey = privateKeyMatch[1].replace(/\s/g, '');
+                    }
+
+                    this.keys.push(keyData);
+                    this.saveKeys();
+                    this.showStatus('Key imported successfully!', 'success');
+                    this.render();
+                } catch (error) {
+                    this.showStatus(`Error importing key: ${error.message}`, 'error');
+                }
+            }
+
+            showStatus(message, type) {
+                const statusEl = this.querySelector('.status');
+                if (statusEl) {
+                    statusEl.remove();
+                }
+
+                const status = document.createElement('div');
+                status.className = `status ${type}`;
+                status.textContent = message;
+                this.querySelector('.main-content').insertBefore(status, this.querySelector('.controls'));
+
+                setTimeout(() => status.remove(), 5000);
+            }
+
+            render() {
+                this.innerHTML = `
+                    <div class="controls">
+                        <div class="control-group">
+                            <h3>Generate New Key Pair</h3>
+                            <select id="algorithm">
+                                <option value="RSA">RSA</option>
+                                <option value="ECDSA">ECDSA</option>
+                                <option value="ECDH">ECDH</option>
+                            </select>
+                            <select id="keySize">
+                                <option value="2048">2048 bits</option>
+                                <option value="3072">3072 bits</option>
+                                <option value="4096">4096 bits</option>
+                            </select>
+                            <button class="btn" onclick="this.closest('key-manager').handleGenerate()">
+                                Generate Key Pair
+                            </button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h3>Import Key</h3>
+                            <input type="file" id="keyFile" accept=".pem,.key,.pub,.txt" 
+                                   onchange="this.closest('key-manager').handleImport(this)">
+                            <button class="btn btn-secondary" onclick="document.getElementById('keyFile').click()">
+                                Choose Key File
+                            </button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h3>Quick Actions</h3>
+                            <button class="btn btn-secondary" onclick="this.closest('key-manager').clearAllKeys()">
+                                Clear All Keys
+                            </button>
+                            <button class="btn" onclick="this.closest('key-manager').exportAllKeys()">
+                                Export All Keys
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="keys-section">
+                        <h2 style="color: #2c3e50; margin-bottom: 20px;">
+                            Stored Keys (${this.keys.length})
+                        </h2>
+                        ${this.renderKeys()}
+                    </div>
+                `;
+
+                // Update key size options based on algorithm
+                const algorithmSelect = this.querySelector('#algorithm');
+                const keySizeSelect = this.querySelector('#keySize');
+                
+                algorithmSelect.addEventListener('change', (e) => {
+                    const algorithm = e.target.value;
+                    if (algorithm === 'ECDSA' || algorithm === 'ECDH') {
+                        keySizeSelect.innerHTML = `
+                            <option value="P-256">P-256</option>
+                            <option value="P-384">P-384</option>
+                            <option value="P-521">P-521</option>
+                        `;
+                    } else {
+                        keySizeSelect.innerHTML = `
+                            <option value="2048">2048 bits</option>
+                            <option value="3072">3072 bits</option>
+                            <option value="4096">4096 bits</option>
+                        `;
+                    }
+                });
+            }
+
+            renderKeys() {
+                if (this.keys.length === 0) {
+                    return `
+                        <div class="empty-state">
+                            <svg fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 10v3c0 2.97 2.16 5.43 5 5.92V21h2v-2.08c2.84-.49 5-2.95 5-5.92v-3h2V8h-2V7c0-2.76-2.24-5-5-5S8 4.24 8 7v1H6v2zm4-3c0-1.66 1.34-3 3-3s3 1.34 3 3v1h-6V7z"/>
+                            </svg>
+                            <h3>No keys stored</h3>
+                            <p>Generate or import your first key pair to get started</p>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="keys-grid">
+                        ${this.keys.map(key => `
+                            <div class="key-card">
+                                <div class="key-header">
+                                    <span class="key-type">${key.algorithm}</span>
+                                    <span class="key-id">${key.id.slice(0, 8)}...</span>
+                                </div>
+                                
+                                <div class="key-details">
+                                    <div class="key-detail">
+                                        <strong>Name:</strong>
+                                        <span>${key.name}</span>
+                                    </div>
+                                    <div class="key-detail">
+                                        <strong>Size:</strong>
+                                        <span>${key.keySize}</span>
+                                    </div>
+                                    <div class="key-detail">
+                                        <strong>Created:</strong>
+                                        <span>${new Date(key.created).toLocaleDateString()}</span>
+                                    </div>
+                                    
+                                    <div class="key-fingerprint">
+                                        <strong>Fingerprint:</strong><br>
+                                        ${key.fingerprint}
+                                    </div>
+                                </div>
+                                
+                                <div class="key-actions">
+                                    ${key.publicKey ? `<button class="btn" onclick="this.closest('key-manager').exportKey('${key.id}', 'public')">Export Public</button>` : ''}
+                                    ${key.privateKey ? `<button class="btn" onclick="this.closest('key-manager').exportKey('${key.id}', 'private')">Export Private</button>` : ''}
+                                    <button class="btn btn-danger" onclick="this.closest('key-manager').deleteKey('${key.id}')">Delete</button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+
+            handleGenerate() {
+                const algorithm = this.querySelector('#algorithm').value;
+                const keySize = this.querySelector('#keySize').value;
+                this.generateKeyPair(algorithm, keySize);
+            }
+
+            handleImport(input) {
+                const file = input.files[0];
+                if (file) {
+                    this.importKey(file);
+                    input.value = '';
+                }
+            }
+
+            clearAllKeys() {
+                if (confirm('Are you sure you want to delete all stored keys? This action cannot be undone.')) {
+                    this.keys = [];
+                    this.saveKeys();
+                    this.showStatus('All keys cleared successfully!', 'success');
+                    this.render();
+                }
+            }
+
+            exportAllKeys() {
+                if (this.keys.length === 0) {
+                    this.showStatus('No keys to export!', 'error');
+                    return;
+                }
+
+                const exportData = {
+                    exportDate: new Date().toISOString(),
+                    keys: this.keys.map(key => ({
+                        ...key,
+                        publicKeyPEM: key.publicKey ? this.formatKeyForExport(key, 'public') : null,
+                        privateKeyPEM: key.privateKey ? this.formatKeyForExport(key, 'private') : null
+                    }))
+                };
+
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `keys-export-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+
+                this.showStatus('All keys exported successfully!', 'success');
+            }
+        }
+
+        // Define custom element
+        customElements.define('key-manager', KeyManager);
+
+        // Modal functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function copyToClipboard() {
+            const textarea = document.getElementById('exportText');
+            textarea.select();
+            document.execCommand('copy');
+            alert('Key copied to clipboard!');
+        }
+
+        function downloadKey() {
+            const keyManager = document.querySelector('key-manager');
+            if (keyManager.currentExportData) {
+                const blob = new Blob([keyManager.currentExportData.content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = keyManager.currentExportData.filename;
+                a.click();
+                URL.revokeObjectURL(url);
+                closeModal('exportModal');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Initialize storage
+        if (!window.keyStorage) {
+            window.keyStorage = '[]';
+        }
+    </script>
+</body>
+</html>

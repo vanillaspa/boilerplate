@@ -1,0 +1,32 @@
+<template>
+    <div id="plan">
+        <ul class="tabs">
+            <li><a href="/plan/templates">Templates</a></li>
+            <li><a href="/plan/rules">Rules</a></li>
+        </ul>
+        <div id="tab">
+            <slot name="planning">
+                <p>Zum Planen bitte zuerst Fachereignisse unter Templates und dann Regeln unter Rules erstellen.</p>
+            </slot>
+        </div>
+    </div>
+</template>
+<script>
+    const links = shadowDocument.querySelectorAll("li");
+    const tab = shadowDocument.querySelector("#tab");
+
+    links.forEach(li => {
+        let a = li.querySelector("a");
+        li.addEventListener("click", router.clickHandler);
+        a.addEventListener("click", router.clickHandler);
+    });
+
+    // router.register(
+    //     function test(elementOrder) {
+    //         let i = elementOrder.findIndex(el => el === "engine-plan");
+    //         let element = elementOrder[++i];
+    //         let section = document.createElement(element);
+    //         shadowDocument.host.appendChild(section);
+    //     }
+    // );
+</script>

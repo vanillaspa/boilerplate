@@ -1,0 +1,71 @@
+<script>
+    shadowDocument.host.draggable = true;
+
+    shadowDocument.host.addEventListener("dragstart", (event) => {
+        // event.stopPropagation();
+        // event.preventDefault();
+        console.log("dragstart", event);
+        shadowDocument.host.classList.toggle("is-dragging");
+        shadowDocument.host.offsetX = event.clientX - shadowDocument.host.offsetLeft;
+        shadowDocument.host.offsetY = event.clientY - shadowDocument.host.offsetTop;
+
+        event.dataTransfer.clearData();
+        // event.dataTransfer.setData("text/plain", "text from child:dragstart");
+        event.dataTransfer.setData('text/plain', shadowDocument.host.dataset.id);
+        event.dataTransfer.setData('text/html', shadowDocument.host.outerHTML);
+    });
+
+    shadowDocument.host.addEventListener('drag', (event) => {
+        // event.stopPropagation();
+        // event.preventDefault();
+        console.log("drag");
+        shadowDocument.host.style.left = `${event.clientX - shadowDocument.host.offsetX}px`;
+        shadowDocument.host.style.top = `${event.clientY - shadowDocument.host.offsetY}px`;
+    });
+
+    shadowDocument.host.addEventListener('dragend', (event) => {
+        // event.stopPropagation();
+        // event.preventDefault();
+        console.log("dragend");
+        shadowDocument.host.classList.toggle("is-dragging");
+        shadowDocument.host.style.left = `${event.clientX - shadowDocument.host.offsetX}px`;
+        shadowDocument.host.style.top = `${event.clientY - shadowDocument.host.offsetY}px`;
+    });
+</script>
+
+<template>
+    <div>I am a custom element!</div>
+</template>
+
+<style>
+    :host {
+        /* Basic styling for the custom element */
+        width: 150px;
+        height: 150px;
+        background-color: #4f46e5;
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        color: white;
+        display: inline-block;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        cursor: grab;
+
+        /* Prevent text selection during drag */
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        transition: box-shadow 0.2s ease-in-out;
+        opacity: 1;
+        /* touch-action: none; */
+    }
+
+    :host(.is-dragging) {
+        background-color: red;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        /* pointer-events: none; */
+        /* user-select: none; */
+        opacity: 0.1;
+    }
+</style>

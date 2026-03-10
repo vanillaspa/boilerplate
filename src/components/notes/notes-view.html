@@ -1,0 +1,32 @@
+<template>
+    <article id="parent"></article>
+</template>
+
+<style>
+    article {
+        display: flex;
+        flex-flow: column nowrap;
+        gap: 20px;
+    }
+
+    @media only screen and (min-width: 600px) {
+        article {
+            flex-flow: row wrap;
+        }
+    }
+</style>
+
+<script>
+    const { getNotes, deleteNote } = window.Notes;
+
+    const notes = await getNotes();
+
+    if (notes.length != 0) {
+        const parentArticle = shadowDocument.querySelector("#parent");
+        notes.forEach(element => {
+            const article = document.createElement("notes-article");
+            article.state = JSON.stringify(element);
+            parentArticle.appendChild(article);
+        });
+    }
+</script>

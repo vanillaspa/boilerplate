@@ -1,0 +1,232 @@
+<script>
+
+    const target = shadowDocument.getElementById("drop-target");
+    target.addEventListener("mouseover", (event) => {
+        console.log("Hello", event);
+    });
+    target.addEventListener("mouseout", (event) => {
+        console.log("leaving");
+    });
+    target.addEventListener("dragover", (event) => {
+        event.preventDefault();
+        target.classList.toggle('hover');
+        // event.stopPropagation();
+    });
+
+    target.addEventListener("drop", (event) => {
+        event.preventDefault();
+        console.log("parent:drop", event.dataTransfer.getData('text'));
+        // move dragged element to the selected drop target
+        if (event.target.className === "dropzone") {
+            dragged.parentNode.removeChild(dragged);
+            event.target.appendChild(dragged);
+        }
+    });
+    dragElement(shadowDocument.getElementById("mydiv"));
+
+    function dragElement(elmnt) {
+        console.log("drag element", elmnt)
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (shadowDocument.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            shadowDocument.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            console.log("dragging. mousedown")
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            shadowDocument.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            shadowDocument.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            console.log("elementDrad")
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            shadowDocument.onmouseup = null;
+            shadowDocument.onmousemove = null;
+        }
+    }
+
+</script>
+<template>
+    <div class="row">
+        <div class="leftcolumn">
+            <section>
+                <h1>Drag the elements below!</h1>
+                <div class="container">
+                    <div class="dropzone" id="drop-target"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="rightcolumn">
+        <div class="card">
+            <h3>Popular Post</h3>
+            <ux-draggable id="drag1">Drag Me</ux-draggable>
+            <ux-draggable id="drag2" style="top: 250px; left: 200px;">Another One</ux-draggable>
+            <div class="fakeimg">Image</div><br>
+            <div class="fakeimg">Image</div><br>
+            <div class="fakeimg">Image</div>
+            <div id="mydiv">
+                <!-- Include a header DIV with the same name as the draggable DIV, followed by "header" -->
+                <div id="mydivheader">Click here to move</div>
+                <p>Move</p>
+                <p>this</p>
+                <p>DIV</p>
+            </div>
+        </div>
+        <div class="card">
+            <h3>Follow Me</h3>
+            <p>Some text..</p>
+        </div>
+    </div>
+    </div>
+
+    <div class="layout">
+
+    </div>
+    <aside>Functions</aside>
+</template>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial;
+        padding: 20px;
+        background: #f1f1f1;
+    }
+
+    /* Create two unequal columns that floats next to each other */
+    /* Left column */
+    .leftcolumn {
+        float: left;
+        width: 75%;
+    }
+
+    /* Right column */
+    .rightcolumn {
+        float: left;
+        width: 25%;
+        padding-left: 20px;
+    }
+
+    /* Add a card effect for articles */
+    .card {
+        background-color: white;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .fakeimg {
+        background-color: #aaa;
+        width: 100%;
+        padding: 20px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+    @media screen and (max-width: 800px) {
+
+        .leftcolumn,
+        .rightcolumn {
+            width: 100%;
+            padding: 0;
+        }
+    }
+
+    :host {
+        display: flex;
+        flex-flow: column nowrap;
+        width: 100%;
+    }
+
+    div.layout {
+        display: block;
+        background-color: blue;
+        width: 80%;
+    }
+
+    aside {
+        background-color: red;
+        width: 200px;
+    }
+
+    #mydiv {
+        position: absolute;
+        z-index: 9;
+        background-color: #f1f1f1;
+        border: 1px solid #d3d3d3;
+        text-align: center;
+    }
+
+    #mydivheader {
+        padding: 10px;
+        cursor: move;
+        z-index: 10;
+        background-color: #2196F3;
+        color: #fff;
+    }
+
+    section {
+        font-family: 'Inter', sans-serif;
+        background-color: #f0f4f8;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        height: 500px;
+        border: 2px dashed #9ca3af;
+        border-radius: 12px;
+        position: relative;
+        background-color: #ffffff;
+        overflow: hidden;
+    }
+
+    .dropzone {
+        background-color: rosybrown;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &.hover {
+            background-color: skyblue;
+            pointer-events: none;
+        }
+    }
+</style>

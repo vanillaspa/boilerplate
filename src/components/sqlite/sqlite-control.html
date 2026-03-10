@@ -72,6 +72,8 @@
             }
         }
     });
+    const textarea = shadowDocument.querySelector("#workers");
+    textarea.innerHTML = [...sqlite.getWorkers().keys()];
 </script>
 <template>
     <span>
@@ -81,6 +83,10 @@
     <button type="button" id="downloadButton">Download DB</button>
     <button type="button" id="resetButton">Reset DB</button>
     <a id="downloadLink"></a>
+    <br /><br />
+    <textarea id="workers"></textarea>
+    <sqlite-links></sqlite-links>
+    <sqlite-notes></sqlite-notes>
 </template>
 <style>
     button {

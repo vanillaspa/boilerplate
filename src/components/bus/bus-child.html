@@ -1,0 +1,39 @@
+<script>
+    const detail = {
+        action: "refresh"
+    }
+
+    const capture = shadowDocument.getElementById("capture");
+    const bubble = shadowDocument.getElementById("bubble");
+
+    capture.addEventListener("click", (e) => {
+        shadowDocument.host.dispatchBusEvent(detail);
+    });
+
+    // 2
+    const textIdea = shadowDocument.querySelector("text-idea");
+
+    // 3
+    // (x,y) of mouseclick
+    // y
+    shadowDocument.addEventListener("click", (e) => {
+        const visibleDiv = document.createElement("visible-div");
+        visibleDiv.state = e;
+        shadowDocument.appendChild(visibleDiv);
+    })
+</script>
+<template>
+    <button id="capture">Capture</button>
+    <button id="bubble">Bubble</button>
+    <text-idea></text-idea>
+</template>
+<style></style>
+
+<!--
+WORKFLOW: 
+a) create Event on target
+b) compare which listeners react how (capture/bubble)
+c) use capturing events, as they appear first
+d) make EventBus events appear first.
+e) Switch to EventBus events.
+-->

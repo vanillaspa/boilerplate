@@ -1,0 +1,1785 @@
+<style>
+    .container {
+        max-width: 1280px;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    /* --- Utility Classes --- */
+    .text-center {
+        text-align: center;
+    }
+
+    .mx-auto {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .mb-4 {
+        margin-bottom: 1rem;
+    }
+
+    .mb-6 {
+        margin-bottom: 1.5rem;
+    }
+
+    .mb-8 {
+        margin-bottom: 2rem;
+    }
+
+    .mb-16 {
+        margin-bottom: 4rem;
+    }
+
+    .mt-4 {
+        margin-top: 1rem;
+    }
+
+    .pt-20 {
+        padding-top: 5rem;
+    }
+
+    .pb-20 {
+        padding-bottom: 5rem;
+    }
+
+    .py-20 {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+    .px-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .space-y-4>*+* {
+        margin-top: 1rem;
+    }
+
+    .space-y-12>*+* {
+        margin-top: 3rem;
+    }
+
+    .space-x-2>*+* {
+        margin-left: 0.5rem;
+    }
+
+    .space-x-3>*+* {
+        margin-left: 0.75rem;
+    }
+
+    .space-x-8>*+* {
+        margin-left: 2rem;
+    }
+
+    .flex {
+        display: flex;
+    }
+
+    .items-center {
+        align-items: center;
+    }
+
+    .items-start {
+        align-items: flex-start;
+    }
+
+    .justify-between {
+        justify-content: space-between;
+    }
+
+    .justify-center {
+        justify-content: center;
+    }
+
+    .gap-4 {
+        gap: 1rem;
+    }
+
+    .gap-8 {
+        gap: 2rem;
+    }
+
+    .gap-12 {
+        gap: 3rem;
+    }
+
+    .relative {
+        position: relative;
+    }
+
+    .absolute {
+        position: absolute;
+    }
+
+    .top-0 {
+        top: 0;
+    }
+
+    .w-full {
+        width: 100%;
+    }
+
+    .h-16 {
+        height: 4rem;
+    }
+
+    .h-5 {
+        height: 1.25rem;
+    }
+
+    .h-6 {
+        height: 1.5rem;
+    }
+
+    .h-1.h-8 {
+        height: 2rem;
+    }
+
+    .w-8 {
+        width: 2rem;
+    }
+
+    .icon-size-nav {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .icon-size-card-header {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .icon-size-list-item {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .icon-size-check {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .w-6 {
+        width: 1.5rem;
+    }
+
+    .w-12 {
+        width: 3rem;
+    }
+
+    .rounded-full {
+        border-radius: 9999px;
+    }
+
+    .rounded-lg {
+        border-radius: var(--border-radius);
+    }
+
+    .shadow-lg {
+        box-shadow: var(--shadow-lg);
+    }
+
+    .transition-colors {
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    }
+
+    .font-bold {
+        font-weight: 700;
+    }
+
+    .font-semibold {
+        font-weight: 600;
+    }
+
+    .text-xl {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+    }
+
+    .text-2xl {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+    .text-4xl {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+    }
+
+    .text-5xl {
+        font-size: 3rem;
+        line-height: 1;
+    }
+
+    .text-7xl {
+        font-size: 4.5rem;
+        line-height: 1;
+    }
+
+    .text-lg {
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    .text-sm {
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
+
+    .text-white {
+        color: var(--color-white);
+    }
+
+    .text-gray-900 {
+        color: var(--color-gray-900);
+    }
+
+    .text-gray-700 {
+        color: var(--color-gray-700);
+    }
+
+    .text-gray-600 {
+        color: var(--color-gray-600);
+    }
+
+    .text-blue-600 {
+        color: var(--color-blue-600);
+    }
+
+    .text-green-600 {
+        color: var(--color-green-600);
+    }
+
+    .text-orange-600 {
+        color: var(--color-orange-600);
+    }
+
+    .text-purple-600 {
+        color: var(--color-purple-600);
+    }
+
+    .text-purple-700 {
+        color: var(--color-purple-700);
+    }
+
+    .text-yellow-600 {
+        color: var(--color-yellow-600);
+    }
+
+    .bg-white {
+        background-color: var(--color-white);
+    }
+
+    .bg-blue-600 {
+        background-color: var(--color-blue-600);
+    }
+
+    .bg-green-600 {
+        background-color: var(--color-green-600);
+    }
+
+    .bg-purple-600 {
+        background-color: var(--color-purple-600);
+    }
+
+    .bg-blue-50 {
+        background-color: var(--color-blue-50);
+    }
+
+    .bg-green-50 {
+        background-color: var(--color-green-50);
+    }
+
+    .bg-purple-50 {
+        background-color: var(--color-purple-50);
+    }
+
+    .border-b {
+        border-bottom: 1px solid var(--color-gray-200);
+    }
+
+    .border-2 {
+        border-width: 2px;
+    }
+
+    .border-gray-200 {
+        border-color: var(--color-gray-200);
+    }
+
+    .border-blue-200 {
+        border-color: var(--color-blue-500);
+    }
+
+    .border-green-200 {
+        border-color: var(--color-green-600);
+    }
+
+    .border-blue-500 {
+        border-color: var(--color-blue-500);
+    }
+
+    .border-purple-500 {
+        border-color: var(--color-purple-600);
+    }
+
+    .border-l-4 {
+        border-left-width: 4px;
+    }
+
+    .border-l-blue-600 {
+        border-left-color: var(--color-blue-600);
+    }
+
+    .border-l-green-600 {
+        border-left-color: var(--color-green-600);
+    }
+
+    .border-l-purple-600 {
+        border-left-color: var(--color-purple-600);
+    }
+
+    .opacity-90 {
+        opacity: 0.9;
+    }
+
+    .opacity-75 {
+        opacity: 0.75;
+    }
+
+    .transform {
+        transform: translate(0, 0) rotate(0) skew(0) scale(1);
+    }
+
+    .translate-x-1\/2 {
+        transform: translateX(50%);
+    }
+
+    .translate-x-1\/2-neg {
+        transform: translateX(-50%);
+    }
+
+    .absolute-center-x {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .top-n3 {
+        top: -0.75rem;
+    }
+
+    .min-h-screen {
+        min-height: 100vh;
+    }
+
+    .z-50 {
+        z-index: 50;
+    }
+
+    .fixed {
+        position: fixed;
+    }
+
+    .top-0 {
+        top: 0;
+    }
+
+    .backdrop-blur-md {
+        backdrop-filter: blur(8px);
+    }
+
+    .bg-white\/90 {
+        background-color: rgba(255, 255, 255, 0.9);
+    }
+
+    .bg-gradient-to-br {
+        background-image: linear-gradient(to bottom right, var(--color-background), var(--color-blue-50));
+    }
+
+    .from-blue-600 {
+        background-image: linear-gradient(to bottom right, var(--color-blue-600), var(--color-purple-700));
+    }
+
+    .from-blue-50 {
+        background-image: linear-gradient(to bottom right, var(--color-blue-50), var(--color-indigo-50));
+    }
+
+    .from-gray-50 {
+        background-image: linear-gradient(to bottom right, var(--color-background), var(--color-background));
+    }
+
+    .border-white\/20 {
+        border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .pt-32 {
+        padding-top: 8rem;
+    }
+
+    .pb-20 {
+        padding-bottom: 5rem;
+    }
+
+    .pt-8 {
+        padding-top: 2rem;
+    }
+
+    .ml-2 {
+        margin-left: 0.5rem;
+    }
+
+    .mr-4 {
+        margin-right: 1rem;
+    }
+
+    .mt-1 {
+        margin-top: 0.25rem;
+    }
+
+    .mt-2 {
+        margin-top: 0.5rem;
+    }
+
+    .mt-12 {
+        margin-top: 3rem;
+    }
+
+    .pb-3 {
+        padding-bottom: 0.75rem;
+    }
+
+    .pt-2 {
+        padding-top: 0.5rem;
+    }
+
+    .pb-8 {
+        padding-bottom: 2rem;
+    }
+
+    .pb-4 {
+        padding-bottom: 1rem;
+    }
+
+    .pt-6 {
+        padding-top: 1.5rem;
+    }
+
+    .px-8 {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .py-3 {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .p-8 {
+        padding: 2rem;
+    }
+
+    .p-4 {
+        padding: 1rem;
+    }
+
+    .px-3 {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .py-2 {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .w-1\/2 {
+        width: 50%;
+    }
+
+    .w-full {
+        width: 100%;
+    }
+
+    .block {
+        display: block;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .space-y-1>*+* {
+        margin-top: 0.25rem;
+    }
+
+    .space-y-2>*+* {
+        margin-top: 0.5rem;
+    }
+
+    .space-y-3>*+* {
+        margin-top: 0.75rem;
+    }
+
+    .space-y-6>*+* {
+        margin-top: 1.5rem;
+    }
+
+    .space-y-8>*+* {
+        margin-top: 2rem;
+    }
+
+    .space-y-12>*+* {
+        margin-top: 3rem;
+    }
+
+    .grid {
+        display: grid;
+    }
+
+    .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .border-t {
+        border-top: 1px solid;
+    }
+
+    .border-t-white\/20 {
+        border-top-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .transform-none {
+        transform: none;
+    }
+
+    .translate-x-0 {
+        transform: translateX(0);
+    }
+
+    .translate-y-0 {
+        transform: translateY(0);
+    }
+
+    .transition-transform {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .transition-opacity {
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .transition-all {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .hover\:text-blue-600:hover {
+        color: var(--color-blue-600);
+    }
+
+    .hover\:bg-blue-700:hover {
+        background-color: var(--color-blue-700);
+    }
+
+    .hover\:bg-gray-100:hover {
+        background-color: var(--color-gray-100);
+    }
+
+    .hover\:text-blue-600:hover {
+        color: var(--color-blue-600);
+    }
+
+    .hover\:border-blue-200:hover {
+        border-color: var(--color-blue-500);
+    }
+
+    .hover\:border-green-200:hover {
+        border-color: var(--color-green-600);
+    }
+
+    .hover\:border-orange-200:hover {
+        border-color: var(--color-orange-600);
+    }
+
+    .hover\:bg-white:hover {
+        background-color: var(--color-white);
+    }
+
+    .hover\:text-blue-600:hover {
+        color: var(--color-blue-600);
+    }
+
+    .hover\:opacity-100:hover {
+        opacity: 1;
+    }
+
+    .hover\:scale-105:hover {
+        transform: scale(1.05);
+    }
+
+    .hover\:shadow-xl:hover {
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    /* --- Component Styles --- */
+
+    /* Button */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.375rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s ease-in-out;
+        padding: 0.625rem 1.25rem;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        border: 1px solid transparent;
+    }
+
+    .btn-primary {
+        background-color: var(--color-blue-600);
+        color: var(--color-white);
+    }
+
+    .btn-primary:hover {
+        background-color: var(--color-blue-700);
+    }
+
+    .btn-outline {
+        background-color: transparent;
+        color: var(--color-gray-700);
+        border-color: var(--color-gray-200);
+    }
+
+    .btn-outline:hover {
+        background-color: var(--color-gray-100);
+        border-color: var(--color-gray-200);
+    }
+
+    .btn-lg {
+        padding: 0.75rem 2rem;
+        font-size: 1.125rem;
+        line-height: 1.75rem;
+    }
+
+    /* Card */
+    .card {
+        background-color: var(--color-white);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        border: 1px solid var(--color-gray-200);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card-header {
+        margin-bottom: 1rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--color-gray-900);
+    }
+
+    .card-description {
+        font-size: 1rem;
+        color: var(--color-gray-600);
+    }
+
+    .card-content {
+        padding-top: 1rem;
+    }
+
+    /* Badge */
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.25rem;
+        color: var(--color-white);
+    }
+
+    .badge-blue {
+        background-color: var(--color-blue-600);
+    }
+
+    .badge-green {
+        background-color: var(--color-green-600);
+    }
+
+    /* Roadmap Timeline */
+    .roadmap-item {
+        position: relative;
+        padding-left: 4rem;
+    }
+
+    .roadmap-item-icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9999px;
+        font-weight: 700;
+        font-size: 1.125rem;
+        color: var(--color-white);
+        z-index: 10;
+    }
+
+    .roadmap-item-card {
+        margin-left: 1rem;
+        border-left-width: 4px;
+        padding: 1.5rem;
+    }
+
+    /* --- Navigation --- */
+    .nav-link {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        color: var(--color-gray-700);
+        transition: color 0.15s ease-in-out;
+    }
+
+    .nav-link:hover {
+        color: var(--color-blue-600);
+    }
+
+    .mobile-menu {
+        display: none;
+        background-color: var(--color-white);
+        border-top: 1px solid var(--color-gray-200);
+        padding: 0.5rem 0;
+    }
+
+    .mobile-menu-item {
+        display: block;
+        padding: 0.5rem 0.75rem;
+        color: var(--color-gray-700);
+        text-align: left;
+        width: 100%;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .mobile-menu-item:hover {
+        color: var(--color-blue-600);
+    }
+
+    /* --- Responsive Design (mimicking Tailwind breakpoints) --- */
+    @media (min-width: 640px) {
+
+        /* sm */
+        .sm\:px-6 {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .sm\:flex-row {
+            flex-direction: row;
+        }
+
+        .sm\:gap-4 {
+            gap: 1rem;
+        }
+
+        .sm\:text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+    }
+
+    @media (min-width: 768px) {
+
+        /* md */
+        .md\:grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .md\:grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .md\:text-7xl {
+            font-size: 4.5rem;
+            line-height: 1;
+        }
+
+        .md\:text-2xl {
+            font-size: 1.5rem;
+            line-height: 2rem;
+        }
+
+        .md\:flex {
+            display: flex;
+        }
+
+        .md\:hidden {
+            display: none;
+        }
+    }
+
+    @media (min-width: 1024px) {
+
+        /* lg */
+        .lg\:px-8 {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .lg\:grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>
+<template>
+    <!-- SVG Icons (Embedded for simplicity) -->
+    <svg style="display: none;">
+        <symbol id="icon-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5a3 3 0 1 0-3 3" />
+            <path d="M12 5a3 3 0 1 1 3 3" />
+            <path d="M12 19a3 3 0 1 0 3 3" />
+            <path d="M12 19a3 3 0 1 1-3-3" />
+            <path d="M18 11a2 2 0 0 0 0 4" />
+            <path d="M6 11a2 2 0 0 1 0 4" />
+            <path d="M12 22h6a2 2 0 0 0 2-2v-1a2 2 0 0 0-2-2h-6" />
+            <path d="M12 2h6a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-6" />
+            <path d="M12 22H6a2 2 0 0 1-2-2v-1a2 2 0 0 1 2-2h6" />
+            <path d="M12 2H6a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h6" />
+        </symbol>
+        <symbol id="icon-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </symbol>
+        <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </symbol>
+        <symbol id="icon-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
+        </symbol>
+        <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="5" width="14" height="14" rx="2" />
+            <path d="M15 9h1a2 2 0 0 1 2 2v1" />
+            <path d="M18 15v1a2 2 0 0 1-2 2h-1" />
+            <path d="M9 15h-1a2 2 0 0 1-2-2v-1" />
+            <path d="M6 9v-1a2 2 0 0 1 2-2h1" />
+        </symbol>
+        <symbol id="icon-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4" />
+            <path d="M12 18v4" />
+            <path d="M4.93 10.93l2.83 2.83" />
+            <path d="M16.24 10.93l2.83 2.83" />
+            <path d="M2 12h4" />
+            <path d="M18 12h4" />
+            <path d="M4.93 13.07l2.83-2.83" />
+            <path d="M16.24 13.07l2.83-2.83" />
+            <circle cx="12" cy="12" r="4" />
+            <circle cx="12" cy="6" r="2" />
+            <circle cx="12" cy="18" r="2" />
+            <circle cx="6" cy="12" r="2" />
+            <circle cx="18" cy="12" r="2" />
+        </symbol>
+        <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <path d="M9 11l3 3L22 4" />
+        </symbol>
+        <symbol id="icon-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </symbol>
+        <symbol id="icon-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="6" />
+            <circle cx="12" cy="12" r="2" />
+        </symbol>
+        <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+        </symbol>
+        <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        </symbol>
+        <symbol id="icon-dollar-sign" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+        </symbol>
+        <symbol id="icon-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polygon
+                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+        </symbol>
+        <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+        </symbol>
+        <symbol id="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+        </symbol>
+        <symbol id="icon-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+        </symbol>
+    </svg>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-200 z-50">
+        <div class="container">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <svg class="icon-size-nav text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <use href="#icon-brain" />
+                    </svg>
+                    <span class="text-xl font-bold text-gray-900">Jahro Automate</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <button class="nav-link" onclick="scrollToSection('overview')">Overview</button>
+                    <button class="nav-link" onclick="scrollToSection('product')">Product</button>
+                    <button class="nav-link" onclick="scrollToSection('market')">Market</button>
+                    <button class="nav-link" onclick="scrollToSection('roadmap')">Roadmap</button>
+                    <button class="nav-link" onclick="scrollToSection('pricing')">Pricing</button>
+                    <button class="btn btn-primary" onclick="scrollToSection('contact')">
+                        Get Early Access
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-700 hover:text-blue-600">
+                        <svg id="menu-icon" class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <use href="#icon-menu" />
+                        </svg>
+                        <svg id="close-icon" class="h-6 w-6 hidden" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <use href="#icon-x" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Navigation -->
+            <div id="mobile-menu" class="mobile-menu md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <button class="mobile-menu-item" onclick="scrollToSection('overview')">Overview</button>
+                    <button class="mobile-menu-item" onclick="scrollToSection('product')">Product</button>
+                    <button class="mobile-menu-item" onclick="scrollToSection('market')">Market</button>
+                    <button class="mobile-menu-item" onclick="scrollToSection('roadmap')">Roadmap</button>
+                    <button class="mobile-menu-item" onclick="scrollToSection('pricing')">Pricing</button>
+                    <button class="btn btn-primary w-full mt-2" onclick="scrollToSection('contact')">
+                        Get Early Access
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div class="container text-center">
+            <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
+                Local-First
+                <span class="text-blue-600 block">Process Automation</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                Revolutionary browser-based automation platform with powerful temporal logic engine.
+                No servers, no costs, maximum privacy and performance.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="btn btn-primary btn-lg" onclick="scrollToSection('product')">
+                    Explore the Vision
+                    <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <use href="#icon-arrow-right" />
+                    </svg>
+                </button>
+                <button class="btn btn-outline btn-lg" onclick="scrollToSection('roadmap')">
+                    View Roadmap
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Summary -->
+    <section id="overview" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Executive Summary</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Jahro Automate represents the next generation of process automation, combining cutting-edge
+                    browser technology with sophisticated temporal logic to deliver unprecedented privacy,
+                    performance, and cost-effectiveness.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card border-2 hover:border-blue-200 transition-colors">
+                    <div class="card-header">
+                        <svg class="icon-size-card-header text-blue-600 mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <use href="#icon-shield" />
+                        </svg>
+                        <div class="card-title">Privacy-First Architecture</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="text-gray-600">
+                            All data and processes remain on the user's device. No cloud dependencies,
+                            no data collection, complete user control.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card border-2 hover:border-green-200 transition-colors">
+                    <div class="card-header">
+                        <svg class="icon-size-card-header text-green-600 mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <use href="#icon-zap" />
+                        </svg>
+                        <div class="card-title">Zero Server Costs</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="text-gray-600">
+                            Eliminate recurring infrastructure expenses. Users run complex automations
+                            without paying for server time or cloud resources.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card border-2 hover:border-orange-200 transition-colors">
+                    <div class="card-header">
+                        <svg class="icon-size-card-header text-orange-600 mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <use href="#icon-brain" />
+                        </svg>
+                        <div class="card-title">Temporal Logic Engine</div>
+                    </div>
+                    <div class="card-content">
+                        <p class="text-gray-600">
+                            Advanced automation capabilities with AND, OR, SEQUENCE, and NOT operators
+                            for sophisticated workflow management.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product & Vision -->
+    <section id="product" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Product & Vision</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A revolutionary approach to process automation that runs entirely in your browser,
+                    powered by SQLite WASM and sophisticated temporal logic.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                <div>
+                    <h3 class="text-3xl font-bold text-gray-900 mb-6">Core Technology Stack</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <svg class="icon-size-list-item text-blue-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-database" />
+                            </svg>
+                            <span class="text-lg">SQLite WASM for local data persistence</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="icon-size-list-item text-green-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-cpu" />
+                            </svg>
+                            <span class="text-lg">Vanilla WebComponents framework</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="icon-size-list-item text-purple-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-network" />
+                            </svg>
+                            <span class="text-lg">Event-driven processing engine</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="icon-size-list-item text-orange-600" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-brain" />
+                            </svg>
+                            <span class="text-lg">Linear time logic automation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-8 bg-white shadow-lg">
+                    <div class="card-header pb-4">
+                        <div class="card-title text-2xl">Key Differentiators</div>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <svg class="icon-size-list-item text-green-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <div>
+                                <strong>Local-First & Private:</strong> All processing happens on your device
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="icon-size-list-item text-green-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <div>
+                                <strong>No Server Costs:</strong> Eliminate recurring infrastructure expenses
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="icon-size-list-item text-green-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <div>
+                                <strong>Extreme Performance:</strong> No network latency, instant processing
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="icon-size-list-item text-green-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <div>
+                                <strong>Ultimate Flexibility:</strong> Complex temporal logic for sophisticated
+                                workflows
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Market -->
+    <section id="market" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Target Market</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A phased approach to market entry, starting with innovators and expanding to mainstream business
+                    users.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="card border-2 border-blue-200 bg-blue-50">
+                    <div class="card-header">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="badge badge-blue">Phase 1</span>
+                            <div class="card-title text-2xl">The Innovators</div>
+                        </div>
+                        <div class="card-description text-lg">Initial Launch - First 6 Months</div>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-blue-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-target" />
+                            </svg>
+                            <div>
+                                <strong>Developers & Power Users:</strong> Attracted to technical novelty and
+                                integration capabilities
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-blue-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-shield" />
+                            </svg>
+                            <div>
+                                <strong>Privacy-Conscious Users:</strong> Value local-first architecture and data
+                                control
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-blue-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-zap" />
+                            </svg>
+                            <div>
+                                <strong>Automation Enthusiasts:</strong> Early adopters who love connecting apps and
+                                services
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-2 border-green-200 bg-green-50">
+                    <div class="card-header">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="badge badge-green">Phase 2</span>
+                            <div class="card-title text-2xl">Early Adopters</div>
+                        </div>
+                        <div class="card-description text-lg">Growth Phase - 6-18 Months</div>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-green-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-users" />
+                            </svg>
+                            <div>
+                                <strong>Freelancers & Small Business:</strong> Need cost-effective automation solutions
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-green-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-target" />
+                            </svg>
+                            <div>
+                                <strong>Marketing Professionals:</strong> Require client-side automation and analytics
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <svg class="h-5 w-5 text-green-600 mt-1" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <use href="#icon-network" />
+                            </svg>
+                            <div>
+                                <strong>Remote Teams:</strong> Value privacy and performance for distributed workflows
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Roadmap -->
+    <section id="roadmap" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-50 to-slate-50">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Product Roadmap</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A strategic three-phase development plan from MVP to full commercial platform.
+                </p>
+            </div>
+
+            <div class="space-y-12">
+                <!-- Phase 1 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-item-icon bg-blue-600">1</div>
+                    <div class="mb-6 ml-16">
+                        <h3 class="text-2xl font-bold text-gray-900">MVP - The Developer's Playground</h3>
+                        <p class="text-gray-600">1-3 Months • Prove core concept and attract innovators</p>
+                    </div>
+                    <div class="card roadmap-item-card bg-white border-l-blue-600">
+                        <div class="card-content pt-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Core Features</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Deployment automaton engine</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>AND, OR, SEQUENCE operators</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Event bus architecture</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Basic JSON rule editor</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Initial Connectors</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-blue-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <use href="#icon-globe" />
+                                            </svg>
+                                            <span>UI events (clicks, forms)</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-blue-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <use href="#icon-calendar" />
+                                            </svg>
+                                            <span>Time-based triggers</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-blue-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <use href="#icon-network" />
+                                            </svg>
+                                            <span>API webhooks</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-blue-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <use href="#icon-zap" />
+                                            </svg>
+                                            <span>Browser notifications</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-item-icon bg-green-600">2</div>
+                    <div class="mb-6 ml-16">
+                        <h3 class="text-2xl font-bold text-gray-900">Public Beta - The Visual Automator</h3>
+                        <p class="text-gray-600">3-6 Months • Make accessible to non-developer audience</p>
+                    </div>
+                    <div class="card roadmap-item-card bg-white border-l-green-600">
+                        <div class="card-content pt-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">User Experience</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Drag-and-drop workflow builder</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Visual monitoring dashboard</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Pre-built app connectors</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Community documentation</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Popular Integrations</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-yellow-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-star" />
+                                            </svg>
+                                            <span>Slack, Discord</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-yellow-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-star" />
+                                            </svg>
+                                            <span>Google Sheets, Airtable</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-yellow-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-star" />
+                                            </svg>
+                                            <span>Trello, Notion</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-yellow-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-star" />
+                                            </svg>
+                                            <span>Email providers</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="roadmap-item">
+                    <div class="roadmap-item-icon bg-purple-600">3</div>
+                    <div class="mb-6 ml-16">
+                        <h3 class="text-2xl font-bold text-gray-900">Version 1.0 - The Freemium Business</h3>
+                        <p class="text-gray-600">6-12 Months • Launch paid tiers and begin monetization</p>
+                    </div>
+                    <div class="card roadmap-item-card bg-white border-l-purple-600">
+                        <div class="card-content pt-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Premium Features</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-purple-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Cloud sync & backup</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-purple-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Team collaboration</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-purple-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Enterprise connectors</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-purple-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-check-circle" />
+                                            </svg>
+                                            <span>Advanced analytics</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900 mb-3">Business Model</h4>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-dollar-sign" />
+                                            </svg>
+                                            <span>Freemium with generous limits</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-dollar-sign" />
+                                            </svg>
+                                            <span>Pro tier: $10-15/month</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-dollar-sign" />
+                                            </svg>
+                                            <span>Team tier: $25/user/month</span>
+                                        </li>
+                                        <li class="flex items-center space-x-2">
+                                            <svg class="icon-size-check text-green-600" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <use href="#icon-dollar-sign" />
+                                            </svg>
+                                            <span>Enterprise solutions</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Strategy -->
+    <section id="pricing" class="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="container">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">Monetization Strategy</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A freemium model designed to maximize user acquisition while providing clear upgrade paths for power
+                    users and teams.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Free Tier -->
+                <div class="card border-2 border-gray-200 relative">
+                    <div class="card-header text-center pb-8">
+                        <div class="card-title text-2xl font-bold text-gray-900">Personal</div>
+                        <div class="text-4xl font-bold text-gray-900 mt-4">Free</div>
+                        <div class="card-description text-lg mt-2">Perfect for individual automation</div>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Up to 10 active rules</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>1,000 actions per month</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>All basic connectors</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Local data storage</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Community support</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pro Tier -->
+                <div class="card border-2 border-blue-500 relative bg-blue-50">
+                    <div class="absolute absolute-center-x top-n3">
+                        <span class="badge badge-blue px-4 py-1">Most Popular</span>
+                    </div>
+                    <div class="card-header text-center pb-8">
+                        <div class="card-title text-2xl font-bold text-gray-900">Professional</div>
+                        <div class="text-4xl font-bold text-blue-600 mt-4">$12<span
+                                class="text-lg text-gray-600">/month</span></div>
+                        <div class="card-description text-lg mt-2">For power users and freelancers</div>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Unlimited active rules</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>10,000 actions per month</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Cloud sync & backup</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Premium connectors</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Priority support</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Advanced analytics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Tier -->
+                <div class="card border-2 border-purple-500 relative bg-purple-50">
+                    <div class="card-header text-center pb-8">
+                        <div class="card-title text-2xl font-bold text-gray-900">Business</div>
+                        <div class="text-4xl font-bold text-purple-600 mt-4">$25<span
+                                class="text-lg text-gray-600">/user/month</span></div>
+                        <div class="card-description text-lg mt-2">For teams and organizations</div>
+                    </div>
+                    <div class="card-content space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Everything in Professional</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Team collaboration</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Shared workflows</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Enterprise connectors</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>Admin dashboard</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <svg class="h-5 w-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <use href="#icon-check-circle" />
+                            </svg>
+                            <span>24/7 support</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact/CTA Section -->
+    <section id="contact" class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-600 to-purple-700 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">Ready to Transform Process Automation?</h2>
+            <p class="text-xl mb-8 opacity-90">
+                Join the revolution in local-first automation. Be among the first to experience
+                the power of browser-based process management with unparalleled privacy and performance.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="btn btn-lg bg-white text-blue-600 hover:bg-gray-100"
+                    onclick="alert('Early Access Request Form Placeholder')">
+                    Request Early Access
+                </button>
+                <button class="btn btn-lg btn-outline border-white text-white hover:bg-white hover:text-blue-600"
+                    onclick="alert('Schedule Demo Placeholder')">
+                    Schedule Demo
+                </button>
+            </div>
+            <div class="mt-12 pt-8 border-t border-white\/20">
+                <p class="text-sm opacity-75">
+                    &copy; 2025 Jahro Automate. Built with privacy and performance in mind.
+                </p>
+            </div>
+        </div>
+    </section>
+</template>
+<script>
+    // --- Vanilla JavaScript for Interactivity ---
+
+    // 1. Smooth Scrolling Function
+    function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // Close mobile menu after clicking a link
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu.style.display === 'block') {
+                toggleMobileMenu();
+            }
+        }
+    }
+
+    // 2. Mobile Menu Toggle
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+
+        if (mobileMenu.style.display === 'block') {
+            mobileMenu.style.display = 'none';
+            menuIcon.style.display = 'block';
+            closeIcon.style.display = 'none';
+        } else {
+            mobileMenu.style.display = 'block';
+            menuIcon.style.display = 'none';
+            closeIcon.style.display = 'block';
+        }
+    }
+
+    document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+    // 3. Initial Setup for Mobile Icons
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        if (window.innerWidth >= 768) {
+            // Hide mobile button on desktop
+            document.getElementById('mobile-menu-btn').style.display = 'none';
+        } else {
+            // Ensure correct initial state on mobile
+            menuIcon.style.display = 'block';
+            closeIcon.style.display = 'none';
+        }
+    });
+</script>

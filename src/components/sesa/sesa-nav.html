@@ -1,0 +1,31 @@
+<!--
+API description of this custom element goes here.
+UP:DOWN = dispatchEvent:state
+-->
+
+<script>
+    const { getLinks } = window.Links;
+
+    const links = await getLinks();
+
+    if (links.length != 0) {
+        const ul = $("ul");
+        links.forEach((json) => {
+            const link = JSON.parse(json);
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.addEventListener("click", (e) => {
+                const clickEvent = new CustomEvent('openModal', { bubbles: true, composed: true, detail: atob(link.uri.substring(29)) });
+                shadowDocument.dispatchEvent(clickEvent);
+            })
+            a.innerText = link.text;
+            li.appendChild(a);
+            ul.appendChild(li);
+        })
+    }
+</script>
+
+<template>
+    <ul></ul>
+    <engine-main></engine-main>
+</template>

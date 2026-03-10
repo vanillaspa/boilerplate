@@ -1,0 +1,12 @@
+<script>
+    shadowDocument.addEventListener('custom', (e) => {
+        console.log("bus parent, captured", e.detail, shadowDocument.host.hostDataIDs)
+    }, { capture: true })
+    shadowDocument.addEventListener('custom', (e) => {
+        console.log("bus parent, bubbled", e.detail, shadowDocument.host.hostDataIDs)
+    })
+</script>
+<template>
+    <bus-child></bus-child>
+</template>
+<style></style>

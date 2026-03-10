@@ -1,0 +1,50 @@
+<template>
+    <h3>SQLite Links</h3>
+</template>
+
+<script>
+    let { createDB, executeQuery } = sqlite;
+    const { message } = createDB("links");
+
+    console.log(message);
+
+    export function query(sql, values) {
+        return executeQuery({ sql, values }, 'links');
+    }
+
+    await executeQuery({
+        "sql": `
+CREATE TABLE IF NOT EXISTS Links (
+	id INTEGER NOT NULL,
+	text TEXT NOT NULL,
+    uri TEXT NOT NULL,
+	CONSTRAINT Navigation_PK PRIMARY KEY (id));
+INSERT OR REPLACE INTO links(id, text, uri) VALUES 
+(1, 'Test1', 'data:application/json;base64,eyJ0eXBlIjoibW9kYWwiLCJjb250ZW50IjoiVGVzdDEifQ=='),
+(2, 'Test2', 'data:application/json;base64,eyJ0eXBlIjoibW9kYWwiLCJjb250ZW50IjoiVGVzdDIifQ==')`
+    }, 'links');
+
+    export function insertLink({ text, uri }) {
+        return executeQuery({
+            sql: "INSERT INTO links(text, uri) VALUES ($1,$2) RETURNING id;",
+            values: [text, uri],
+        }, 'links');
+    }
+    export function deleteLink(id) {
+        return executeQuery({
+            sql: "DELETE FROM links WHERE id=$1;",
+            values: [id],
+        }, 'links');
+    }
+    export function getLinks(id) {
+        if (id)
+            return executeQuery({
+                sql: "SELECT * FROM links WHERE id=$1;",
+                values: [id]
+            }, 'links');
+        else
+            return executeQuery({
+                sql: "SELECT json_object('id', id, 'text', text, 'uri', uri) FROM links ORDER BY id ASC;"
+            }, 'links');
+    }
+</script>

@@ -1,0 +1,169 @@
+<template>
+    <table class="typewriter-parent"></table>
+</template>
+
+<script>
+    var world = monospace("Hello, world!");
+    world.addEventListener('animationend', () => {
+        setTimeout(() => {
+            var rome = monospace("This is Rome.");
+            rome.addEventListener('animationend', () => {
+                setTimeout(() => {
+                    var jahrome = monospace("Jahrome.");
+                    jahrome.addEventListener('animationend', () => {
+                        setTimeout(() => {
+                            var enter = monospace("Enter my world.");
+                            enter.addEventListener('animationend', () => {
+                                enter.style.overflow = "visible";
+                                enter.classList.add("big-city-nights");
+                            });
+                            jahrome.replaceWith(enter);
+                            enter.classList.add("typewriter-long");
+                        }, 500);
+                    })
+                    rome.replaceWith(jahrome);
+                    jahrome.classList.add("typewriter-short");
+                }, 1000);
+            })
+            world.replaceWith(rome);
+            rome.classList.add("typewriter");
+        }, 1000);
+    });
+    shadowDocument.querySelector("table").appendChild(world);
+    world.classList.add("typewriter");
+
+    function monospace(text) {
+        var tr = document.createElement("tr");
+        for (var i = 0; i < text.length; i++) {
+            var td = document.createElement("td");
+            td.innerHTML = text.charAt(i);
+            tr.appendChild(td);
+        }
+        return tr;
+    }
+</script>
+
+
+<style>
+    :host {
+        --typewriter-color: hsl(230, 40%, 80%);
+    }
+
+    .typewriter-parent {
+        color: var(--typewriter-color);
+        font-family: "Punk Typewriter", "Courier New", Courier, monospace;
+
+        .typewriter {
+            animation:
+                typing 2s steps(14, end),
+                typewriter-cursor .5s step-end infinite;
+            border-right: .5em solid var(--typewriter-color);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .typewriter-short {
+            animation:
+                typing 1.5s steps(9, end),
+                typewriter-cursor .5s step-end infinite;
+            border-right: .5em solid var(--typewriter-color);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .typewriter-long {
+            animation:
+                typing 2.5s steps(16, end),
+                typewriter-cursor .5s step-end infinite;
+            border-right: .5em solid var(--typewriter-color);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .big-city-nights {
+            animation: big-city-nights 4s 750ms linear infinite, typewriter-cursor .5s step-end infinite;
+        }
+    }
+
+    table {
+        tr {
+            width: fit-content;
+            block-size: fit-content;
+            font-size: 4em;
+
+            td {
+                min-width: .5em;
+                max-width: .5em;
+            }
+        }
+    }
+
+    @keyframes typing {
+        from {
+            width: 0;
+        }
+
+        to {
+            width: 100%;
+        }
+    }
+
+    @keyframes typewriter-cursor {
+
+        from,
+        to {
+            border-color: transparent;
+        }
+
+        50% {
+            border-color: var(--typewriter-color);
+        }
+    }
+
+    @keyframes big-city-nights {
+        0% {
+            color: hsl(230, 40%, 80%);
+            text-shadow:
+                0 0 1em hsla(320, 100%, 50%, 0.2),
+                0 0 0.125em hsla(320, 100%, 60%, 0.3),
+                -1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
+                1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+        }
+
+        30% {
+            color: hsl(230, 80%, 90%);
+            text-shadow:
+                0 0 1em hsla(320, 100%, 50%, 0.5),
+                0 0 0.125em hsla(320, 100%, 60%, 0.5),
+                -0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
+                0.5em 0.125em 0.25em hsla(200, 100%, 60%, 0.4);
+        }
+
+        40% {
+            color: hsl(230, 100%, 95%);
+            text-shadow:
+                0 0 1em hsla(320, 100%, 50%, 0.5),
+                0 0 0.125em hsla(320, 100%, 90%, 0.5),
+                -0.25em -0.125em 0.125em hsla(40, 100%, 60%, 0.2),
+                0.25em 0.125em 0.125em hsla(200, 100%, 60%, 0.4);
+        }
+
+        70% {
+            color: hsl(230, 80%, 90%);
+            text-shadow:
+                0 0 1em hsla(320, 100%, 50%, 0.5),
+                0 0 0.125em hsla(320, 100%, 60%, 0.5),
+                0.5em -0.125em 0.25em hsla(40, 100%, 60%, 0.2),
+                -0.5em 0.125em 0.25em hsla(200, 100%, 60%, 0.4);
+        }
+
+        100% {
+            color: hsl(230, 40%, 80%);
+            text-shadow:
+                0 0 1em hsla(320, 100%, 50%, 0.2),
+                0 0 0.125em hsla(320, 100%, 60%, 0.3),
+                1em -0.125em 0.5em hsla(40, 100%, 60%, 0),
+                -1em 0.125em 0.5em hsla(200, 100%, 60%, 0);
+        }
+    }
+</style>

@@ -1,0 +1,21 @@
+<script>
+    const detail = {
+        hostDataIDs: shadowDocument.host.hostDataIDs,
+        action: "refresh"
+    }
+
+    dispatchEvent(detail);
+
+    // shadowDocument.addEventListener('test', event => console.log("2",event.detail));
+
+    const button = shadowDocument.querySelector("button");
+
+    button.addEventListener("click", () => {
+        const customEvent = new CustomEvent('test', { bubbles: true, composed: true, detail: detail });
+        shadowDocument.dispatchEvent(customEvent);
+    });
+</script>
+<template>
+    <button>CLICK</button>
+</template>
+<style></style>
