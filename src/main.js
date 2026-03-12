@@ -1,6 +1,6 @@
 import('@vanillaspa/web-components');
 
-customElements.whenDefined("sqlite-control").then(() => {
+customElements.whenDefined("router-app2").then(() => {
     Promise.all([
         import('@vanillaspa/event-bus'),
         import('@vanillaspa/sqlite-database')
@@ -13,6 +13,6 @@ customElements.whenDefined("sqlite-control").then(() => {
         });
     }).finally(() => {
         const root = document.getElementsByTagName('body')[0];
-        root.innerHTML = '<sqlite-control></sqlite-control>';
+        root.innerHTML = '<router-app2></router-app2>';
     });
 })

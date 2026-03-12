@@ -3,62 +3,198 @@
 </template>
 
 <script>
-    let { createDB, executeQuery } = sqlite;
+    const { dispatchEvent, addEventListener } = window.eventbus;
+    const {
+        createDB,
+        closeDB,
+        deleteDB,
+        executeQuery,
+        executeStatement,
+        uploadDB,
+        downloadDB
+    } = window.sqlite;
 
-    const message = await createDB("notes");
+    const host = shadowDocument.host;
 
-    console.log(message);
+    addEventListener('sqlite:create', async (event) => {
+        const { name } = event.detail;
+        try {
+            const result = await createDB(name);
+            const readyEvent = new CustomEvent(`sqlite:created:${event.timeStamp}`, { detail: { result } });
+            dispatchEvent(readyEvent);
+        } catch (error) {
+            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'createDB', event } });
+            dispatchEvent(errorEvent);
+        }
+    }, host);
 
-    function query(sql, values) {
-        return executeQuery({ sql, values }, 'notes');
-    }
+    addEventListener('sqlite:query', async (event) => {
+        const { sql, name } = event.detail;
+        try {
+            const result = await executeQuery(sql, name);
+            const isSelect = sql.trim().toUpperCase().startsWith('SELECT');
+            console.log({ sql });
+            const resultEvent = isSelect
+                ? new CustomEvent(`sqlite:result:${event.timeStamp}`, { detail: { result } })
+                : new CustomEvent(`sqlite:updated:${event.timeStamp}`, { detail: { result } });
+            dispatchEvent(resultEvent);
+        } catch (error) {
+            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'executeQuery', event } });
+            dispatchEvent(errorEvent);
+        }
+    }, host);
 
-    await executeQuery({
-        "sql": `
+    addEventListener('sqlite:statement', async (event) => {
+        const { sql, values, name } = event.detail;
+        try {
+            const result = await executeStatement(sql, values, name);
+            const isSelect = sql.trim().toUpperCase().startsWith('SELECT');
+            const resultEvent = isSelect
+                ? new CustomEvent(`sqlite:result:${event.timeStamp}`, { detail: { result } })
+                : new CustomEvent(`sqlite:updated:${event.timeStamp}`, { detail: { result } })
+            dispatchEvent(resultEvent);
+        } catch (error) {
+            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'prepareStatement', event } });
+            dispatchEvent(errorEvent);
+        }
+    }, host);
+
+    addEventListener('sqlite:upload', async (event) => {
+        const { fileName, arrayBuffer } = event.detail;
+        try {
+            const result = await uploadDB(fileName, arrayBuffer);
+            const uploadedEvent = new CustomEvent('sqlite:uploaded', { detail: { result } });
+            dispatchEvent(uploadedEvent);
+        } catch (error) {
+            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'uploadDB', event } });
+            dispatchEvent(errorEvent);
+        }
+    }, host);
+
+    addEventListener('sqlite:download', async (event) => {
+        const { name } = event.detail;
+        try {
+            await downloadDB(name);
+            const downloadedEvent = new CustomEvent('sqlite:downloaded', { detail: {} });
+            dispatchEvent(downloadedEvent);
+        } catch (error) {
+            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'downloadDB', event } });
+            dispatchEvent(errorEvent);
+        }
+    }, host);
+
+    addEventListener('sqlite:closeDB', async (event) => {
+        const { name } = event.detail;
+        try {
+            await closeDB();
+            const closedEvent = new CustomEvent('sqlite:closed', { detail: { name } });
+            dispatchEvent(closedEvent);
+        } catch (error) {
+            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'closeDB', event } });
+            dispatchEvent(errorEvent);
+        }
+    }, host);
+
+    addEventListener('sqlite:deleteDB', async (event) => {
+        const { name } = event.detail;
+        try {
+            await deleteDB(name);
+            const deletedEvent = new CustomEvent('sqlite:deleted', { detail: { name } });
+            dispatchEvent(deletedEvent);
+        } catch (error) {
+            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'deleteDB', event } });
+            dispatchEvent(errorEvent);
+        }
+    }, host);
+
+
+    const creationEvent = new CustomEvent('sqlite:create', {
+        detail: {
+            name: 'notes',
+            target: host
+        }
+    });
+
+    const insertionEvent = new CustomEvent('sqlite:query', {
+        detail: {
+            sql: `
 CREATE TABLE IF NOT EXISTS notes(id INTEGER PRIMARY KEY, title VARCHAR(255), note TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT current_timestamp, updated_at TEXT NOT NULL DEFAULT current_timestamp);
 INSERT OR REPLACE INTO notes(id, title, note) VALUES 
 (1, 'Most Popular Database', 'SQLite is the "<a href="https://www.sqlite.org/mostdeployed.html">Most Widely Deployed and Used Database Engine.</a>" I am using it for persistent state management in an <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system">Origin Private File System (OPFS)</a>. I recommend using Chromium/Chrome with <a href="https://github.com/tomayac/opfs-explorer">OPFS explorer</a>.'),
 (2, 'Symbolic programming', 'In an <a href="https://www.youtube.com/watch?v=PdE-waSx-d8">interview with Stephen Wolfram</a> I have found a particularly noteworthy quote that "even very simple programs can do all sorts of complicated things". This is something I have been working on as a computer scientist and hobby psychologist for years now. It is one aspect of declarative and the foundation of symbolic programming. It is a model for <a href="https://www.youtube.com/watch?v=Ohk5TvaW6vs">how nature works</a> and how you could use a no-code platform.'),
 (3, 'Project Management', '<a href="https://www.youtube.com/watch?v=GC7pN8Mjot8">Ricardo Vargas explains PMBOK Guide 6th edition</a> in less than one hour. The solution I am working on helps manage the Planning, the Executing and the Monitoring & Controlling phases of an event-based project.'),
-(4, 'Migration to yhwh-script', 'While still using <a href="https://vuejs.org/guide/typescript/overview.html">Vue.js and TypeScript</a> at work, I have now migrated this Website to my self-written vanilla JavaScript WebComponents framework <a href="https://github.com/yhwh-script/">yhwh-script</a>. The migration worked fine and serves as a proof of concept, that the framework can be used in a production environment (while it is still "work in progress").'),
+(4, 'Migration to @vanillaspa', 'While still using <a href="https://vuejs.org/guide/typescript/overview.html">Vue.js and TypeScript</a> at work, I have now migrated this Website to my self-written vanilla JavaScript WebComponents framework <a href="https://vanillaspa.github.io/github-page/">Vanilla SPA</a>. The migration worked fine and serves as a proof of concept, that the framework can be used in a production environment (while it is still "work in progress").'),
 (5, 'Tame Your advice monster','I know, this website is <i>beta</i>, I know it is using technology, one could argue about. I know, one could do things better and while I am always open for constructive feedback, <a href="https://www.ted.com/talks/michael_bungay_stanier_how_to_tame_your_advice_monster">You have to learn to tame your advice monster</a>. I am not trying to safe the world.'),
-(6, 'Contribution', 'P2P QUIC/gRPC protobuf WASM SQLite OPFS API IndexedDB fallback/Postgres sounds familiar to you? Lets connect :)'),
-(7, 'Memory Usage', 'Estimate disk & memory usage of Tribute to Jah');`
-    }, 'notes');
+(6, 'Contribution', 'P2P QUIC/gRPC protobuf WASM SQLite OPFS API IndexedDB fallback/Postgres sounds familiar to you? Lets connect :)');`,
+            name: 'notes',
+            target: host
+        }
+    });
 
-    function insertNote({ title, note }) {
-        return executeQuery({
-            sql: "INSERT INTO notes(title, note) VALUES ($1,$2) RETURNING id;",
-            values: [title, note],
-        }, 'notes');
-    }
-    function deleteNote(id) {
-        return executeQuery({
-            sql: "DELETE FROM notes WHERE id=$1;",
-            values: [id],
-        }, 'notes');
-    }
-    function getNotes(id) {
-        if (id)
-            return executeQuery({
-                sql: "SELECT * FROM notes WHERE id=$1;",
-                values: [id]
-            }, 'notes');
-        else
-            return executeQuery({
-                sql: "SELECT * FROM notes ORDER BY id DESC;",
-            }, 'notes');
-    }
+    const queryNotesEvent = new CustomEvent('sqlite:query', {
+        detail: {
+            sql: `SELECT * FROM notes ORDER BY id DESC;`,
+            name: 'notes',
+            target: host
+        }
+    });
 
-    const notes = await getNotes();
+    addEventListener(`sqlite:created:${creationEvent.timeStamp}`, (e) => {
+        dispatchEvent(insertionEvent, host);
+    }, host);
 
-    if (notes.length != 0) {
-        const parentArticle = shadowDocument.querySelector("#parent");
-        notes.forEach(element => {
-            let article = document.createElement("notes-article")
-            article.dataset.state = JSON.stringify(element);
+    addEventListener(`sqlite:updated:${insertionEvent.timeStamp}`, (event) => {
+        const { result } = event.detail;
+        if (!result || result.length === 0) {
+            dispatchEvent(queryNotesEvent);
+            return;
+        }
+    }, host);
+
+    addEventListener(`sqlite:result:${queryNotesEvent.timeStamp}`, (event) => {
+        const { result } = event.detail;
+        const parentArticle = shadowDocument.querySelector('#parent');
+        parentArticle.replaceChildren();
+        result.forEach(([id, title, note, created_at, updated_at]) => {
+            const article = document.createElement('notes-article');
+            article.dataset.state = JSON.stringify({ id, title, note, created_at, updated_at });
             parentArticle.appendChild(article);
         });
+    }, host);
+
+    dispatchEvent(creationEvent, host); // fires first
+
+    addEventListener('sqlite:error', (event) => {
+        const { error, action } = event.detail;
+        console.error(action, error);
+    }, host);
+
+    host.addEventListener('component:disconnected', () => {
+        eventbus.removeAllEventListeners(host);
+    });
+
+
+    function getNotes(id) {
+        if (id)
+            dispatchEvent(new CustomEvent('sqlite:statement', {
+                detail: {
+                    sql: `SELECT * FROM notes WHERE id=$1;`,
+                    values: [id],
+                    name: 'notes',
+                    target: host
+                }
+            }));
+    }
+
+    function insertNote({ title, note }) {
+        dispatchEvent(new CustomEvent('sqlite:statement', {
+            detail: { sql: `INSERT INTO notes(title, note) VALUES ($1,$2) RETURNING id;`, values: [title, note], name: 'notes', target: host }
+        }));
+    }
+    function deleteNote(id) {
+        dispatchEvent(new CustomEvent('sqlite:statement', {
+            detail: { sql: `DELETE FROM notes WHERE id=$1;`, values: [id], name: 'notes', target: host }
+        }));
     }
 </script>
 

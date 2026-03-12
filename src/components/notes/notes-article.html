@@ -1,6 +1,6 @@
 <script>
-    let state = JSON.parse(shadowDocument.host.dataset.state);
-    const article = { id: state[0], title: state[1], note: state[2], createdAt: state[3], updatedAt: state[4] }
+    let note = JSON.parse(shadowDocument.host.dataset.state);
+    const article = { id: note.id, title: note.title, note: note.note, createdAt: note.created_at, updatedAt: note.updated_at }
     const h1 = shadowDocument.querySelector("h1");
     h1.innerHTML = article.title;
     const p = shadowDocument.querySelector("p");
