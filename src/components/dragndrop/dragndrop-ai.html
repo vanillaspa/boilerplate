@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Elements Drag & Drop with Slots</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        drag-drop-container {
+            display: block;
+            max-width: 600px;
+        }
+
+        drag-item {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 5px;
+            background: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            cursor: grab;
+            user-select: none;
+            transition: opacity 0.2s ease;
+        }
+
+        drag-item:active {
+            cursor: grabbing;
+        }
+
+        drag-item.dragging {
+            opacity: 0.5;
+        }
+
+        drop-zone {
+            display: block;
+            min-height: 100px;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            background: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        drop-zone.drag-over {
+            border-color: #4CAF50;
+            background: #f0f8f0;
+        }
+
+        drop-zone[data-zone="source"] {
+            border-color: #2196F3;
+        }
+
+        drop-zone[data-zone="source"].drag-over {
+            border-color: #1976D2;
+            background: #f0f7ff;
+        }
+
+        drop-zone::before {
+            content: attr(data-label);
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: white;
+            padding: 0 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .zone-content {
+            min-height: 60px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .example-item {
+            background: #FF9800;
+        }
+
+        .example-item.special {
+            background: #9C27B0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Custom Elements Drag & Drop with Slots</h1>
+    
+    <drag-drop-container>
+        <drop-zone data-zone="source" data-label="Source Items">
+            <div slot="content">
+                <drag-item data-id="1">
+                    <span slot="content">📦 Package 1</span>
+                </drag-item>
+                <drag-item data-id="2">
+                    <span slot="content">📄 Document 2</span>
+                </drag-item>
+                <drag-item data-id="3" class="example-item">
+                    <span slot="content">🎯 Target 3</span>
+                </drag-item>
+                <drag-item data-id="4" class="example-item special">
+                    <span slot="content">⭐ Special Item</span>
+                </drag-item>
+            </div>
+        </drop-zone>
+        
+        <drop-zone data-zone="target-a" data-label="Drop Zone A">
+            <div slot="placeholder">
+                <p style="color: #666; text-align: center; margin: 20px 0;">
+                    Drop items here to move them
+                </p>
+            </div>
+        </drop-zone>
+        
+        <drop-zone data-zone="target-b" data-label="Drop Zone B">
+            <div slot="placeholder">
+                <p style="color: #666; text-align: center; margin: 20px 0;">
+                    Or move them here
+                </p>
+            </div>
+        </drop-zone>
+    </drag-drop-container>
+
+    <script>
+        // Draggable Item Custom Element with Shadow DOM and Slots
+        class DragItem extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback() {
+                this.render();
+                this.draggable = true;
+                this.addEventListener('dragstart', this.onDragStart);
+                this.addEventListener('dragend', this.onDragEnd);
+            }
+
+            render() {
+                this.shadowRoot.innerHTML = `
+                    <style>
+                        :host {
+                            display: inline-block;
+                            padding: 10px 15px;
+                            margin: 5px;
+                            background: var(--drag-item-bg, #4CAF50);
+                            color: var(--drag-item-color, white);
+                            border-radius: 4px;
+                            cursor: grab;
+                            user-select: none;
+                            transition: opacity 0.2s ease;
+                        }
+                        
+                        :host(:active) {
+                            cursor: grabbing;
+                        }
+                        
+                        :host(.dragging) {
+                            opacity: 0.5;
+                        }
+                        
+                        .content {
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                        }
+                    </style>
+                    <div class="content">
+                        <slot name="content">Default Item</slot>
+                    </div>
+                `;
+            }
+
+            onDragStart(e) {
+                e.dataTransfer.effectAllowed = 'move';
+                e.dataTransfer.setData('text/plain', this.dataset.id);
+                e.dataTransfer.setData('application/drag-item', this.outerHTML);
+                
+                this.classList.add('dragging');
+                window.draggedElement = this;
+            }
+
+            onDragEnd(e) {
+                this.classList.remove('dragging');
+                if (e.dataTransfer.dropEffect === 'none') {
+                    window.draggedElement = null;
+                }
+            }
+        }
+
+        // Drop Zone Custom Element with Shadow DOM and Slots
+        class DropZone extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback() {
+                this.render();
+                this.addEventListener('dragover', this.onDragOver);
+                this.addEventListener('dragleave', this.onDragLeave);
+                this.addEventListener('drop', this.onDrop);
+            }
+
+            render() {
+                this.shadowRoot.innerHTML = `
+                    <style>
+                        :host {
+                            display: block;
+                            min-height: 100px;
+                            border: 2px dashed #ccc;
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin: 20px 0;
+                            background: white;
+                            transition: all 0.3s ease;
+                            position: relative;
+                        }
+                        
+                        :host(.drag-over) {
+                            border-color: #4CAF50;
+                            background: #f0f8f0;
+                        }
+                        
+                        :host([data-zone="source"]) {
+                            border-color: #2196F3;
+                        }
+                        
+                        :host([data-zone="source"].drag-over) {
+                            border-color: #1976D2;
+                            background: #f0f7ff;
+                        }
+                        
+                        .zone-container {
+                            min-height: 60px;
+                        }
+                        
+                        .placeholder {
+                            display: none;
+                        }
+                        
+                        :host(.empty) .placeholder {
+                            display: block;
+                        }
+                        
+                        :host(.empty) ::slotted([slot="content"]) {
+                            display: none;
+                        }
+                    </style>
+                    <div class="zone-container">
+                        <slot name="content"></slot>
+                        <div class="placeholder">
+                            <slot name="placeholder"></slot>
+                        </div>
+                    </div>
+                `;
+            }
+
+            onDragOver(e) {
+                if (e.dataTransfer.types.includes('application/drag-item')) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    this.classList.add('drag-over');
+                }
+            }
+
+            onDragLeave(e) {
+                if (!this.contains(e.relatedTarget)) {
+                    this.classList.remove('drag-over');
+                }
+            }
+
+            onDrop(e) {
+                e.preventDefault();
+                this.classList.remove('drag-over');
+                
+                if (!e.dataTransfer.types.includes('application/drag-item')) {
+                    return;
+                }
+                
+                const itemId = e.dataTransfer.getData('text/plain');
+                const itemHTML = e.dataTransfer.getData('application/drag-item');
+                
+                // Create new element from the dragged item
+                const newItem = document.createElement('div');
+                newItem.innerHTML = itemHTML;
+                const draggedItem = newItem.firstChild;
+                
+                // Find content slot or create one
+                let contentSlot = this.querySelector('[slot="content"]');
+                if (!contentSlot) {
+                    contentSlot = document.createElement('div');
+                    contentSlot.slot = 'content';
+                    this.appendChild(contentSlot);
+                }
+                
+                // Add the item to the content slot
+                contentSlot.appendChild(draggedItem);
+                
+                // Remove the original element
+                if (window.draggedElement && window.draggedElement.parentNode) {
+                    const originalParent = window.draggedElement.closest('drop-zone');
+                    window.draggedElement.remove();
+                    
+                    // Check if original parent is now empty and toggle empty state
+                    this.updateEmptyState(originalParent);
+                }
+                
+                // Update empty state for this zone
+                this.updateEmptyState(this);
+                
+                window.draggedElement = null;
+                
+                this.dispatchEvent(new CustomEvent('item-moved', {
+                    detail: { itemId, targetZone: this.dataset.zone },
+                    bubbles: true
+                }));
+            }
+
+            updateEmptyState(zone) {
+                if (!zone) return;
+                
+                const contentSlot = zone.querySelector('[slot="content"]');
+                const hasItems = contentSlot && contentSlot.querySelector('drag-item');
+                
+                if (hasItems) {
+                    zone.classList.remove('empty');
+                } else {
+                    zone.classList.add('empty');
+                }
+            }
+        }
+
+        // Main Container Custom Element with Shadow DOM
+        class DragDropContainer extends HTMLElement {
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback() {
+                this.render();
+                this.addEventListener('item-moved', this.onItemMoved);
+                
+                // Initialize empty states
+                setTimeout(() => {
+                    this.querySelectorAll('drop-zone').forEach(zone => {
+                        const dropZoneInstance = zone;
+                        if (dropZoneInstance.updateEmptyState) {
+                            dropZoneInstance.updateEmptyState(zone);
+                        }
+                    });
+                }, 0);
+            }
+
+            render() {
+                this.shadowRoot.innerHTML = `
+                    <style>
+                        :host {
+                            display: block;
+                            max-width: 600px;
+                        }
+                    </style>
+                    <slot></slot>
+                `;
+            }
+
+            onItemMoved(e) {
+                const { itemId, targetZone } = e.detail;
+                console.log(`Item ${itemId} moved to zone: ${targetZone}`);
+            }
+        }
+
+        // Register custom elements
+        customElements.define('drag-item', DragItem);
+        customElements.define('drop-zone', DropZone);
+        customElements.define('drag-drop-container', DragDropContainer);
+    </script>
+</body>
+</html>

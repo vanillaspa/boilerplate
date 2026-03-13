@@ -1,0 +1,79 @@
+<template>
+    <!-- Draggable Item Custom Element with Shadow DOM and Slots -->
+    <slot></slot>
+</template>
+
+<script>
+    const element = shadowDocument.host;
+    element.draggable = true;
+
+    function handleDragStart(event) {
+        setTimeout(() => element.classList.add("dragging"), 0);
+    }
+    function handleDragEnd(event) {
+        // TODO: Fix Uncaught HierarchyRequestError: Failed to execute 'appendChild' on 'Node': The new child element contains the parent.
+        dropToZoneFromPoint(event.clientX, event.clientY)
+        setTimeout(() => element.classList.remove('dragging'), 0);
+    }
+    function handleTouchStart(touchEvent) {
+        if (touchEvent.touches.length === 1) {
+            setTimeout(() => element.classList.add('dragging'), 0);
+        }
+    }
+    function handleTouchEnd(event) {
+        dropToZoneFromPoint(event.changedTouches[0].clientX, event.changedTouches[0].clientY)
+        setTimeout(() => element.classList.remove('dragging'), 0);
+    }
+    function dropToZoneFromPoint(x, y) {
+        let maybeDropZone = document.elementFromPoint(x, y);
+        while (maybeDropZone && maybeDropZone.shadowRoot) {
+            const nextElement = maybeDropZone.shadowRoot.elementFromPoint(x, y);
+            if (nextElement && nextElement !== maybeDropZone) {
+                if (maybeDropZone.tagName === 'DRAGNDROP-ZONE') {
+                    break;
+                }
+                maybeDropZone = nextElement;
+            } else {
+                break;
+            }
+        }
+        maybeDropZone.appendChild(element);
+        return maybeDropZone;
+    }
+
+    element.addEventListener("dragstart", handleDragStart);
+    element.addEventListener('dragend', handleDragEnd);
+    if ('ontouchstart' in window) {
+        element.addEventListener('touchstart', handleTouchStart);
+        element.addEventListener('touchend', handleTouchEnd);
+    }
+</script>
+
+<style>
+    :host {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 5px;
+        background: var(--drag-item-bg, #4CAF50);
+        color: var(--drag-item-color, white);
+        border-radius: 4px;
+        cursor: grab;
+        user-select: none;
+        transition: opacity 0.2s ease;
+    }
+
+    :host(:active) {
+        cursor: grabbing;
+    }
+
+    :host(.dragging) {
+        opacity: 0.5;
+        /* background: red; */
+    }
+
+    .content {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+</style>
