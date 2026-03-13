@@ -1,15 +1,15 @@
 <script>
     let note = JSON.parse(shadowDocument.host.dataset.state);
     const article = { id: note.id, title: note.title, note: note.note, createdAt: note.created_at, updatedAt: note.updated_at }
-    const h1 = shadowDocument.querySelector("h1");
-    h1.innerHTML = article.title;
+    const h3 = shadowDocument.querySelector("h3");
+    h3.innerHTML = article.title;
     const p = shadowDocument.querySelector("p");
     p.innerHTML = article.note;
 </script>
 
 <template>
     <article>
-        <h1></h1>
+        <h3></h3>
         <p></p>
         <span>note</span>
     </article>
@@ -28,7 +28,7 @@
         padding: 8px;
         margin: 8px 0 !important;
 
-        h1 {
+        h3 {
             color: #144000;
             display: block;
             padding-bottom: 4px;
