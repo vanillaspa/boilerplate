@@ -19,7 +19,7 @@ export default defineConfig({
         },
     },
     optimizeDeps: {
-        exclude: ['@sqlite.org/sqlite-wasm', '@vanillaspa/event-bus', '@vanillaspa/sqlite-database']
+        exclude: ['@sqlite.org/sqlite-wasm']
     },
     plugins: [
         basicSsl()
