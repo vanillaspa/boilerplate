@@ -39,7 +39,7 @@ You can then access the app via https://localhost:4173 in your browser.
 
 You create SNIPPETS! by using dedicated `.html` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.html` file.
 
-Ok, you got me. This is not a standard HTML. But maybe it will be webstandard in the future [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/main/src/components/donate/donate-paypal.html) or read on.
+Ok, you got me. This is not a standard HTML. But maybe it will be webstandard in the future [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.html) or read on.
 
 ![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
 
