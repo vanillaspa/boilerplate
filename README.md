@@ -43,7 +43,7 @@ Ok, you got me. This is not a standard HTML. But maybe it will be webstandard in
 
 ![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
 
-Say to the AI: Create a single .html file component in vanilla js for a donate paypal button.
+Say to the AI: *Create a single .html file component in vanilla js for a donate paypal button.*
 
 Hopefully, You will get something like this:
 ```html
@@ -83,7 +83,7 @@ Hopefully, You will get something like this:
 </script>
 ```
 
-Means, the ai generated file needs to be customized. This is a no-brainer
+But the ai generated file needs to be customized because they don't know vanillaspa yet, unless you show it to them. But this is a no-brainer.
 
 ```html
 <template>
@@ -140,19 +140,20 @@ Means, the ai generated file needs to be customized. This is a no-brainer
 </style>
 ```
 
+Important! Each WebComponent must be located in your project in a subfolder under src/components, for instance, for a component named <app-start></app-start> it should be src/components/app/app-start.html in order for the import.meta.glob Wildcard-Pattern to work properly.
+
+Just put them into a seperate folder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components).
+
+All the files under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) are automagically defined as web-components in the customElements registry. You just have to stick to (custom elements naming conventions)[https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name].
+
 Then just import your web-components with:
 
 <script type="module">
     import('@vanillaspa/web-components')
 </script>
 
-After importing web-components, your WebComponents will be defined in the CustomElements registry. You don't have to register your elements manually. Just put them into a seperate folder under src/components.
+After importing web-components, your WebComponents will be defined in the CustomElements registry. You don't have to register your elements manually.
 
-Important! Each WebComponent must be located in your project in a subfolder under src/components, for instance, for a component named <app-start></app-start> it should be src/components/app/app-start.html in order for the import.meta.glob Wildcard-Pattern to work properly.
-
-All the files under `/src/components` are automagically defined as web-components in the customElements registry. You just have to stick to (custom elements naming conventions)[https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name].
-
-Just put your customElements in the [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) folder.
 
 After having imported the `web-components` module, your custom elements can be instantiated immediately.s
 
