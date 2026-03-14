@@ -140,7 +140,7 @@ But the ai generated file needs to be customized because they don't know vanilla
 </style>
 ```
 
-**Important!** Each WebComponent must be located in your project in a subfolder under src/components, for instance, for a component named <app-start></app-start> it should be src/components/app/app-start.html in order for the import.meta.glob Wildcard-Pattern to work properly.
+**Important!** Each WebComponent must be located in your project in a subfolder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components), for instance, for a component named `<app-start></app-start>` it should be `src/components/app/app-start.html` in order for the import.meta.glob Wildcard-Pattern to work properly.
 
 Just put them into a seperate folder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components).
 
