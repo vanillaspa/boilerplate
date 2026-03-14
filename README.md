@@ -140,11 +140,11 @@ But the ai generated file needs to be customized because they don't know vanilla
 </style>
 ```
 
-**Important!** Each WebComponent must be located in your project in a subfolder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components), for instance, for a component named `<app-start></app-start>` it should be `src/components/app/app-start.html` in order for the import.meta.glob Wildcard-Pattern to work properly.
+**Important!** Each WebComponent must be located in your project in a subfolder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components), for instance, for a component named `<app-start></app-start>` it should be `src/components/app/app-start.html` in order for the [import.meta.glob Wildcard-Pattern](https://github.com/vanillaspa/web-components/blob/881048a70a58854eb364f30c03b5b12483f47307/index.js#L1) to work properly.
 
 Just put them into a seperate folder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components).
 
-All the files under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) are automagically defined as web-components in the customElements registry. You just have to stick to (custom elements naming conventions)[https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name].
+All the files under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) are automagically defined as web-components in the customElements registry. You just have to stick to [custom elements naming conventions](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name).
 
 Then just import your web-components with:
 
