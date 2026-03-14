@@ -37,9 +37,11 @@ You can then access the app via https://localhost:4173 in your browser.
 
 ## How It's done
 
-Ok, you got me. This is not standard HTML. [See the example](https://github.com/vanillaspa/boilerplate/main/src/components/donate/donate-paypal.html) or read on.
+You create SNIPPETS! by using dedicated `.html` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.html` file.
 
-![Conceptual graphic](https://github.com/vanillaspa/boilerplate/main/assets/conceptual.png)
+Ok, you got me. This is not a standard HTML. But maybe it will be webstandard in the future [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/main/src/components/donate/donate-paypal.html) or read on.
+
+![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
 
 Say to the AI: Create a single .html file component in vanilla js for a donate paypal button.
 
@@ -81,7 +83,7 @@ Hopefully, You will get something like this:
 </script>
 ```
 
-You create SNIPPETS! by using dedicated `.html` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.html` file. Means, the ai generated file needs to be customized. This is a no-brainer
+Means, the ai generated file needs to be customized. This is a no-brainer
 
 ```html
 <template>
