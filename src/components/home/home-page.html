@@ -1,4 +1,5 @@
 <template>
+    <please-donate></please-donate>
     <p>The combination of <strong>SQLite WASM</strong> (WebAssembly) and the <strong>Origin Private File System
             (OPFS)</strong> is currently the <strong>most powerful</strong> and <strong>recommended</strong> method for
         running a complete relational database in the browser.</p>
@@ -16,7 +17,8 @@
     <h3>2. OPFS: The File System Backend</h3>
     <p>The <strong>Origin Private File System (OPFS)</strong> is part of the File System Access API and provides a
         private, highly optimized storage area that is only accessible to the respective <em>Origin</em> (e.g.,
-        <code>https://your-app.com</code>).</p>
+        <code>https://your-app.com</code>).
+    </p>
     <h2>🔑 Why the Combination is So Powerful</h2>
     <p>SQLite was designed as a synchronous system that requires immediate access to its database file. However,
         standard browser APIs like IndexedDB are asynchronous. The combination solves this central problem:</p>
@@ -54,7 +56,8 @@
                 <td style="text-align: left;">The application must be served with the HTTP headers
                     <code>Cross-Origin-Opener-Policy: same-origin</code> and
                     <code>Cross-Origin-Embedder-Policy: require-corp</code>. This is necessary because SQLite WASM uses
-                    <strong><code>SharedArrayBuffer</code></strong>, a prerequisite for synchronous communication.</td>
+                    <strong><code>SharedArrayBuffer</code></strong>, a prerequisite for synchronous communication.
+                </td>
             </tr>
             <tr>
                 <td style="text-align: left;"><strong>Execution in the Worker</strong></td>
@@ -80,9 +83,11 @@
     <h2>🌐 Summary</h2>
     <p>SQLite WASM in OPFS is the <strong>game changer</strong> for demanding, data-centric web applications. It enables
         <em>Local-First</em> architectures where large amounts of data and complex queries can be handled entirely
-        client-side and very performantly.</p>
+        client-side and very performantly.
+    </p>
     <p>If you are developing a web application that requires a fully-fledged, fast relational database, this is the
         technology you should be using.</p>
+    <please-donate2></please-donate2>
 </template>
 <script></script>
 <style>

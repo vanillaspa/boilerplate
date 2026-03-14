@@ -35,11 +35,122 @@ and then simply
 
 You can then access the app via https://localhost:4173 in your browser.
 
-## How-To
+## How It's done
 
-You will be using dedicated `.html` files to create your Single File Components (SFCs). Create your SFCs à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.html` file.
+Ok, you got me. This is not standard HTML. [See the example](https://github.com/vanillaspa/boilerplate/main/src/components/donate/donate-paypal.html) or read on.
 
-Just put your custom elements in the [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) folder. All the files under `/src/components` are automagically defined as web-components in the customElements registry. You just have to stick to (custom elements naming conventions)[https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name].
+![Conceptual graphic](https://github.com/vanillaspa/boilerplate/main/assets/conceptual.png)
+
+Say to the AI: Create a single .html file component in vanilla js for a donate paypal button.
+
+Hopefully, You will get something like this:
+```html
+<button 
+  id="donate-btn" 
+  style="background:#0070ba; color:white; border:none; padding:10px 20px; border-radius:4px; cursor:pointer; font-weight:bold; display:inline-flex; align-items:center; gap:8px;"
+  onclick="sendDonation('robert.meissner@outlook.com', 'EUR')"
+>
+  Donate to VanillaSPA
+</button>
+
+<script>
+  window.sendDonation = (email, currency) => {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://www.paypal.com/cgi-bin/webscr';
+    
+    const params = {
+      cmd: '_donations',
+      business: email,
+      currency_code: currency,
+      item_name: 'Support VanillaSPA Development'
+    };
+
+    for (const [key, value] of Object.entries(params)) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  };
+</script>
+```
+
+You create SNIPPETS! by using dedicated `.html` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.html` file. Means, the ai generated file needs to be customized. This is a no-brainer
+
+```html
+<template>
+  <button id="donate-btn">
+    Donate to VanillaSPA
+  </button>
+</template>
+
+<script>
+  function sendDonation(email, currency) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'https://www.paypal.com/cgi-bin/webscr';
+    
+    const params = {
+      cmd: '_donations',
+      business: email,
+      currency_code: currency,
+      item_name: 'Support VanillaSPA Development'
+    };
+
+    for (const [key, value] of Object.entries(params)) {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = value;
+      form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+  };
+
+  const button = shadowDocument.querySelector("#");
+    button.addEventListener("click", () => {
+      sendDonation('robert.meissner@outlook.com', 'EUR')";
+    }
+</script>
+
+<style>
+  button {
+    background: #0070ba;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>
+```
+
+Then just import your web-components with:
+
+<script type="module">
+    import('@vanillaspa/web-components')
+</script>
+
+After importing web-components, your WebComponents will be defined in the CustomElements registry. You don't have to register your elements manually. Just put them into a seperate folder under src/components.
+
+Important! Each WebComponent must be located in your project in a subfolder under src/components, for instance, for a component named <app-start></app-start> it should be src/components/app/app-start.html in order for the import.meta.glob Wildcard-Pattern to work properly.
+
+All the files under `/src/components` are automagically defined as web-components in the customElements registry. You just have to stick to (custom elements naming conventions)[https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name].
+
+Just put your customElements in the [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) folder.
 
 After having imported the `web-components` module, your custom elements can be instantiated immediately.s
 
