@@ -12,7 +12,9 @@ customElements.whenDefined("router-app2").then(() => {
             window[module.name] = module;
         });
     }).finally(() => {
-        const root = document.getElementsByTagName('body')[0];
-        root.innerHTML = '<router-app2></router-app2>';
+        const root = document.body;
+        root.replaceChildren(); // clear existing content safely
+        const app = document.createElement('router-app2');
+        root.appendChild(app);
     });
 })
