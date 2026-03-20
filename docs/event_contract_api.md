@@ -8,8 +8,8 @@ routing behaviour, and which component handles it.
 ## Conventions
 
 ### Direction
-- **→ inbound** — dispatched by a consumer component to request an action
-- **← outbound** — emitted by the bridge component as a result
+- **→ request** — dispatched by a consumer component to request an action
+- **← response** — emitted by the bridge component as a result
 
 ### Routing
 - **scoped** — delivered only to listeners registered with the matching `context`
@@ -36,8 +36,8 @@ interfering with other components making the same request concurrently.
 ## Bridge Component
 
 `<sqlite-notes>` (and `<sqlite-workers>`) act as the sqlite bridge. They
-translate inbound `sqlite:*` events into direct `window.sqlite` API calls and
-emit the corresponding outbound events. Consumers never call `window.sqlite`
+translate request `sqlite:*` events into direct `window.sqlite` API calls and
+emit the corresponding response events. Consumers never call `window.sqlite`
 directly — they communicate exclusively through this event API.
 
 ---
@@ -45,7 +45,7 @@ directly — they communicate exclusively through this event API.
 ## Event Reference
 
 ### `sqlite:create`
-**→ inbound · scoped**
+**→ request · scoped**
 
 Open (or create) a named SQLite database.
 
@@ -58,7 +58,7 @@ new CustomEvent('sqlite:create', {
 })
 ```
 
-**Response:** `sqlite:created:{timeStamp}` ← outbound · scoped
+**Response:** `sqlite:created:{timeStamp}` ← response · scoped
 
 ```js
 event.detail = { result: string } // confirmation message from sqlite-wasm
@@ -67,7 +67,7 @@ event.detail = { result: string } // confirmation message from sqlite-wasm
 ---
 
 ### `sqlite:query`
-**→ inbound · scoped**
+**→ request · scoped**
 
 Execute a raw SQL string. Use for DDL, multi-statement scripts, or queries
 where column-keyed results are not required.
@@ -82,13 +82,13 @@ new CustomEvent('sqlite:query', {
 })
 ```
 
-**Response (SELECT):** `sqlite:result:{timeStamp}` ← outbound · scoped
+**Response (SELECT):** `sqlite:result:{timeStamp}` ← response · scoped
 
 ```js
 event.detail = { result: Array<Array<any>> } // rows as positional arrays
 ```
 
-**Response (non-SELECT):** `sqlite:updated:{timeStamp}` ← outbound · scoped
+**Response (non-SELECT):** `sqlite:updated:{timeStamp}` ← response · scoped
 
 ```js
 event.detail = { result: any }
@@ -97,7 +97,7 @@ event.detail = { result: any }
 ---
 
 ### `sqlite:statement`
-**→ inbound · scoped**
+**→ request · scoped**
 
 Execute a parameterised SQL statement. Prefer this over `sqlite:query` for any
 statement that includes user-supplied values. Uses positional placeholders
@@ -114,13 +114,13 @@ new CustomEvent('sqlite:statement', {
 })
 ```
 
-**Response (SELECT):** `sqlite:result:{timeStamp}` ← outbound · scoped
+**Response (SELECT):** `sqlite:result:{timeStamp}` ← response · scoped
 
 ```js
 event.detail = { result: Array<Record<string, any>> } // rows as column-keyed objects
 ```
 
-**Response (non-SELECT):** `sqlite:updated:{timeStamp}` ← outbound · scoped
+**Response (non-SELECT):** `sqlite:updated:{timeStamp}` ← response · scoped
 
 ```js
 event.detail = { result: any }
@@ -133,7 +133,7 @@ event.detail = { result: any }
 ---
 
 ### `sqlite:upload`
-**→ inbound · scoped**
+**→ request · scoped**
 
 Import a `.sqlite` or `.sqlite3` file into OPFS, replacing the named database.
 
@@ -147,7 +147,7 @@ new CustomEvent('sqlite:upload', {
 })
 ```
 
-**Response:** `sqlite:uploaded` ← outbound · **broadcast**
+**Response:** `sqlite:uploaded` ← response · **broadcast**
 
 ```js
 event.detail = { result: any }
@@ -156,7 +156,7 @@ event.detail = { result: any }
 ---
 
 ### `sqlite:download`
-**→ inbound · scoped**
+**→ request · scoped**
 
 Export the named database as a `.sqlite3` file download (triggers browser save dialog).
 
@@ -169,7 +169,7 @@ new CustomEvent('sqlite:download', {
 })
 ```
 
-**Response:** `sqlite:downloaded` ← outbound · **broadcast**
+**Response:** `sqlite:downloaded` ← response · **broadcast**
 
 ```js
 event.detail = { name: string }
@@ -178,7 +178,7 @@ event.detail = { name: string }
 ---
 
 ### `sqlite:closeDB`
-**→ inbound · scoped**
+**→ request · scoped**
 
 Close the database connection and terminate the worker. The OPFS file is kept.
 
@@ -191,7 +191,7 @@ new CustomEvent('sqlite:closeDB', {
 })
 ```
 
-**Response:** `sqlite:closed` ← outbound · **broadcast**
+**Response:** `sqlite:closed` ← response · **broadcast**
 
 ```js
 event.detail = { name: string }
@@ -200,7 +200,7 @@ event.detail = { name: string }
 ---
 
 ### `sqlite:deleteDB`
-**→ inbound · scoped**
+**→ request · scoped**
 
 Close the database connection, terminate the worker, and permanently delete the
 OPFS file. Irreversible.
@@ -214,7 +214,7 @@ new CustomEvent('sqlite:deleteDB', {
 })
 ```
 
-**Response:** `sqlite:deleted` ← outbound · **broadcast**
+**Response:** `sqlite:deleted` ← response · **broadcast**
 
 ```js
 event.detail = { name: string }
@@ -223,7 +223,7 @@ event.detail = { name: string }
 ---
 
 ### `sqlite:error`
-**← outbound · broadcast**
+**← response · broadcast**
 
 Emitted by the bridge on any failure. Consumers should always register a
 listener for this event.
@@ -232,7 +232,7 @@ listener for this event.
 event.detail = {
     error: string,          // error message
     action: string,         // the bridge action that failed (e.g. 'executeQuery')
-    event: CustomEvent      // the original inbound event that caused the failure
+    event: CustomEvent      // the original request event that caused the failure
 }
 ```
 
@@ -272,7 +272,7 @@ dispatchEvent(req, host);
 ```
 Does the event need a specific response?
 ├── Yes → scoped + timestamp correlation
-│         dispatchEvent(event, host)          // inbound
+│         dispatchEvent(event, host)          // request
 │         addEventListener(`event:name:${req.timeStamp}`, handler, host)
 └── No (lifecycle notification) → broadcast
           dispatchEvent(new CustomEvent('sqlite:closed', { detail: { name } }))

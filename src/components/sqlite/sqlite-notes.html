@@ -4,154 +4,121 @@
 
 <script>
     const { dispatchEvent, addEventListener } = window.eventbus;
-    const {
-        createDB,
-        closeDB,
-        deleteDB,
-        executeQuery,
-        executeStatement,
-        uploadDB,
-        downloadDB
-    } = window.sqlite;
+    const { createDB, closeDB, deleteDB, executeQuery, executeStatement, uploadDB, downloadDB } = window.sqlite;
+    const { namespace, events } = window.SqliteContract;
 
     const host = shadowDocument.host;
 
-    addEventListener('sqlite:create', async (event) => {
+    // ── bridge: sqlite:create → sqlite:created:{ts} ──────────────────
+    addEventListener(`${namespace}:${events.create.past === 'created' ? 'create' : 'create'}`, async (event) => {
         const { name } = event.detail;
         try {
             const result = await createDB(name);
-            const readyEvent = new CustomEvent(`sqlite:created:${event.timeStamp}`, { detail: { result } });
-            dispatchEvent(readyEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:${events.create.past}:${event.timeStamp}`, { detail: { result } }), host);
         } catch (error) {
-            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'createDB', event } });
-            dispatchEvent(errorEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:error:${event.timeStamp}`, { detail: { error: error.message, action: 'create' } }), host);
         }
     }, host);
 
-    addEventListener('sqlite:query', async (event) => {
+    // ── bridge: sqlite:query → sqlite:queried:{ts} ───────────────────
+    addEventListener(`${namespace}:query`, async (event) => {
         const { sql, name } = event.detail;
         try {
             const result = await executeQuery(sql, name);
-            const isSelect = sql.trim().toUpperCase().startsWith('SELECT');
-            console.log({ sql });
-            const resultEvent = isSelect
-                ? new CustomEvent(`sqlite:result:${event.timeStamp}`, { detail: { result } })
-                : new CustomEvent(`sqlite:updated:${event.timeStamp}`, { detail: { result } });
-            dispatchEvent(resultEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:${events.query.past}:${event.timeStamp}`, { detail: { result } }), host);
         } catch (error) {
-            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'executeQuery', event } });
-            dispatchEvent(errorEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:error:${event.timeStamp}`, { detail: { error: error.message, action: 'query' } }), host);
         }
     }, host);
 
-    addEventListener('sqlite:statement', async (event) => {
+    // ── bridge: sqlite:statement → sqlite:executed:{ts} ──────────────
+    addEventListener(`${namespace}:statement`, async (event) => {
         const { sql, values, name } = event.detail;
         try {
             const result = await executeStatement(sql, values, name);
-            const isSelect = sql.trim().toUpperCase().startsWith('SELECT');
-            const resultEvent = isSelect
-                ? new CustomEvent(`sqlite:result:${event.timeStamp}`, { detail: { result } })
-                : new CustomEvent(`sqlite:updated:${event.timeStamp}`, { detail: { result } })
-            dispatchEvent(resultEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:${events.statement.past}:${event.timeStamp}`, { detail: { result } }), host);
         } catch (error) {
-            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'prepareStatement', event } });
-            dispatchEvent(errorEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:error:${event.timeStamp}`, { detail: { error: error.message, action: 'statement' } }), host);
         }
     }, host);
 
-    addEventListener('sqlite:upload', async (event) => {
-        const { fileName, arrayBuffer } = event.detail;
-        try {
-            const result = await uploadDB(fileName, arrayBuffer);
-            const uploadedEvent = new CustomEvent('sqlite:uploaded', { detail: { result } });
-            dispatchEvent(uploadedEvent);
-        } catch (error) {
-            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'uploadDB', event } });
-            dispatchEvent(errorEvent);
-        }
-    }, host);
-
-    addEventListener('sqlite:download', async (event) => {
+    // ── bridge: sqlite:close → sqlite:closed:{ts} ────────────────────
+    addEventListener(`${namespace}:close`, async (event) => {
         const { name } = event.detail;
         try {
-            await downloadDB(name);
-            const downloadedEvent = new CustomEvent('sqlite:downloaded', { detail: {} });
-            dispatchEvent(downloadedEvent);
+            await closeDB(name);
+            dispatchEvent(new CustomEvent(`${namespace}:${events.close.past}:${event.timeStamp}`, { detail: { name } }), host);
         } catch (error) {
-            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'downloadDB', event } });
-            dispatchEvent(errorEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:error:${event.timeStamp}`, { detail: { error: error.message, action: 'close' } }), host);
         }
     }, host);
 
-    addEventListener('sqlite:closeDB', async (event) => {
-        const { name } = event.detail;
-        try {
-            await closeDB();
-            const closedEvent = new CustomEvent('sqlite:closed', { detail: { name } });
-            dispatchEvent(closedEvent);
-        } catch (error) {
-            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'closeDB', event } });
-            dispatchEvent(errorEvent);
-        }
-    }, host);
-
-    addEventListener('sqlite:deleteDB', async (event) => {
+    // ── bridge: sqlite:delete → sqlite:deleted:{ts} ──────────────────
+    addEventListener(`${namespace}:delete`, async (event) => {
         const { name } = event.detail;
         try {
             await deleteDB(name);
-            const deletedEvent = new CustomEvent('sqlite:deleted', { detail: { name } });
-            dispatchEvent(deletedEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:${events.delete.past}:${event.timeStamp}`, { detail: { name } }), host);
         } catch (error) {
-            const errorEvent = new CustomEvent('sqlite:error', { detail: { error: error.message, action: 'deleteDB', event } });
-            dispatchEvent(errorEvent);
+            dispatchEvent(new CustomEvent(`${namespace}:error:${event.timeStamp}`, { detail: { error: error.message, action: 'delete' } }), host);
         }
     }, host);
 
-
-    const creationEvent = new CustomEvent('sqlite:create', {
-        detail: {
-            name: 'notes',
-            target: host
+    // ── bridge: sqlite:upload → sqlite:uploaded:{ts} ─────────────────
+    addEventListener(`${namespace}:upload`, async (event) => {
+        const { fileName, arrayBuffer } = event.detail;
+        try {
+            const result = await uploadDB(fileName, arrayBuffer);
+            dispatchEvent(new CustomEvent(`${namespace}:${events.upload.past}:${event.timeStamp}`, { detail: { result } }), host);
+        } catch (error) {
+            dispatchEvent(new CustomEvent(`${namespace}:error:${event.timeStamp}`, { detail: { error: error.message, action: 'upload' } }), host);
         }
+    }, host);
+
+    // ── bridge: sqlite:download → sqlite:downloaded:{ts} ─────────────
+    addEventListener(`${namespace}:download`, async (event) => {
+        const { name } = event.detail;
+        try {
+            await downloadDB(name);
+            dispatchEvent(new CustomEvent(`${namespace}:${events.download.past}:${event.timeStamp}`, { detail: {} }), host);
+        } catch (error) {
+            dispatchEvent(new CustomEvent(`${namespace}:error:${event.timeStamp}`, { detail: { error: error.message, action: 'download' } }), host);
+        }
+    }, host);
+
+    // ── seed + render ─────────────────────────────────────────────────
+    const creationEvent = new CustomEvent(`${namespace}:create`, {
+        detail: { name: 'notes' }
     });
 
-    const insertionEvent = new CustomEvent('sqlite:query', {
+    const insertionEvent = new CustomEvent(`${namespace}:query`, {
         detail: {
             sql: `
 CREATE TABLE IF NOT EXISTS notes(id INTEGER PRIMARY KEY, title VARCHAR(255), note TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT current_timestamp, updated_at TEXT NOT NULL DEFAULT current_timestamp);
-INSERT OR REPLACE INTO notes(id, title, note) VALUES 
+INSERT OR REPLACE INTO notes(id, title, note) VALUES
 (1, 'Most Popular Database', 'SQLite is the "<a href="https://www.sqlite.org/mostdeployed.html">Most Widely Deployed and Used Database Engine.</a>" I am using it for persistent state management in an <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system">Origin Private File System (OPFS)</a>. I recommend using Chromium/Chrome with <a href="https://github.com/tomayac/opfs-explorer">OPFS explorer</a>.'),
 (2, 'Symbolic programming', 'In an <a href="https://www.youtube.com/watch?v=PdE-waSx-d8">interview with Stephen Wolfram</a> I have found a particularly noteworthy quote that "even very simple programs can do all sorts of complicated things". This is something I have been working on as a computer scientist and hobby psychologist for years now. It is one aspect of declarative and the foundation of symbolic programming. It is a model for <a href="https://www.youtube.com/watch?v=Ohk5TvaW6vs">how nature works</a> and how you could use a no-code platform.'),
 (3, 'Project Management', '<a href="https://www.youtube.com/watch?v=GC7pN8Mjot8">Ricardo Vargas explains PMBOK Guide 6th edition</a> in less than one hour. The solution I am working on helps manage the Planning, the Executing and the Monitoring & Controlling phases of an event-based project.'),
 (4, 'Migration to @vanillaspa', 'While still using <a href="https://vuejs.org/guide/typescript/overview.html">Vue.js and TypeScript</a> at work, I have now migrated this Website to my self-written vanilla JavaScript WebComponents framework <a href="https://vanillaspa.github.io/github-page/">Vanilla SPA</a>. The migration worked fine and serves as a proof of concept, that the framework can be used in a production environment (while it is still "work in progress").'),
-(5, 'Tame Your advice monster','I know, this website is <i>beta</i>, I know it is using technology, one could argue about. I know, one could do things better and while I am always open for constructive feedback, <a href="https://www.ted.com/talks/michael_bungay_stanier_how_to_tame_your_advice_monster">You have to learn to tame your advice monster</a>. I am not trying to safe the world.'),
+(5, 'Tame Your advice monster', 'I know, this website is <i>beta</i>, I know it is using technology, one could argue about. I know, one could do things better and while I am always open for constructive feedback, <a href="https://www.ted.com/talks/michael_bungay_stanier_how_to_tame_your_advice_monster">You have to learn to tame your advice monster</a>. I am not trying to safe the world.'),
 (6, 'Contribution', 'P2P QUIC/gRPC protobuf WASM SQLite OPFS API IndexedDB fallback/Postgres sounds familiar to you? Lets connect :)');`,
-            name: 'notes',
-            target: host
+            name: 'notes'
         }
     });
 
-    const queryNotesEvent = new CustomEvent('sqlite:query', {
-        detail: {
-            sql: `SELECT * FROM notes ORDER BY id DESC;`,
-            name: 'notes',
-            target: host
-        }
+    const queryNotesEvent = new CustomEvent(`${namespace}:query`, {
+        detail: { sql: `SELECT * FROM notes ORDER BY id DESC;`, name: 'notes' }
     });
 
-    addEventListener(`sqlite:created:${creationEvent.timeStamp}`, (e) => {
+    addEventListener(`${namespace}:${events.create.past}:${creationEvent.timeStamp}`, () => {
         dispatchEvent(insertionEvent, host);
     }, host);
 
-    addEventListener(`sqlite:updated:${insertionEvent.timeStamp}`, (event) => {
-        const { result } = event.detail;
-        if (!result || result.length === 0) {
-            dispatchEvent(queryNotesEvent);
-            return;
-        }
+    addEventListener(`${namespace}:${events.query.past}:${insertionEvent.timeStamp}`, () => {
+        dispatchEvent(queryNotesEvent, host);
     }, host);
 
-    addEventListener(`sqlite:result:${queryNotesEvent.timeStamp}`, (event) => {
+    addEventListener(`${namespace}:${events.query.past}:${queryNotesEvent.timeStamp}`, (event) => {
         const { result } = event.detail;
         const parentArticle = shadowDocument.querySelector('#parent');
         parentArticle.replaceChildren();
@@ -162,39 +129,31 @@ INSERT OR REPLACE INTO notes(id, title, note) VALUES
         });
     }, host);
 
-    dispatchEvent(creationEvent, host); // fires first
-
-    addEventListener('sqlite:error', (event) => {
+    addEventListener(`${namespace}:error`, (event) => {
         const { error, action } = event.detail;
-        console.error(action, error);
+        console.error(`[sqlite-notes] ${action}:`, error);
     }, host);
 
-    host.addEventListener('component:disconnected', () => {
-        eventbus.removeAllEventListeners(host);
-    });
+    dispatchEvent(creationEvent, host);
 
-
+    // ── public helpers (callable from sibling components via eventbus) ─
     function getNotes(id) {
-        if (id)
-            dispatchEvent(new CustomEvent('sqlite:statement', {
-                detail: {
-                    sql: `SELECT * FROM notes WHERE id=$1;`,
-                    values: [id],
-                    name: 'notes',
-                    target: host
-                }
-            }));
+        if (!id) return;
+        dispatchEvent(new CustomEvent(`${namespace}:statement`, {
+            detail: { sql: `SELECT * FROM notes WHERE id=$1;`, values: [id], name: 'notes' }
+        }), host);
     }
 
     function insertNote({ title, note }) {
-        dispatchEvent(new CustomEvent('sqlite:statement', {
-            detail: { sql: `INSERT INTO notes(title, note) VALUES ($1,$2) RETURNING id;`, values: [title, note], name: 'notes', target: host }
-        }));
+        dispatchEvent(new CustomEvent(`${namespace}:statement`, {
+            detail: { sql: `INSERT INTO notes(title, note) VALUES ($1,$2) RETURNING id;`, values: [title, note], name: 'notes' }
+        }), host);
     }
+
     function deleteNote(id) {
-        dispatchEvent(new CustomEvent('sqlite:statement', {
-            detail: { sql: `DELETE FROM notes WHERE id=$1;`, values: [id], name: 'notes', target: host }
-        }));
+        dispatchEvent(new CustomEvent(`${namespace}:statement`, {
+            detail: { sql: `DELETE FROM notes WHERE id=$1;`, values: [id], name: 'notes' }
+        }), host);
     }
 </script>
 
