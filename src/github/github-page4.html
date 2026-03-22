@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanillaSpa | Divine Micro-Framework</title>
+    <style>
+        :root {
+            --godly-gold: #ffd700;
+            --deep-abyss: #144000;
+            --heavenly-red: #ff3131;
+            --shimmer: rgba(255, 215, 0, 0.15);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--deep-abyss);
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            /* Radial glow from the top like a divine light source */
+            background: radial-gradient(circle at 50% -20%, #2a6b00 0%, #144000 80%);
+            overflow-x: hidden;
+        }
+
+        .shining-altar {
+            max-width: 1100px;
+            width: 100%;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            margin: 0;
+            color: var(--godly-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            /* Divine Glow */
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #fff;
+            opacity: 0.8;
+            margin-top: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 5rem;
+        }
+
+        /* The "Shining Platter" Card */
+        article {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50% 50% 15px 15px / 10% 10% 15px 15px; /* Slight platter curve */
+            padding: 3rem 2rem;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+            /* The Platter Base Shadow */
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* Divine Halo behind the platter on hover */
+        article::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 120%; height: 120%;
+            background: radial-gradient(circle, var(--shimmer) 0%, transparent 70%);
+            transform: translate(-50%, -50%) scale(0.8);
+            z-index: -1;
+            transition: transform 0.5s ease;
+            opacity: 0;
+        }
+
+        article:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--godly-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        article:hover::before {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .loc-tag {
+            display: inline-block;
+            color: var(--heavenly-red);
+            font-family: monospace;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px var(--heavenly-red);
+        }
+
+        h2 {
+            color: var(--godly-gold);
+            margin: 0.5rem 0;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .cta-link {
+            margin-top: 2rem;
+            display: inline-block;
+            color: var(--godly-gold);
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--godly-gold);
+            border-radius: 2px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+
+        .cta-link:hover {
+            background: var(--godly-gold);
+            color: var(--deep-abyss);
+            box-shadow: 0 0 20px var(--godly-gold);
+        }
+
+        footer {
+            margin-top: 8rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 215, 0, 0.1);
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: var(--godly-gold);
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="shining-altar">
+        <header>
+            <h1>VanillaSpa</h1>
+            <div class="subtitle">PRESERVE THE PURITY. EMBRACE THE POWER.</div>
+        </header>
+
+        <main class="grid">
+            <article>
+                <span class="loc-tag">&lt; 100 LOC</span>
+                <h2>Web Components</h2>
+                <p>Sacred UI modules. Zero-dependency encapsulation using native Custom Elements. Performance without compromise.</p>
+                <a href="https://github.com/vanillaspa/web-components" class="cta-link">Observe Source</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">&lt; 50 LOC</span>
+                <h2>Event Bus</h2>
+                <p>The invisible thread. A divine Pub/Sub contract that orchestrates your world without binding your hands.</p>
+                <a href="https://github.com/vanillaspa/event-bus" class="cta-link">Observe Source</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">&lt; 100 LOC</span>
+                <h2>SQLite DB</h2>
+                <p>Relational truth. A crystallized Wasm wrapper bringing the permanence of SQL to the browser's ephemeral state.</p>
+                <a href="https://github.com/vanillaspa/sqlite-database" class="cta-link">Observe Source</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">Master Code</span>
+                <h2>Boilerplate</h2>
+                <p>The Holy Contract. The blueprint where all modules unite to form a single, perfect Application State.</p>
+                <a href="https://github.com/vanillaspa/boilerplate" class="cta-link">Observe Source</a>
+            </article>
+        </main>
+
+        <footer>
+            THE ARCHITECTURE OF RADIANCE // 2026
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanillaSpa | The Elite <100 LOC Framework</title>
+    <style>
+        :root {
+            /* Deine Kernfarben */
+            --bg-deep: #144000;
+            --text-gold: #ffd700;
+            --accent-red: #ff3131; /* Rötlicher Akzent */
+            
+            /* Neue Material- und Licht-Komponenten */
+            --vessel-silver: #a0ac90; /* Die silbrige Basis der Legierung */
+            --vessel-rim: #c0c8b0; /* Hellerer Rand für Reflexion */
+            
+            /* Definierte Verläufe für Materialtiefe */
+            --body-gradient: radial-gradient(circle at 50% -20%, #2a6b00 0%, var(--bg-deep) 70%);
+            
+            /* Der komplexe Glanzeffekt: Konischer Verlauf, der Lichtreflektionen auf Metall simuliert */
+            --shine-effect: conic-gradient(
+                from 180deg at 50% 110%, 
+                rgba(255,255,255,0) 0deg, 
+                rgba(255,255,255,0.1) 90deg, 
+                rgba(255,255,255,0.4) 180deg, 
+                rgba(255,255,255,0.1) 270deg, 
+                rgba(255,255,255,0) 360deg
+            );
+        }
+
+        body {
+            font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-deep);
+            background-image: var(--body-gradient);
+            color: #fff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        header { 
+            text-align: center;
+            border-bottom: 3px solid var(--text-gold); 
+            padding-bottom: 2rem; 
+            margin-bottom: 5rem; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+            /* Ein leichter Gold-Glow über dem Header */
+            background-image: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.1) 0%, transparent 80%);
+        }
+
+        h1 { 
+            color: var(--text-gold); 
+            margin: 0; 
+            font-size: 3.5rem; 
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            /* Göttliches Leuchten */
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+
+        .hero-p { color: #cbd5e1; font-size: 1.2rem; max-width: 700px; margin: 1rem auto; opacity: 0.9; }
+        .hero-p strong { color: var(--text-gold); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        /* Die polierte Silber-Grün-Schüssel */
+        article {
+            background-color: rgba(20, 64, 0, 0.6); /* Transparente grüne Basis */
+            /* Der Glanzeffekt, der von unten-hinten strahlt */
+            background-image: var(--shine-effect);
+            padding: 2.5rem;
+            border-radius: 50% 50% 15px 15px / 12% 12% 15px 15px; /* Gewölbte Form */
+            border: 2px solid var(--vessel-rim);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            overflow: hidden; /* Für den Glanz-Overlay */
+        }
+
+        /* Der subtile göttliche Halo, der nur beim Hover erscheint */
+        article::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        article:hover {
+            transform: translateY(-15px) scale(1.03);
+            border-color: var(--text-gold);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+        }
+
+        article:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(192, 200, 176, 0.3); /* Legierungs-Randfarbe */
+            padding-bottom: 0.8rem;
+        }
+
+        .card-header strong { 
+            color: var(--text-gold); 
+            font-size: 1.4rem; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        .loc { 
+            color: var(--accent-red); 
+            font-family: 'Courier New', monospace; 
+            font-weight: bold; 
+            font-size: 1rem; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(255, 49, 49, 0.5);
+        }
+
+        p { flex-grow: 1; color: #fff; font-size: 1rem; margin-bottom: 2rem; opacity: 0.85; }
+
+        /* Der polierte Button-Effekt */
+        a {
+            color: #fff;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.1) 100%);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            text-align: center;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        a:hover { 
+            background: var(--text-gold);
+            color: var(--bg-deep);
+            border-color: var(--text-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+        }
+
+        .philosophy { 
+            margin-top: 7rem; 
+            padding: 3rem; 
+            border-radius: 12px;
+            background-color: rgba(0,0,0,0.4);
+            border: 1px solid var(--accent-red);
+            box-shadow: 0 0 30px rgba(255, 49, 49, 0.15);
+        }
+
+        .philosophy h2 { 
+            color: var(--accent-red); 
+            text-transform: uppercase; 
+            letter-spacing: 3px;
+            margin-top: 0; 
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px rgba(255, 49, 49, 0.4);
+        }
+
+        .philosophy ul { list-style: none; padding: 0; margin-top: 2rem; }
+        .philosophy li { margin-bottom: 1.5rem; display: flex; align-items: center; font-size: 1.1rem; }
+        .philosophy li::before {
+            content: "→";
+            color: var(--accent-red);
+            margin-right: 1.5rem;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        code { 
+            background: rgba(255,255,255,0.1); 
+            color: #d1d5db;
+            padding: 0.2rem 0.5rem; 
+            border-radius: 4px; 
+            font-family: monospace; 
+            font-size: 0.9rem;
+        }
+
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.5;
+            font-size: 0.8rem;
+            color: var(--text-gold);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VanillaSpa</h1>
+            <p class="hero-p">The Elite Micro-Framework Ecosystem. Zero Dependencies. Zero Build Tools. <strong>Strictly &lt; 100 LOC.</strong></p>
+        </header>
+
+        <main class="grid">
+            <article>
+                <div class="card-header">
+                    <strong>Web Components</strong>
+                    <span class="loc">&lt; 100 LOC</span>
+                </div>
+                <p>Sacred UI modules. Full <code>CustomElementRegistry</code> control and Shadow DOM encapsulation—without framework overhead.</p>
+                <a href="https://github.com/vanillaspa/web-components">Observe Source &rarr;</a>
+            </article>
+
+            <article>
+                <div class="card-header">
+                    <strong>Event Bus</strong>
+                    <span class="loc">&lt; 50 LOC</span>
+                </div>
+                <p>The invisible thread. A divine Pub/Sub contract that orchestrates your application logic seamlessly.</p>
+                <a href="https://github.com/vanillaspa/event-bus">Observe Source &rarr;</a>
+            </article>
+
+            <article>
+                <div class="card-header">
+                    <strong>SQLite DB</strong>
+                    <span class="loc">&lt; 100 LOC</span>
+                </div>
+                <p>Crystallized truth. A functional Wasm wrapper bringing the relational permanence of SQL to the browser.</p>
+                <a href="https://github.com/vanillaspa/sqlite-database">Observe Source &rarr;</a>
+            </article>
+
+            <article>
+                <div class="card-header">
+                    <strong>Boilerplate</strong>
+                    <span class="loc">Starter</span>
+                </div>
+                <p>The Code Contract. The sacred blueprint where components, events, and data unite into a single SPA structure.</p>
+                <a href="https://github.com/vanillaspa/boilerplate">Project Template &rarr;</a>
+            </article>
+        </main>
+
+        <section class="philosophy">
+            <h2>The Architect's Vow</h2>
+            <ul>
+                <li><strong>No Dependencies:</strong> We bow only to the Web Platform (and core Wasm runtimes).</li>
+                <li><strong>Radical Transparency:</strong> The entire stack is auditable and readable in a single glance.</li>
+                <li><strong>Native-First:</strong> Built exclusively on modern (2026) Web Standards.</li>
+            </ul>
+        </section>
+
+        <footer>
+            THE ARCHITECTURE OF RADIANCE // 2026
+        </footer>
+    </div>
+</body>
+</html>

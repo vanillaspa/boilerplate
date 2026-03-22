@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanillaSpa | Architecture for Contract Masters</title>
+    <style>
+        :root {
+            --emerald-deep: #01241a;
+            --emerald-bright: #043927;
+            --gold-leaf: #d4af37;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --text-light: #f1f5f1;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'SF Pro Display', -apple-system, system-ui, sans-serif;
+            background: radial-gradient(circle at 50% 0%, var(--emerald-bright) 0%, var(--emerald-deep) 100%);
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 1rem;
+        }
+
+        /* --- HERO SECTION --- */
+        header {
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            /* Reactive font size */
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5rem;
+            background: linear-gradient(135deg, #f9f295 0%, #cf9d3c 50%, #f9f295 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px var(--gold-glow));
+        }
+
+        .vow-line {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold-leaf);
+            opacity: 0.8;
+        }
+
+        /* --- SYMMETRICAL GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            /* Mobile first: 1 column */
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+
+            header {
+                padding: 8rem 0 4rem;
+            }
+        }
+
+        article {
+            background: var(--glass);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            transition: 0.4s ease;
+        }
+
+        article:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold-leaf);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h3 {
+            color: var(--gold-leaf);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 1rem 0;
+        }
+
+        .cta {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.7rem 2rem;
+            border: 1px solid var(--gold-leaf);
+            color: var(--gold-leaf);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .cta:hover {
+            background: var(--gold-leaf);
+            color: var(--emerald-deep);
+        }
+
+        /* --- SIMULATION (REACTIVE) --- */
+        .visualizer {
+            margin: 5rem 0;
+            padding: 3rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 30px;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            width: 100%;
+        }
+
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            /* Mobile: Vertical flow */
+            align-items: center;
+            gap: 3rem;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .flow-container {
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 2rem 0;
+            }
+        }
+
+        .hub {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--gold-leaf) 0%, transparent 70%);
+            border: 2px solid var(--gold-leaf);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--emerald-deep);
+            font-weight: 900;
+            text-align: center;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .node {
+            background: var(--emerald-bright);
+            border: 1px solid var(--gold-leaf);
+            padding: 1.5rem;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* --- PULSE ANIMATION --- */
+        .pulse {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-leaf);
+            opacity: 0;
+        }
+
+        /* Mobile Vertical Pulses */
+        @keyframes flowDown {
+            0% {
+                top: 10%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                top: 90%;
+                opacity: 0;
+            }
+        }
+
+        /* Desktop Horizontal Pulses */
+        @keyframes flowRight {
+            0% {
+                left: 10%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 90%;
+                opacity: 0;
+            }
+        }
+
+        .pulse-1 {
+            animation: flowDown 4s infinite linear;
+        }
+
+        @media (min-width: 768px) {
+            .pulse-1 {
+                animation: flowRight 4s infinite linear;
+                top: 50%;
+            }
+        }
+
+        footer {
+            padding: 4rem;
+            opacity: 0.5;
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>VanillaSpa</h1>
+            <div class="vow-line">Less framework, less stress.</div>
+        </header>
+
+        <main class="grid">
+            <article>
+                <h3>UI Engine</h3>
+                <p>Native Web Components. Optimized for Vite. Zero abstraction tax.</p>
+                <a href="https://github.com/vanillaspa/web-components" class="cta">Repository</a>
+            </article>
+            <article>
+                <h3>Event Bus</h3>
+                <p>The Contract. Decoupled reactive messaging logic.</p>
+                <a href="https://github.com/vanillaspa/event-bus" class="cta">Repository</a>
+            </article>
+            <article>
+                <h3>SQLite DB</h3>
+                <p>Relational truth. Wasm-powered persistence.</p>
+                <a href="https://github.com/vanillaspa/sqlite-database" class="cta">Repository</a>
+            </article>
+            <article>
+                <h3>Vite Shell</h3>
+                <p>The Master Blueprint. Pre-configured for speed.</p>
+                <a href="https://github.com/vanillaspa/boilerplate" class="cta">Boilerplate</a>
+            </article>
+        </main>
+
+        <section class="visualizer">
+            <div class="flow-container">
+                <div class="pulse pulse-1"></div>
+                <div class="node"><strong>Component</strong><br><small>Emit Intent</small></div>
+                <div class="hub">The Bus<br>Contract</div>
+                <div class="node"><strong>Module</strong><br><small>Execute Handler</small></div>
+            </div>
+        </section>
+
+        <footer>VANILLASPA // ARCHITECTURE OF RADIANCE // 2026</footer>
+    </div>
+</body>
+
+</html>

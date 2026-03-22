@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanillaSpa | The Elite <100 LOC Framework</title>
+    <style>
+        :root {
+            /* Deine Kernfarben aus dem Bild, veredelt */
+            --arch-bg: #0b1400; /* Tiefes, organisches Waldgrün */
+            --arch-text: #ecf0f1; /* Sauberes, off-white */
+            
+            /* GÖTTLICHES GOLD (komplexer Glanz) */
+            --godly-gold: #f1c40f; 
+            --godly-shine: #fffbe0; /* Der hellste Glanzpunkt */
+            --godly-glow: rgba(241, 196, 15, 0.6); /* Der goldene Halo */
+            
+            /* Akzente */
+            --tech-blue: #3498db; /* Subtiler Wasser-Akzent */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'SF Pro Display', system-ui, -apple-system, sans-serif;
+            background-color: var(--arch-bg);
+            color: var(--arch-text);
+            line-height: 1.6;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Subtiler radialer Verlauf für Tiefe */
+            background-image: radial-gradient(circle at 50% -20%, #1a3000 0%, var(--arch-bg) 70%);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* --- SYMMETRISCHER HERO-ABSCHNITT --- */
+        .hero {
+            text-align: center;
+            padding: 8rem 0;
+            margin-bottom: 5rem;
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Ein sanfter, goldener Schein, der von oben strahlt */
+            background-image: radial-gradient(circle at 50% 0%, rgba(241, 196, 15, 0.15) 0%, transparent 80%);
+        }
+
+        /* Der leuchtende Partikel-Effekt (Glimmer) im Hintergrund */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 10%; left: 10%; width: 80%; height: 80%;
+            background-image: radial-gradient(#fff 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        h1 {
+            font-size: 5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.8rem;
+            font-weight: 900;
+            /* Komplexer Gold-Glanzeffekt */
+            color: var(--godly-gold);
+            background: linear-gradient(135deg, var(--godly-gold) 0%, var(--godly-shine) 50%, var(--godly-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Göttlicher Glow */
+            filter: drop-shadow(0 0 25px var(--godly-glow)) drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            letter-spacing: 5px;
+            color: var(--arch-text);
+            opacity: 0.9;
+            margin-top: 1.5rem;
+            text-transform: uppercase;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Die "Guaranteed Behavior" Zeile - absolute Symmetrie */
+        .vow-p {
+            max-width: 750px;
+            margin: 3rem auto 0;
+            color: rgba(236, 240, 241, 0.7);
+            font-size: 1rem;
+            border-top: 1px solid rgba(241, 196, 15, 0.2);
+            padding-top: 2rem;
+            letter-spacing: 1px;
+            font-style: italic;
+        }
+
+        /* --- SYMMETRISCHES GRID-LAYOUT --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Perfekt symmetrisches 2x2 Grid */
+            gap: 4rem;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Das schwebende Glaselement (Floating Vessel) */
+        article {
+            position: relative;
+            background: rgba(20, 44, 0, 0.5); /* Dunkelgrüne Glas-Basis */
+            /* Der polierte Schüssel-Effekt: Ein subtiler konischer Glanz */
+            background-image: conic-gradient(from 180deg at 50% 120%, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.01) 100%);
+            border-radius: 12px;
+            padding: 3rem 2.5rem;
+            border: 1px solid rgba(241, 196, 15, 0.15);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Symmetrie innerhalb der Karte */
+            text-align: center;
+        }
+
+        /* Der goldene Halo, der nur beim Hover erscheint */
+        article::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(241, 196, 15, 0.15) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        article:hover {
+            transform: translateY(-15px) scale(1.03);
+            border-color: rgba(241, 196, 15, 0.5);
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.4), 0 30px 60px rgba(0,0,0,0.6);
+        }
+
+        article:hover::before { opacity: 1; }
+
+        .loc-tag {
+            color: var(--tech-blue); /* Nutzung des Wasser-Akzents */
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        h2 {
+            color: var(--godly-gold);
+            font-size: 1.8rem;
+            margin: 0.5rem 0;
+            text-shadow: 0 0 15px rgba(241, 196, 15, 0.4);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        p {
+            color: rgba(236, 240, 241, 0.9);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: 3rem;
+            flex-grow: 1;
+        }
+
+        /* Der polierte Gold-Button */
+        .cta {
+            display: inline-block;
+            color: var(--godly-gold);
+            text-decoration: none;
+            border: 2px solid var(--godly-gold);
+            padding: 0.8rem 2.5rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 3px;
+            border-radius: 4px;
+            transition: all 0.3s;
+            background: rgba(0,0,0,0.3);
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.2);
+        }
+
+        .cta:hover {
+            background: var(--godly-gold);
+            color: var(--arch-bg);
+            box-shadow: 0 0 30px rgba(241, 196, 15, 0.8);
+        }
+
+        /* Der "The Vow" Abschnitt - wie deine Architekten-Ecke */
+        .the-vow {
+            margin-top: 10rem;
+            padding: 4rem;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(241, 196, 15, 0.15);
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .the-vow h2 { color: var(--godly-gold); margin-bottom: 3rem; font-size: 2.2rem; }
+        
+        ul { list-style: none; padding: 0; text-align: left; max-width: 650px; margin: 0 auto; }
+        li { margin-bottom: 2rem; display: flex; align-items: center; font-size: 1.1rem; }
+        /* Der biophile, organische Pfeil-Akzent */
+        li::before { content: '◈'; color: var(--godly-gold); margin-right: 1.5rem; font-size: 1.5rem; opacity: 0.8; }
+
+        footer {
+            margin-top: 8rem;
+            opacity: 0.6;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            color: var(--godly-gold);
+            padding: 3rem;
+            border-top: 1px solid rgba(241, 196, 15, 0.1);
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="hero">
+            <h1>VanillaSpa</h1>
+            <div class="subtitle">Architecture of Purity // Zero Dependencies</div>
+            <p class="vow-p">Guaranteed Behavior, Absolute Control, Defined State: One Source of Truth, Unrivaled Efficiency.</p>
+        </section>
+
+        <main class="grid">
+            <article>
+                <span class="loc-tag">&lt; 100 LOC</span>
+                <h2>Web Components</h2>
+                <p>Native <code>CustomElements</code> with absolute encapsulation. Your UI, exactly how you architected it.</p>
+                <a href="https://github.com/vanillaspa/web-components" class="cta">Observe Source &rarr;</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">&lt; 50 LOC</span>
+                <h2>Event Bus</h2>
+                <p>The messaging layer. A minimalist Pub/Sub interface that decouples state from rendering flawlessly.</p>
+                <a href="https://github.com/vanillaspa/event-bus" class="cta">Observe Source &rarr;</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">&lt; 100 LOC</span>
+                <h2>SQLite DB</h2>
+                <p>Relational truth. A functional Wasm wrapper bringing the permanence of SQL directly to the client state.</p>
+                <a href="https://github.com/vanillaspa/sqlite-database" class="cta">Observe Source &rarr;</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">Master Glue</span>
+                <h2>Boilerplate</h2>
+                <p>The Code Contract. The sacred starting pattern where all modules fuse into a high-performance SPA.</p>
+                <a href="https://github.com/vanillaspa/boilerplate" class="cta">Inspect Project &rarr;</a>
+            </article>
+        </main>
+
+        <section class="the-vow">
+            <h2>The Vow of Clarity</h2>
+            <ul>
+                <li><strong>No Dependencies:</strong> We serve only the native Web Platform.</li>
+                <li><strong>Radical Transparency:</strong> All core logic is auditable in seconds, not hours.</li>
+                <li><strong>Native-First:</strong> Built exclusively on 2026 Standards.</li>
+            </ul>
+        </section>
+
+        <footer>
+            VANILLASPA // THE RADIANT ARCHITECTURE // 2026
+        </footer>
+    </div>
+</body>
+</html>

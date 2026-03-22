@@ -1,0 +1,33 @@
+<template>
+    <h2>This is Bob</h2>
+    <button id="say-to-alice">Say to Alice</button>
+</template>
+
+<script>
+    const { mountBridge, useContract, dispatchEvent } = window.eventbus;
+    const host = shadowDocument.host;
+
+    function sayInB(message) {
+        console.log("In B:", message);
+    }
+
+
+    mountBridge({
+        name: 'ContractA',
+        namespace: 'bus',
+        events: {
+            helloB: { detail: { message: 'string' }, past: "byeB" }
+        },
+        handlers: {
+            helloB: ({ message }) => sayInB(message)
+        }
+    }, host);
+
+    shadowDocument.querySelector('#say-to-alice').addEventListener("click",
+        function (e) {
+            dispatchEvent(new CustomEvent('bus:helloA'));
+        }
+    );
+</script>
+
+<style></style>

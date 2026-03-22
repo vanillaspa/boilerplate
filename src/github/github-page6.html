@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VanillaSpa | Divine Micro-Framework</title>
+    <style>
+        :root {
+            /* Deine exakte Farbvorgabe */
+            --glow-green: #38ef7d;
+            --deep-abyss: #144000;
+            --godly-gold: #ffd700;
+            --accent-red: #ff3131;
+            
+            /* Silberne Legierungskomponenten */
+            --silver-shine: rgba(255, 255, 255, 0.4);
+            --silver-rim: #c0c8b0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #fff;
+            /* Dein gewünschter Hintergrund-Verlauf */
+            background: radial-gradient(circle, var(--glow-green) 0%, var(--deep-abyss) 100%);
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 5rem;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            margin: 0;
+            color: var(--godly-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.6rem;
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.8), 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: #fff;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            opacity: 0.9;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        /* Die silbern-grüne Schüssel (The Vessel) */
+        article {
+            position: relative;
+            background: linear-gradient(135deg, rgba(20, 64, 0, 0.8) 0%, rgba(10, 30, 0, 0.9) 100%);
+            /* Glanzeffekt einer polierten Schüssel */
+            background-image: radial-gradient(circle at 50% 0%, var(--silver-shine) 0%, transparent 70%);
+            border-radius: 50% 50% 20px 20px / 15% 15% 20px 20px;
+            padding: 3rem 2rem;
+            border: 2px solid var(--silver-rim);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 20px rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        article:hover {
+            transform: translateY(-20px) scale(1.03);
+            border-color: var(--godly-gold);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.3), 0 40px 80px rgba(0,0,0,0.7);
+        }
+
+        /* Lichtreflexion auf der Kante */
+        article::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 10%; width: 80%; height: 1px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            opacity: 0.5;
+        }
+
+        .loc-tag {
+            color: var(--accent-red);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 49, 49, 0.6);
+        }
+
+        h2 {
+            color: var(--godly-gold);
+            font-size: 1.8rem;
+            margin: 0.5rem 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        p {
+            color: #eee;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta {
+            display: inline-block;
+            color: var(--godly-gold);
+            text-decoration: none;
+            border: 1px solid var(--godly-gold);
+            padding: 0.7rem 1.8rem;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            border-radius: 3px;
+            transition: all 0.3s;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .cta:hover {
+            background: var(--godly-gold);
+            color: var(--deep-abyss);
+            box-shadow: 0 0 20px var(--godly-gold);
+            font-weight: bold;
+        }
+
+        .vow {
+            margin-top: 8rem;
+            padding: 3rem;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--accent-red);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 49, 49, 0.2);
+        }
+
+        .vow h2 { color: var(--accent-red); margin-bottom: 2rem; }
+        
+        ul { list-style: none; padding: 0; text-align: left; max-width: 600px; margin: 0 auto; }
+        li { margin-bottom: 1.5rem; display: flex; align-items: center; font-size: 1.1rem; }
+        li::before { content: '◈'; color: var(--accent-red); margin-right: 1.5rem; font-size: 1.4rem; }
+
+        footer {
+            margin-top: 6rem;
+            opacity: 0.7;
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            color: var(--godly-gold);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VanillaSpa</h1>
+            <div class="subtitle">Architecture of Purity // No Dependencies</div>
+        </header>
+
+        <main class="grid">
+            <article>
+                <span class="loc-tag">&lt; 100 LOC</span>
+                <h2>Web Components</h2>
+                <p>The core UI shell. Native <code>CustomElements</code> with absolute encapsulation. Pure performance, zero overhead.</p>
+                <a href="https://github.com/vanillaspa/web-components" class="cta">Inspect Source</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">&lt; 50 LOC</span>
+                <h2>Event Bus</h2>
+                <p>The divine messenger. Orchestrate your entire state through a minimalist Pub/Sub contract.</p>
+                <a href="https://github.com/vanillaspa/event-bus" class="cta">Inspect Source</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">&lt; 100 LOC</span>
+                <h2>SQLite DB</h2>
+                <p>Relational truth. A crystallized Wasm wrapper bringing industrial-grade SQL to the client state.</p>
+                <a href="https://github.com/vanillaspa/sqlite-database" class="cta">Inspect Source</a>
+            </article>
+
+            <article>
+                <span class="loc-tag">The Glue</span>
+                <h2>Boilerplate</h2>
+                <p>The Sacred Contract. The starting point where all modules fuse into a high-speed SPA.</p>
+                <a href="https://github.com/vanillaspa/boilerplate" class="cta">Inspect Source</a>
+            </article>
+        </main>
+
+        <section class="vow">
+            <h2>The Purist's Vow</h2>
+            <ul>
+                <li><strong>No External Bloat:</strong> We bow only to the native Web Platform.</li>
+                <li><strong>Visible Logic:</strong> Code so concise it can be audited in seconds.</li>
+                <li><strong>Built for 2026:</strong> Embracing the future of Wasm and Web Standards.</li>
+            </ul>
+        </section>
+
+        <footer>
+            VANILLASPA // THE RADIANT ARCHITECTURE
+        </footer>
+    </div>
+</body>
+</html>
