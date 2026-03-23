@@ -22,7 +22,7 @@
  */
 import('@vanillaspa/web-components');
 
-let root = 'router-app2';
+let root = 'router-app';
 
 customElements.whenDefined(root).then(() => {
     Promise.all([

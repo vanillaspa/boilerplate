@@ -2,9 +2,9 @@
     <router-hamburger></router-hamburger>
     <nav>
         <ul>
-            <li><a href="/plan">Plan</a></li>
-            <li><a href="/execute">Execute</a></li>
-            <li><a href="/monitor">Monitor</a></li>
+            <li><a href="/sqlite">SQLite</a></li>
+            <li><a href="/opfs">OPFS</a></li>
+            <li><a href="/dragndrop">Drag'n Drop Demo</a></li>
         </ul>
     </nav>
     <behind-menu></behind-menu>
@@ -20,15 +20,14 @@
         };
     })(window.history);
 
-    let _sitemap = [
-        [
-            { "/": { "title": "Home", "template": "sqlite-control" } }
-        ], [
-            { "/plan": { "title": "Plan", "template": "project-plan" } },
-            { "/execute": { "title": "Execute", "template": "project-execute" } },
-            { "/monitor": { "title": "Monitor", "template": "project-monitor" } }
-        ]
-    ];
+    let _sitemap = [[
+        { "/": { "title": "Home", "template": "home-page" } }
+    ],
+    [
+        { "/notes": { "title": "SQLite", "template": "sqlite-workers" } },
+        { "/opfs": { "title": "OPFS", "template": "opfs-admin" } },
+        { "/dragndrop": { "title": "Drag'nDrop", "template": "dragndrop-container" } }
+    ]];
 
     function getMapping(pathname) {
         let errorMapping = { "title": "404", "template": "error-404" };  // default
