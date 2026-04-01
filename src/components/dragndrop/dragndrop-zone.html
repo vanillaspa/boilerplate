@@ -4,8 +4,17 @@
     </div>
 </template>
 <script>
+    const { addEventListener } = window.eventbus;
     const dropZone = shadowDocument.host;
     const slot = shadowDocument.querySelector('slot');
+
+    addEventListener('dragndrop:drop', (event) => {
+        const { item, targetZone } = event.detail;
+        if (targetZone === dropZone) {
+            dropZone.appendChild(item);
+            dropZone.classList.remove('drag-over');
+        }
+    }, dropZone);
 
     dropZone.addEventListener("dragover", (event) => {
         dropZone.classList.add('drag-over');
