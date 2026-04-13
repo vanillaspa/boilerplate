@@ -1,37 +1,3 @@
-<script>
-    const host = shadowDocument.host;
-    const nameEl  = shadowDocument.getElementById('p-name');
-    const levelEl = shadowDocument.getElementById('p-level');
-    const floorEl = shadowDocument.getElementById('p-floor');
-    const hpBar   = shadowDocument.getElementById('p-hp-bar');
-    const hpText  = shadowDocument.getElementById('p-hp-text');
-    const xpBar   = shadowDocument.getElementById('p-xp-bar');
-    const xpText  = shadowDocument.getElementById('p-xp-text');
-    const atkEl   = shadowDocument.getElementById('p-atk');
-    const defEl   = shadowDocument.getElementById('p-def');
-    const goldEl  = shadowDocument.getElementById('p-gold');
-
-    host.addEventListener('hero:state', (e) => {
-        const { hero, level } = e.detail;
-        nameEl.textContent  = hero.name;
-        levelEl.textContent = `Lv ${hero.level}`;
-        floorEl.textContent = `Floor ${level}`;
-
-        const hpPct = Math.max(0, (hero.hp / hero.maxHp) * 100);
-        hpBar.style.width  = `${hpPct}%`;
-        hpBar.className    = 'bar-fill' + (hpPct < 30 ? ' danger' : hpPct < 60 ? ' warn' : ' ok');
-        hpText.textContent = `${hero.hp}/${hero.maxHp}`;
-
-        const xpPct = Math.min(100, (hero.xp / hero.xpNext) * 100);
-        xpBar.style.width  = `${xpPct}%`;
-        xpText.textContent = `${hero.xp}/${hero.xpNext}`;
-
-        atkEl.textContent  = hero.attack;
-        defEl.textContent  = hero.defense;
-        goldEl.textContent = hero.gold;
-    });
-</script>
-
 <template>
     <div class="card">
         <div class="avatar">🧙</div>
@@ -59,6 +25,42 @@
         </div>
     </div>
 </template>
+
+<script>
+    const { addEventListener: busListen } = window.eventbus;
+    const { notifications } = window.HeroContract;
+    const host    = shadowDocument.host;
+    const nameEl  = shadowDocument.getElementById('p-name');
+    const levelEl = shadowDocument.getElementById('p-level');
+    const floorEl = shadowDocument.getElementById('p-floor');
+    const hpBar   = shadowDocument.getElementById('p-hp-bar');
+    const hpText  = shadowDocument.getElementById('p-hp-text');
+    const xpBar   = shadowDocument.getElementById('p-xp-bar');
+    const xpText  = shadowDocument.getElementById('p-xp-text');
+    const atkEl   = shadowDocument.getElementById('p-atk');
+    const defEl   = shadowDocument.getElementById('p-def');
+    const goldEl  = shadowDocument.getElementById('p-gold');
+
+    busListen(notifications.STATE, (e) => {
+        const { hero, floor } = e.detail;
+        nameEl.textContent  = hero.name;
+        levelEl.textContent = `Lv ${hero.level}`;
+        floorEl.textContent = `Floor ${floor}`;
+
+        const hpPct = Math.max(0, (hero.hp / hero.maxHp) * 100);
+        hpBar.style.width  = `${hpPct}%`;
+        hpBar.className    = 'bar-fill' + (hpPct < 30 ? ' danger' : hpPct < 60 ? ' warn' : ' ok');
+        hpText.textContent = `${hero.hp}/${hero.maxHp}`;
+
+        const xpPct = Math.min(100, (hero.xp / hero.xpNext) * 100);
+        xpBar.style.width  = `${xpPct}%`;
+        xpText.textContent = `${hero.xp}/${hero.xpNext}`;
+
+        atkEl.textContent  = hero.attack;
+        defEl.textContent  = hero.defense;
+        goldEl.textContent = hero.gold;
+    }, host);
+</script>
 
 <style>
     :host { display: block; }

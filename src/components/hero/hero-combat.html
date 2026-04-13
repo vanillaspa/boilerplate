@@ -1,46 +1,3 @@
-<script>
-    const host      = shadowDocument.host;
-    const panel     = shadowDocument.getElementById('c-panel');
-    const idleMsg   = shadowDocument.getElementById('c-idle');
-    const mName     = shadowDocument.getElementById('c-m-name');
-    const mHpBar    = shadowDocument.getElementById('c-m-hp-bar');
-    const mHpText   = shadowDocument.getElementById('c-m-hp-text');
-    const turnEl    = shadowDocument.getElementById('c-turn');
-    const attackBtn = shadowDocument.getElementById('c-attack');
-    const fleeBtn   = shadowDocument.getElementById('c-flee');
-
-    // Dispatch up to hero-quest with composed:true so it crosses shadow boundary
-    attackBtn.addEventListener('click', () => {
-        host.dispatchEvent(new CustomEvent('hero:attack', { bubbles: true, composed: true }));
-    });
-    fleeBtn.addEventListener('click', () => {
-        host.dispatchEvent(new CustomEvent('hero:flee', { bubbles: true, composed: true }));
-    });
-
-    host.addEventListener('hero:state', (e) => {
-        const { combat, hero } = e.detail;
-        if (!combat || hero.hp <= 0) {
-            panel.classList.add('hidden');
-            idleMsg.classList.remove('hidden');
-            return;
-        }
-        idleMsg.classList.add('hidden');
-        panel.classList.remove('hidden');
-
-        mName.textContent = combat.monster.name;
-
-        const pct = Math.max(0, (combat.monster.hp / combat.monster.maxHp) * 100);
-        mHpBar.style.width  = `${pct}%`;
-        mHpText.textContent = `${combat.monster.hp}/${combat.monster.maxHp}`;
-
-        const myTurn = combat.turn === 'player';
-        turnEl.textContent = myTurn ? '⚔️ Your turn!' : "⏳ Monster's turn…";
-        turnEl.className   = 'turn ' + (myTurn ? 'player-turn' : 'monster-turn');
-        attackBtn.disabled = !myTurn;
-        fleeBtn.disabled   = !myTurn;
-    });
-</script>
-
 <template>
     <div class="wrap">
         <h3 class="title">⚔️ Combat</h3>
@@ -63,6 +20,50 @@
         </div>
     </div>
 </template>
+
+<script>
+    const { addEventListener: busListen, dispatchEvent: busDispatch } = window.eventbus;
+    const { commands, notifications } = window.HeroContract;
+    const host      = shadowDocument.host;
+    const panel     = shadowDocument.getElementById('c-panel');
+    const idleMsg   = shadowDocument.getElementById('c-idle');
+    const mName     = shadowDocument.getElementById('c-m-name');
+    const mHpBar    = shadowDocument.getElementById('c-m-hp-bar');
+    const mHpText   = shadowDocument.getElementById('c-m-hp-text');
+    const turnEl    = shadowDocument.getElementById('c-turn');
+    const attackBtn = shadowDocument.getElementById('c-attack');
+    const fleeBtn   = shadowDocument.getElementById('c-flee');
+
+    attackBtn.addEventListener('click', () =>
+        busDispatch(new CustomEvent(commands.ATTACK))
+    );
+    fleeBtn.addEventListener('click', () =>
+        busDispatch(new CustomEvent(commands.FLEE))
+    );
+
+    busListen(notifications.STATE, (e) => {
+        const { combat, hero } = e.detail;
+        if (!combat || hero.hp <= 0) {
+            panel.classList.add('hidden');
+            idleMsg.classList.remove('hidden');
+            return;
+        }
+        idleMsg.classList.add('hidden');
+        panel.classList.remove('hidden');
+
+        mName.textContent = combat.monster.name;
+
+        const pct = Math.max(0, (combat.monster.hp / combat.monster.maxHp) * 100);
+        mHpBar.style.width  = `${pct}%`;
+        mHpText.textContent = `${combat.monster.hp}/${combat.monster.maxHp}`;
+
+        const myTurn = combat.turn === 'player';
+        turnEl.textContent = myTurn ? '⚔️ Your turn!' : "⏳ Monster's turn…";
+        turnEl.className   = 'turn ' + (myTurn ? 'player-turn' : 'monster-turn');
+        attackBtn.disabled = !myTurn;
+        fleeBtn.disabled   = !myTurn;
+    }, host);
+</script>
 
 <style>
     :host { display: block; }

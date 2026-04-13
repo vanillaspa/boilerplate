@@ -1,19 +1,21 @@
 {
   "name": "@vanillaspa/boilerplate",
   "devDependencies": {
-    "vite": "^8.0.1",
-    "@vitejs/plugin-basic-ssl": "^2.2.0"
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
+    "vite": "^8.0.8",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@vanillaspa/event-bus": "latest",
-    "@vanillaspa/web-components": "latest",
-    "@vanillaspa/sqlite-database": "latest"
+    "@vanillaspa/sqlite-database": "latest",
+    "@vanillaspa/web-components": "latest"
   },
   "license": "Unlicense",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "npm run build && vite preview"
+    "preview": "npm run build && vite preview",
+    "test": "vitest run"
   },
   "type": "module",
   "version": "1.2.2"

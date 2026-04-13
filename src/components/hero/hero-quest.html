@@ -38,230 +38,87 @@
 </template>
 
 <script>
-    /* ── Helpers ─────────────────────────────────────────────── */
-    function rng(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+    const { addEventListener: busListen, dispatchEvent: busDispatch, mountBridge, useContract } = window.eventbus;
+    const { commands, notifications, reduceMove, reduceAttack, reduceFlee, reduceNewGame } = window.HeroContract;
+    const host = shadowDocument.host;
 
-    const COLS = 10;
-    const ROWS = 10;
+    // ── SQLite persistence ────────────────────────────────────────────────────
+    mountBridge(window.SqliteContract, host);
+    const db = useContract(window.SqliteContract, host);
 
-    const TILE = { FLOOR: 'floor', WALL: 'wall', MONSTER: 'monster', CHEST: 'chest', POTION: 'potion', EXIT: 'exit' };
-
-    /* ── Child element refs (dispatched TO directly) ─────────── */
-    const boardEl     = shadowDocument.getElementById('hq-board');
-    const playerEl    = shadowDocument.getElementById('hq-player');
-    const inventoryEl = shadowDocument.getElementById('hq-inventory');
-    const combatEl    = shadowDocument.getElementById('hq-combat');
-    const logEl       = shadowDocument.getElementById('hq-log');
-
-    /* ── Game state ─────────────────────────────────────────── */
-    function newHero() {
-        return { name: 'Hero', level: 1, hp: 20, maxHp: 20, attack: 5, defense: 2, xp: 0, xpNext: 10, gold: 0, inventory: [] };
-    }
-
-    function buildLevel(heroLevel) {
-        const grid = Array.from({ length: ROWS }, () =>
-            Array.from({ length: COLS }, () => ({ type: TILE.FLOOR, monster: null }))
-        );
-        for (let r = 0; r < ROWS; r++) {
-            for (let c = 0; c < COLS; c++) {
-                if (r === 0 || r === ROWS - 1 || c === 0 || c === COLS - 1) grid[r][c].type = TILE.WALL;
-                else if (Math.random() < 0.13) grid[r][c].type = TILE.WALL;
-            }
-        }
-        function place(type, count) {
-            let placed = 0;
-            while (placed < count) {
-                const r = rng(1, ROWS - 2), c = rng(1, COLS - 2);
-                if (grid[r][c].type === TILE.FLOOR) {
-                    grid[r][c].type = type;
-                    if (type === TILE.MONSTER) {
-                        const t = heroLevel;
-                        grid[r][c].monster = {
-                            name: t < 3 ? 'Goblin' : t < 5 ? 'Orc' : 'Dragon',
-                            hp: rng(5, 8) * t, maxHp: rng(5, 8) * t,
-                            attack: rng(2, 4) + t, defense: rng(0, 2) + Math.floor(t / 2),
-                            xpValue: rng(3, 6) * t, goldValue: rng(2, 5) * t,
-                        };
-                    }
-                    placed++;
-                }
-            }
-        }
-        place(TILE.MONSTER, rng(4, 7));
-        place(TILE.CHEST, rng(2, 4));
-        place(TILE.POTION, rng(2, 3));
-        place(TILE.EXIT, 1);
-        // Clear start position
-        grid[1][1].type = TILE.FLOOR;
-        return grid;
-    }
-
-    let hero    = newHero();
-    let level   = 1;
-    let grid    = buildLevel(1);
-    let player  = { row: 1, col: 1 };
-    let combat  = null;
-    const _log  = [];
-
-    /* ── Broadcast helpers ───────────────────────────────────── */
-    function broadcastState() {
-        const detail = { hero, level, grid, player, combat };
-        boardEl.dispatchEvent(new CustomEvent('hero:state', { detail }));
-        playerEl.dispatchEvent(new CustomEvent('hero:state', { detail }));
-        inventoryEl.dispatchEvent(new CustomEvent('hero:state', { detail }));
-        combatEl.dispatchEvent(new CustomEvent('hero:state', { detail }));
-    }
-
-    function broadcastLog() {
-        logEl.dispatchEvent(new CustomEvent('hero:log', { detail: { log: [..._log] } }));
-    }
-
-    function addLog(msg) {
-        _log.unshift(msg);
-        if (_log.length > 30) _log.pop();
-        broadcastLog();
-    }
-
-    /* ── Movement ────────────────────────────────────────────── */
-    function tryMove(dr, dc) {
-        if (combat) return;
-        const nr = player.row + dr;
-        const nc = player.col + dc;
-        if (nr < 0 || nr >= ROWS || nc < 0 || nc >= COLS) return;
-        const tile = grid[nr][nc];
-        if (tile.type === TILE.WALL) return;
-
-        if (tile.type === TILE.MONSTER) {
-            combat = { row: nr, col: nc, monster: { ...tile.monster }, turn: 'player' };
-            addLog(`⚔️ You encounter a ${combat.monster.name}!`);
-            broadcastState();
-            return;
-        }
-        if (tile.type === TILE.CHEST) {
-            const gold = rng(5, 15) * hero.level;
-            hero.gold += gold;
-            const item = randomItem(hero.level);
-            hero.inventory.push(item);
-            addLog(`🎁 Found ${gold} gold and a ${item}!`);
-            tile.type = TILE.FLOOR;
-        }
-        if (tile.type === TILE.POTION) {
-            const heal = rng(5, 10);
-            hero.hp = Math.min(hero.hp + heal, hero.maxHp);
-            addLog(`🧪 Drank a potion — +${heal} HP.`);
-            tile.type = TILE.FLOOR;
-        }
-        if (tile.type === TILE.EXIT) {
-            level++;
-            hero.maxHp += 5; hero.hp = hero.maxHp; hero.attack++;
-            grid   = buildLevel(hero.level);
-            player = { row: 1, col: 1 };
-            addLog(`🚪 You descend deeper… Floor ${level}!`);
-            broadcastState();
-            return;
-        }
-        player.row = nr;
-        player.col = nc;
-        broadcastState();
-    }
-
-    function randomItem(tier) {
-        const pool = ['Rusty Sword', 'Iron Axe', 'Silver Blade', 'Dragon Lance',
-                      'Leather Vest', 'Chain Mail', 'Plate Armor', 'Dragon Scale'];
-        return pool[rng(0, Math.min(tier, pool.length - 1))];
-    }
-
-    /* ── Combat ─────────────────────────────────────────────── */
-    function combatAttack() {
-        if (!combat || combat.turn !== 'player') return;
-        const dmg = Math.max(1, hero.attack - combat.monster.defense + rng(-1, 2));
-        combat.monster.hp -= dmg;
-        addLog(`🗡 Hit ${combat.monster.name} for ${dmg} dmg.`);
-        if (combat.monster.hp <= 0) {
-            addLog(`💀 ${combat.monster.name} defeated! +${combat.monster.xpValue} XP, +${combat.monster.goldValue} gold.`);
-            hero.xp += combat.monster.xpValue;
-            hero.gold += combat.monster.goldValue;
-            grid[combat.row][combat.col].type = TILE.FLOOR;
-            checkLevelUp();
-            combat = null;
-            broadcastState();
-            return;
-        }
-        combat.turn = 'monster';
-        monsterTurn();
-    }
-
-    function monsterTurn() {
-        if (!combat) return;
-        const dmg = Math.max(0, combat.monster.attack - hero.defense + rng(-1, 1));
-        hero.hp -= dmg;
-        addLog(`💢 ${combat.monster.name} hits you for ${dmg} dmg.`);
-        if (hero.hp <= 0) {
-            hero.hp = 0;
-            addLog(`💀 You have been slain! Start a New Game.`);
-            combat = null;
-            broadcastState();
-            return;
-        }
-        combat.turn = 'player';
-        broadcastState();
-    }
-
-    function combatFlee() {
-        if (!combat || combat.turn !== 'player') return;
-        if (Math.random() < 0.5) {
-            addLog(`🏃 Fled successfully!`);
-            combat = null;
-        } else {
-            addLog(`🚫 Flee failed!`);
-            combat.turn = 'monster';
-            monsterTurn();
-            return;
-        }
-        broadcastState();
-    }
-
-    function checkLevelUp() {
-        while (hero.xp >= hero.xpNext) {
-            hero.xp -= hero.xpNext;
-            hero.level++;
-            hero.xpNext = Math.floor(hero.xpNext * 1.6);
-            hero.maxHp += 8; hero.hp = hero.maxHp;
-            hero.attack += 2; hero.defense++;
-            addLog(`🌟 LEVEL UP! Now level ${hero.level}.`);
-        }
-    }
-
-    /* ── Incoming child events (bubble up with composed:true) ── */
-    const selfHost = shadowDocument.host;
-    selfHost.addEventListener('hero:move',   (e) => tryMove(e.detail.dr, e.detail.dc));
-    selfHost.addEventListener('hero:attack', () => combatAttack());
-    selfHost.addEventListener('hero:flee',   () => combatFlee());
-
-    /* ── UI controls ─────────────────────────────────────────── */
-    function startNewGame() {
-        hero   = newHero();
-        level  = 1;
-        grid   = buildLevel(1);
-        player = { row: 1, col: 1 };
-        combat = null;
-        _log.length = 0;
-        addLog('⚔️ Your quest begins!');
-        broadcastState();
-    }
-
-    shadowDocument.getElementById('new-game-btn').addEventListener('click', startNewGame);
-
-    const helpOverlay = shadowDocument.getElementById('help-overlay');
-    shadowDocument.getElementById('help-btn').addEventListener('click', () => helpOverlay.classList.toggle('hidden'));
-    shadowDocument.getElementById('close-help-btn').addEventListener('click', () => helpOverlay.classList.add('hidden'));
-
-    document.addEventListener('keydown', (e) => {
-        const map = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
-        if (map[e.key]) { e.preventDefault(); tryMove(...map[e.key]); }
+    await db.create({ name: 'heroquest' });
+    await db.query({
+        sql: `CREATE TABLE IF NOT EXISTS hero_save (
+                  id       INTEGER PRIMARY KEY CHECK (id = 1),
+                  data     TEXT    NOT NULL,
+                  saved_at INTEGER NOT NULL
+              )`,
+        name: 'heroquest',
     });
 
-    startNewGame();
+    function saveState() {
+        db.statement({
+            sql:    `INSERT OR REPLACE INTO hero_save VALUES (1, $1, $2)`,
+            values: [JSON.stringify(state), Date.now()],
+            name:   'heroquest',
+        }).catch(console.error);
+    }
+
+    async function loadState() {
+        const { result } = await db.query({
+            sql:  `SELECT data FROM hero_save LIMIT 1`,
+            name: 'heroquest',
+        });
+        if (result?.[0]?.[0]) {
+            try { state = JSON.parse(result[0][0]); } catch { /* keep default */ }
+        }
+    }
+
+    // ── Game state ────────────────────────────────────────────────────────────
+    let state = reduceNewGame();
+
+    // ── Broadcast ─────────────────────────────────────────────────────────────
+    // Dispatched without a routing context → true broadcast to all subscribers.
+    function broadcast() {
+        const { hero, floor, grid, player, combat } = state;
+        busDispatch(new CustomEvent(notifications.STATE, { detail: { hero, floor, grid, player, combat } }));
+        busDispatch(new CustomEvent(notifications.LOG,   { detail: { log: state.log } }));
+    }
+
+    function apply(newState) {
+        state = newState;
+        broadcast();
+        saveState();
+    }
+
+    // ── Command listeners ─────────────────────────────────────────────────────
+    // Children dispatch these; hero-quest is the sole subscriber per type.
+    busListen(commands.MOVE,    (e) => apply(reduceMove(state, e.detail)),   host);
+    busListen(commands.ATTACK,  ()  => apply(reduceAttack(state)),           host);
+    busListen(commands.FLEE,    ()  => apply(reduceFlee(state)),             host);
+    busListen(commands.NEWGAME, ()  => apply(reduceNewGame()),               host);
+
+    // ── UI controls ───────────────────────────────────────────────────────────
+    shadowDocument.getElementById('new-game-btn').addEventListener('click', () =>
+        apply(reduceNewGame())
+    );
+
+    const helpOverlay = shadowDocument.getElementById('help-overlay');
+    shadowDocument.getElementById('help-btn').addEventListener('click', () =>
+        helpOverlay.classList.toggle('hidden')
+    );
+    shadowDocument.getElementById('close-help-btn').addEventListener('click', () =>
+        helpOverlay.classList.add('hidden')
+    );
+
+    document.addEventListener('keydown', (e) => {
+        const map = { ArrowUp: { dr: -1, dc: 0 }, ArrowDown: { dr: 1, dc: 0 }, ArrowLeft: { dr: 0, dc: -1 }, ArrowRight: { dr: 0, dc: 1 } };
+        if (map[e.key]) { e.preventDefault(); apply(reduceMove(state, map[e.key])); }
+    });
+
+    // ── Bootstrap ─────────────────────────────────────────────────────────────
+    await loadState();
+    broadcast();
 </script>
 
 <style>

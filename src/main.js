@@ -29,6 +29,7 @@ customElements.whenDefined(root).then(() => {
         import('@vanillaspa/event-bus'),
         import('@vanillaspa/sqlite-database'),
         import('@vanillaspa/sqlite-database/contract'),
+        import('./components/hero/hero-contract.js'),
     ]).then((modules) => {
         modules.forEach((module) => {
             if (!module.name) throw new Error(`Missing name in imported module.`);
