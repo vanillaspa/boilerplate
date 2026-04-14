@@ -1,9 +1,24 @@
-<script>
-    const host = shadowDocument.host;
+<template>
+    <div class="board-wrap">
+        <div id="board-canvas" class="board"></div>
+        <p class="hint">Click an adjacent tile · Arrow keys also work</p>
+    </div>
+</template>
 
-    const COLS = 10, ROWS = 10;
-    const GLYPH = { floor: '·', wall: '█', monster: '👹', chest: '🎁', potion: '🧪', exit: '🚪' };
+<script>
+    const { addEventListener: busListen, dispatchEvent: busDispatch } = window.eventbus;
+    const { commands, notifications, ROWS, COLS, TILE } = window.HeroContract;
+    const host   = shadowDocument.host;
     const canvas = shadowDocument.getElementById('board-canvas');
+
+    const GLYPH = {
+        [TILE.FLOOR]:   '·',
+        [TILE.WALL]:    '█',
+        [TILE.MONSTER]: '👹',
+        [TILE.CHEST]:   '🎁',
+        [TILE.POTION]:  '🧪',
+        [TILE.EXIT]:    '🚪',
+    };
 
     function render({ grid, player, hero, combat }) {
         if (hero.hp <= 0) {
@@ -26,13 +41,10 @@
                 if (!isPlayer) {
                     const dr = r - player.row, dc = c - player.col;
                     const adjacent = Math.abs(dr) + Math.abs(dc) === 1;
-                    if (adjacent && type !== 'wall' && !combat) {
+                    if (adjacent && type !== TILE.WALL && !combat) {
                         cell.classList.add('movable');
                         cell.addEventListener('click', () => {
-                            // bubbles:true + composed:true crosses shadow boundary up to hero-quest
-                            host.dispatchEvent(new CustomEvent('hero:move', {
-                                bubbles: true, composed: true, detail: { dr, dc }
-                            }));
+                            busDispatch(new CustomEvent(commands.MOVE, { detail: { dr, dc } }));
                         });
                     }
                 }
@@ -42,16 +54,8 @@
         }
     }
 
-    // hero-quest dispatches hero:state directly ON this element
-    host.addEventListener('hero:state', (e) => render(e.detail));
+    busListen(notifications.STATE, (e) => render(e.detail), host);
 </script>
-
-<template>
-    <div class="board-wrap">
-        <div id="board-canvas" class="board"></div>
-        <p class="hint">Click an adjacent tile · Arrow keys also work</p>
-    </div>
-</template>
 
 <style>
     :host { display: block; }
