@@ -20,7 +20,9 @@
  *
  * @module main
  */
-import('@vanillaspa/web-components');
+import { registerComponents } from '@vanillaspa/web-components';
+
+registerComponents(import.meta.glob('/src/components/**/*.sfc', { eager: true }));
 
 let root = 'router-app';
 

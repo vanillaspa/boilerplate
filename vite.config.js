@@ -1,11 +1,8 @@
 import { defineConfig } from "vite";
 import basicSsl from '@vitejs/plugin-basic-ssl';
+import { sfcPlugin } from '@vanillaspa/web-components/vite-plugin-sfc';
 
 export default defineConfig({
-    test: {
-        environment: 'node',
-        include: ['src/**/*.test.js'],
-    },
     build: {
         target: 'esnext'
     },
@@ -16,7 +13,7 @@ export default defineConfig({
         headers: {
             'Cross-Origin-Opener-Policy': 'same-origin', // for sqlite OPFS
             'Cross-Origin-Embedder-Policy': 'require-corp', // for sqlite OPFS
-            // 'Content-Security-Policy': "default-src 'unsafe-eval'; script-src 'self' 'unsafe-eval'; object-src 'none'; base-uri 'self';",
+            // 'Content-Security-Policy': "script-src 'wasm-unsafe-eval'",
             'X-Frame-Options': 'DENY',
             'X-Content-Type-Options': 'nosniff',
             'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -30,6 +27,7 @@ export default defineConfig({
         exclude: ['@sqlite.org/sqlite-wasm']
     },
     plugins: [
-        basicSsl()
+        basicSsl(),
+        sfcPlugin()
     ]
 })
