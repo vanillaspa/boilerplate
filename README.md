@@ -3,6 +3,8 @@ This is a boilerplate project for Vanilla SPA with the latest web-components, ev
 
 ## Hi there 👋
 
+***Breaking change!*** Please use *.sfc instead of *.html file-ending for your single file components!
+
 # Vanilla SPA
 
 With Vanilla SPA your web development experience can become a dream. There is nothing so complicated that it can't be made simple.
@@ -37,13 +39,13 @@ You can then access the app via https://localhost:4173 in your browser.
 
 ## How It's done
 
-You create SNIPPETS! by using dedicated `.html` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.html` file.
+You create SNIPPETS! by using dedicated `.sfc` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.sfc` file.
 
-Ok, you got me. This is not a standard HTML file. But maybe it will be in the future. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.html) or read on.
+Ok, you got me. These are not a standard HTML files. But maybe it will be in the future. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.html) or read on.
 
 ![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
 
-Say to the AI: *Create a single .html file component in vanilla js for a donate paypal button.*
+Say to the AI: *Create a .sfc single file component in vanilla js for a donate paypal button.*
 
 Hopefully, You will get something like this:
 ```html
@@ -140,7 +142,7 @@ But the ai generated file needs to be customized because they don't know vanilla
 </style>
 ```
 
-**Important!** Each WebComponent must be located in your project in a subfolder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components), for instance, for a component named `<app-start></app-start>` it should be `src/components/app/app-start.html` in order for the [import.meta.glob Wildcard-Pattern](https://github.com/vanillaspa/web-components/blob/881048a70a58854eb364f30c03b5b12483f47307/index.js#L1) to work properly.
+**Important!** Each WebComponent must be located in your project in a subfolder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components), for instance, for a component named `<app-start></app-start>` it should be `src/components/app/app-start.sfc` in order for the [import.meta.glob Wildcard-Pattern](https://github.com/vanillaspa/web-components/blob/881048a70a58854eb364f30c03b5b12483f47307/index.js#L1) to work properly.
 
 Just put them into a seperate folder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components).
 
@@ -166,7 +168,7 @@ After having imported the `web-components` module, your custom elements can be i
 ## Features
 
 - written in vanilla JavaScript
-- support for custom elements in dedicated .html files (SinglePageApplications SPAs and SingleFile WebComponents SFCs). Now you can create or use your own library of custom-elements!
+- support for custom elements in dedicated .sfc single file components (SFCs). Now you can create or use your own library of custom-elements!
 - following [W3C standards and MDN-recommended best practices](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) with just a few hacks to accomplish things where people claim: *"This is impossible with WebComponents"*
 - direct access to ShadowDOM in each component's script (via `shadowDocument`)
 - out of the box SCSS support
@@ -175,7 +177,7 @@ After having imported the `web-components` module, your custom elements can be i
 - local first SQLite database for global state management with the Origin Private File System (OPFS). Your data stays private.
 - dedicated workers for database pooling
 - offline capabilities
-- history-driven sitemap router [navigation module](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app2.html)
+- history-driven sitemap router [navigation module](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app.sfc)
 - support for containerized builds. Docker ready.
 - https support out of the box ([@vitejs/plugin-basic-ssl](https://github.com/vitejs/vite-plugin-basic-ssl))
 - basic functionality in under <100LOC
