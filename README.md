@@ -41,7 +41,7 @@ You can then access the app via https://localhost:4173 in your browser.
 
 You create SNIPPETS! by using dedicated `.sfc` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.sfc` file.
 
-Ok, you got me. These are not a standard HTML files. But maybe it will be in the future. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.html) or read on.
+Ok, you got me. These are not a standard HTML files. But maybe it will be in the future. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.sfc) or read on.
 
 ![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
 
@@ -192,6 +192,6 @@ If you still have questions please let me know. Your opinion is valuable to me a
 
 ## Example
 
-Adding a router navigation is very easy. [As the example shows](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app2.html) You can have an entire navigation in one single html file defined as just another custom element. After having it integrated into your app with a single tag (`<router-app2></router-app2>`), you can have routing support and all the things you would expect.
+Adding a router navigation is very easy. [As the example shows](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app.sfc) You can have an entire navigation in one single html file defined as just another custom element. After having it integrated into your app with a single tag (`<router-app></router-app>`), you can have routing support and all the things you would expect.
 
 Of course you are completely free to customize the themes, modules and components and make them whatever you want them to become!
