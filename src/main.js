@@ -20,25 +20,30 @@
  *
  * @module main
  */
+import tailwindCss from '/src/styles/default.css?inline';
 import { registerComponents } from '@vanillaspa/web-components';
 
-registerComponents(import.meta.glob('/src/components/**/*.sfc', { eager: true }));
+const tailwindSheet = new CSSStyleSheet();
+tailwindSheet.replaceSync(tailwindCss.replaceAll(':root', ':host')); // patch known Tailwind issue with :root selector in shadow DOM
+
+registerComponents(import.meta.glob('/src/components/**/*.sfc', { eager: true }), tailwindSheet);
 
 let root = 'router-app';
 
-customElements.whenDefined(root).then(() => {
-    Promise.all([
+await customElements.whenDefined(root);
+
+try {
+    const modules = await Promise.all([
         import('@vanillaspa/event-bus'),
         import('@vanillaspa/sqlite-database'),
         import('@vanillaspa/sqlite-database/contract'),
         import('./components/hero/hero-contract.js'),
-    ]).then((modules) => {
-        modules.forEach((module) => {
-            if (!module.name) throw new Error(`Missing name in imported module.`);
-            window[module.name] = Object.freeze({ ...module });
-        });
-    }).finally(() => {
-        document.body.replaceChildren();
-        document.body.appendChild(document.createElement(root));
+    ]);
+    modules.forEach((module) => {
+        if (!module.name) throw new Error(`Missing name in imported module.`);
+        window[module.name] = Object.freeze({ ...module });
     });
-});
+} finally {
+    document.body.replaceChildren();
+    document.body.appendChild(document.createElement(root));
+};

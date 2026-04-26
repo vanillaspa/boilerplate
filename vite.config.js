@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import basicSsl from '@vitejs/plugin-basic-ssl';
+import tailwindcss from '@tailwindcss/vite';
 import { sfcPlugin } from '@vanillaspa/web-components/vite-plugin-sfc';
 
 export default defineConfig({
@@ -28,6 +29,7 @@ export default defineConfig({
     },
     plugins: [
         basicSsl(),
+        tailwindcss(),
         sfcPlugin()
     ]
 })

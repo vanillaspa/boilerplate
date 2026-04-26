@@ -5,10 +5,10 @@
             <li><a href="/sqlite">SQLite</a></li>
             <li><a href="/opfs">OPFS</a></li>
             <li><a href="/dragndrop">Drag'n Drop Demo</a></li>
+            <li><a href="/test">Test</a></li>
             <li><a href="/hero">Hero Quest</a></li>
         </ul>
     </nav>
-    <behind-menu></behind-menu>
     <main></main>
 </template>
 
@@ -28,6 +28,7 @@
         { "/sqlite": { "title": "SQLite", "template": "sqlite-workers" } },
         { "/opfs": { "title": "OPFS", "template": "opfs-admin" } },
         { "/dragndrop": { "title": "Drag'nDrop", "template": "dragndrop-container" } },
+        { "/test": { "title": "Test", "template": "test-page" } },
         { "/hero": { "title": "Hero Quest", "template": "hero-quest" } }
     ]];
 

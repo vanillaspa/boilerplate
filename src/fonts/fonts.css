@@ -1,5 +1,5 @@
 @font-face {
     font-family: "Inter Variable";
-    src: url('/assets/fonts/InterVariable.ttf') format("truetype");
+    src: url('./InterVariable.ttf') format("truetype");
     font-display: swap;
 }

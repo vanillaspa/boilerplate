@@ -1,0 +1,18 @@
+@import url(../fonts/fonts.css);
+@import "tailwindcss";
+
+html {
+    overflow-y: scroll;
+    scrollbar-color: #ccc transparent;
+    font-family: "Inter Variable", Consolas, 'Courier New', monospace, sans-serif;
+}
+
+body {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: inherit;
+    font-family: inherit;
+}
