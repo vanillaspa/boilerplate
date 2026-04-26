@@ -192,6 +192,6 @@ If you still have questions please let me know. Your opinion is valuable to me a
 
 ## Example
 
-Adding a router navigation is very easy. [As the example shows](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app.sfc) You can have an entire navigation in one single html file defined as just another custom element. After having it integrated into your app with a single tag (`<router-app></router-app>`), you can have routing support and all the things you would expect.
+Adding a router navigation is very easy. [As the example shows](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app.sfc) You can have an entire navigation in one single sfc file defined as just another custom element. After having it integrated into your app with a single tag (`<router-app></router-app>`), you can have routing support and all the things you would expect.
 
 Of course you are completely free to customize the themes, modules and components and make them whatever you want them to become!

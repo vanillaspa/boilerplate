@@ -20,7 +20,7 @@
  *
  * @module main
  */
-import tailwindCss from '/src/styles/default.css?inline';
+import tailwindCss from '/src/styles/tailwind.css?inline';
 import { registerComponents } from '@vanillaspa/web-components';
 
 const tailwindSheet = new CSSStyleSheet();
