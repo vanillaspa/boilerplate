@@ -1,13 +1,10 @@
 # boilerplate
-This is a boilerplate project for Vanilla SPA with the latest web-components, event-bus and sqlite-database module.
-
-## Hi there 👋
-
-***Breaking change!*** Please use *.sfc instead of *.html file-ending for your single file components!
+You gotta try this LIVE @Stackblitz! [https://stackblitz.com/github/vanillaspa/boilerplate](https://stackblitz.com/github/vanillaspa/boilerplate)
+No, this is not about LOOKS! This is a boilerplate project for Vanilla SPA with the latest web-components, event-bus and sqlite-database module.
 
 # Vanilla SPA
 
-With Vanilla SPA your web development experience can become a dream. There is nothing so complicated that it can't be made simple.
+With Vanilla SPA your web development experience can become a dream. There is nothing so complicated that it can't be made simple. Vanilla SPA is an AI-ready micro-framework with a fraction of the complexity of established JavaScript-Frameworks.
 
 I kid You not: Vanilla SPA is an advanced, yet minimalistic WebComponents framework featuring most of the functionality of popular JavaScript frameworks, but in a fraction of their complexity. It is written in vanilla JavaScript.
 
@@ -20,7 +17,7 @@ This is free and unencumbered software released into the public domain. [The Unl
 You need to have <a title="NodeJS" href="https://nodejs.org"><img height="20" alt="NodeJS-logo" src="https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg"></a> installed.
 
 The Vanilla SPA boilerplate consists of [web-components](https://github.com/vanillaspa/web-components), an [event-bus](https://github.com/vanillaspa/event-bus), and a [sqlite-database](https://github.com/vanillaspa/sqlite-database) (<a title="SQLite" href="https://sqlite.org/wasm"><img height="20" alt="SQLite-logo" src="https://sqlite.org/images/sqlite370_banner.gif"></a>) within the [Origin Private Filesystem (OPFS)](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system)
-on top of <a title="Vite" href="https://vitejs.dev"><img height="20" alt="Vitejs-logo" src="https://vitejs.dev/logo.svg"></a>
+on top of [Vite](https://vitejs.dev)<a title="Vite" href=""><img height="20" alt="Vitejs-logo" src="https://vitejs.dev/logo.svg"></a>
 
 ### Getting started
 
@@ -39,53 +36,16 @@ You can then access the app via https://localhost:4173 in your browser.
 
 ## How It's done
 
-You create SNIPPETS! by using dedicated `.sfc` Single File Components (SFCs) à la Vue or Svelte with a ```script```, ```style``` and ```template``` tag on the top-level of the `.sfc` file.
+You create SNIPPETS by using dedicated Single File Components (SFCs) à la Vue or Svelte with a ```template```, ```script``` and ```style``` tag on the top-level of the `.sfc` file.
 
-Ok, you got me. These are not a standard HTML files. But maybe it will be in the future. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.sfc) or read on.
+You combine standard HTML templates vith vanilla JS. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.sfc)
 
 ![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
 
-Say to the AI: *Create a .sfc single file component in vanilla js for a donate paypal button.*
+This is AI-ready.
+Say to the AI, for instance Copilot in VS Code: *Learn how to create sfc components with vanillaspa and create a single file component for a donate paypal button.*
 
-Hopefully, You will get something like this:
-```html
-<button 
-  id="donate-btn" 
-  style="background:#0070ba; color:white; border:none; padding:10px 20px; border-radius:4px; cursor:pointer; font-weight:bold; display:inline-flex; align-items:center; gap:8px;"
-  onclick="sendDonation('robert.meissner@outlook.com', 'EUR')"
->
-  Donate to VanillaSPA
-</button>
-
-<script>
-  window.sendDonation = (email, currency) => {
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://www.paypal.com/cgi-bin/webscr';
-    
-    const params = {
-      cmd: '_donations',
-      business: email,
-      currency_code: currency,
-      item_name: 'Support VanillaSPA Development'
-    };
-
-    for (const [key, value] of Object.entries(params)) {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = value;
-      form.appendChild(input);
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
-  };
-</script>
-```
-
-But the ai generated file needs to be customized because they don't know vanillaspa yet, unless you show it to them. But this is a no-brainer.
+This is a no-brainer.
 
 ```html
 <template>
@@ -142,37 +102,23 @@ But the ai generated file needs to be customized because they don't know vanilla
 </style>
 ```
 
-**Important!** Each WebComponent must be located in your project in a subfolder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components), for instance, for a component named `<app-start></app-start>` it should be `src/components/app/app-start.sfc` in order for the [import.meta.glob Wildcard-Pattern](https://github.com/vanillaspa/web-components/blob/881048a70a58854eb364f30c03b5b12483f47307/index.js#L1) to work properly.
+**Important!** Only restriction: Each component must be located in your project under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components). For a component named `<app-start></app-start>` it should be `src/components/app/app-start.sfc`. While the `app` folder is optional, the [import.meta.glob Wildcard-Pattern](https://github.com/vanillaspa/web-components/blob/881048a70a58854eb364f30c03b5b12483f47307/index.js#L1) will work for any components using [custom elements naming conventions](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name).
 
-Just put them into a seperate folder under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components).
-
-All the files under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) are automagically defined as web-components in the customElements registry. You just have to stick to [custom elements naming conventions](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name).
-
-Then just import your web-components with:
-
-<script type="module">
-    import('@vanillaspa/web-components')
-</script>
-
-After importing web-components, your WebComponents will be defined in the CustomElements registry. You don't have to register your elements manually.
-
-
-After having imported the `web-components` module, your custom elements can be instantiated immediately.s
+All the `.sfc` files under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) are automagically defined as web-components in the customElements registry, see [./src/main.js](https://github.com/vanillaspa/boilerplate/blob/main/src/main.js). You just have to register your elements in the CustomElements registry. Your custom elements can be instantiated immediately without further ado.
 
 ## API description
 
 - `shadowDocument` is the private scope DOM on each of your custom `HTMLElement`s. Most methods available on the `document` are also available on the `shadowDocument`, for instance `getElementById` or  `querySelector`.
+- The EventBus implements `EventTarget`. `addEventListener`, `removeEventListener`, `dispatchEvent` are available on the `eventbus` object.
 - `getWorkers`, `createDB`, `closeDB`, `deleteDB`, `executeQuery`, `executeStatement`, `uploadDB`, `downloadDB` are available on the `sqlite` object.
-- `addEventListener`, `removeEventListener`, `dispatchEvent` are available on the `eventbus` object.
 
 ## Features
 
 - written in vanilla JavaScript
 - support for custom elements in dedicated .sfc single file components (SFCs). Now you can create or use your own library of custom-elements!
-- following [W3C standards and MDN-recommended best practices](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) with just a few hacks to accomplish things where people claim: *"This is impossible with WebComponents"*
+- following [W3C standards and MDN-recommended best practices](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) where people claim: *"This is impossible with WebComponents"*
 - direct access to ShadowDOM in each component's script (via `shadowDocument`)
 - out of the box SCSS support
-- direct access to each module (via its `{moduleName}`)
 - Event-Bus!!!!
 - local first SQLite database for global state management with the Origin Private File System (OPFS). Your data stays private.
 - dedicated workers for database pooling
