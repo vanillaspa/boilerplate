@@ -124,6 +124,7 @@ All the `.sfc` files under [./src/components/](https://github.com/vanillaspa/boi
 - dedicated workers for database pooling
 - offline capabilities
 - history-driven sitemap router [navigation module](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app.sfc)
+- support for Tailwind CSS or other global stylesheets
 - support for containerized builds. Docker ready.
 - https support out of the box ([@vitejs/plugin-basic-ssl](https://github.com/vitejs/vite-plugin-basic-ssl))
 - basic functionality in under <100LOC
