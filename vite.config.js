@@ -28,7 +28,7 @@ export default defineConfig({
         exclude: ['@sqlite.org/sqlite-wasm']
     },
     plugins: [
-        basicSsl(),
+        process.env.VITE_USE_SSL === 'true' && sslPlugin(),
         tailwindcss(),
         sfcPlugin()
     ]
