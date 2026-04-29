@@ -1,4 +1,7 @@
 You are currently LIVE @Stackblitz! Trying out [https://stackblitz.com/github/vanillaspa/boilerplate](https://stackblitz.com/github/vanillaspa/boilerplate)
+Hold on.
+You are in a dev-container. Currently running a complete AI-ready website. Look how it is build in the Terminal.
+
 No, this is not about LOOKS! This is a boilerplate project for a vanilla JS micro-framework 'Vanilla SPA' with the latest web-components, event-bus and sqlite-database module.
 
 # Vanilla SPA
