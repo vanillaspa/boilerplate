@@ -1,6 +1,5 @@
-# boilerplate
-You gotta try this LIVE @Stackblitz! [https://stackblitz.com/github/vanillaspa/boilerplate](https://stackblitz.com/github/vanillaspa/boilerplate)
-No, this is not about LOOKS! This is a boilerplate project for Vanilla SPA with the latest web-components, event-bus and sqlite-database module.
+You are currently LIVE @Stackblitz! Trying out [https://stackblitz.com/github/vanillaspa/boilerplate](https://stackblitz.com/github/vanillaspa/boilerplate)
+No, this is not about LOOKS! This is a boilerplate project for a vanilla JS micro-framework 'Vanilla SPA' with the latest web-components, event-bus and sqlite-database module.
 
 # Vanilla SPA
 
