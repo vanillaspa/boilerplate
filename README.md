@@ -1,4 +1,4 @@
-You are currently LIVE [@Stackblitz](https://stackblitz.com/github/vanillaspa/boilerplate)! Make sure, your browser is supporting latest web technology. Trying out [https://github.com/vanillaspa/boilerplate](https://github.com/vanillaspa/boilerplate)
+You are currently LIVE [@Stackblitz](https://stackblitz.com/github/vanillaspa/boilerplate?file=README.md)! Make sure, your browser is supporting latest web technology. Trying out [https://github.com/vanillaspa/boilerplate](https://github.com/vanillaspa/boilerplate)
 You are in a dev-container. Currently running a complete AI-ready website. Look how it is build in the Terminal. Stackblitz may be a little bit laggy..
 
 No, this is not about LOOKS! This is a boilerplate project for a vanilla JS micro-framework 'Vanilla SPA' with the latest web-components, event-bus and sqlite-database module.
