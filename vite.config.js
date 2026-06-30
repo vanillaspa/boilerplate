@@ -1,7 +1,9 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import tailwindcss from '@tailwindcss/vite';
 import { sfcPlugin } from '@vanillaspa/web-components/vite-plugin-sfc';
+
+const env = loadEnv(process.env.NODE_ENV, process.cwd(), '');
 
 export default defineConfig({
     build: {
@@ -28,7 +30,7 @@ export default defineConfig({
         exclude: ['@sqlite.org/sqlite-wasm']
     },
     plugins: [
-        process.env.VITE_USE_SSL === 'true' && sslPlugin(),
+        env.VITE_USE_SSL === 'true' && basicSsl(),
         tailwindcss(),
         sfcPlugin()
     ]

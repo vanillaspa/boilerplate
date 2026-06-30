@@ -1,0 +1,1 @@
+202606302223 FIXED vite.config.js, ADDED .env.development
