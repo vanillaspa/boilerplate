@@ -18,5 +18,5 @@
     "preview": "npm run build && vite preview"
   },
   "type": "module",
-  "version": "1.5.2"
+  "version": "1.5.3"
 }
