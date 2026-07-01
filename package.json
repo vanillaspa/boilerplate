@@ -9,7 +9,7 @@
   "dependencies": {
     "@vanillaspa/event-bus": "2.0.1",
     "@vanillaspa/sqlite-database": "2.0.2",
-    "@vanillaspa/web-components": "2.6.1"
+    "@vanillaspa/web-components": "2.6.2"
   },
   "license": "Unlicense",
   "scripts": {
