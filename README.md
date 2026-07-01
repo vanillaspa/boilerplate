@@ -1,7 +1,11 @@
-You are currently LIVE [@Stackblitz](https://stackblitz.com/github/vanillaspa/boilerplate?file=README.md)! Make sure, your browser is supporting latest web technology. Trying out [https://github.com/vanillaspa/boilerplate](https://github.com/vanillaspa/boilerplate)
-You are in a dev-container. Currently running a complete AI-ready website. Look how it is build in the Terminal. Stackblitz may be a little bit laggy..
+Hello and Welcome!
 
-No, this is not about LOOKS! This is a boilerplate project for a vanilla JS micro-framework 'Vanilla SPA' with the latest web-components, event-bus and sqlite-database module.
+I am glad, You have found this and I hope it is of some value to You!
+
+If you don't know how to use <a title="NodeJS" href="https://nodejs.org"><img height="20" alt="NodeJS-logo" src="https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg"></a>, can still try out [@vanillaspa/boilerplate](https://github.com/vanillaspa/boilerplate) live [@Stackblitz](https://stackblitz.com/github/vanillaspa/boilerplate?file=README.md)! Make sure, your browser is supporting latest web technology.
+You can run a complete AI-ready website and look how it is build in the Terminal. Stackblitz may be a little bit laggy though..
+
+This is a boilerplate project for @vanillaspa, a JavaScript micro-framework with the latest web-components, event-bus and sqlite-database module.
 
 # Vanilla SPA
 
@@ -15,10 +19,9 @@ This is free and unencumbered software released into the public domain. [The Unl
 
 ### Prerequisites
 
-You need to have <a title="NodeJS" href="https://nodejs.org"><img height="20" alt="NodeJS-logo" src="https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg"></a> installed. (This is being taken care of, if you are @Stackblitz)
 
 The Vanilla SPA boilerplate consists of [web-components](https://github.com/vanillaspa/web-components), an [event-bus](https://github.com/vanillaspa/event-bus), and a [sqlite-database](https://github.com/vanillaspa/sqlite-database) (<a title="SQLite" href="https://sqlite.org/wasm"><img height="20" alt="SQLite-logo" src="https://sqlite.org/images/sqlite370_banner.gif"></a>) within the [Origin Private Filesystem (OPFS)](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system)
-on top of [Vite](https://vitejs.dev)<a title="Vite" href=""><img height="20" alt="Vitejs-logo" src="https://vitejs.dev/logo.svg"></a>
+on top of a[Vite-build](https://vitejs.dev)<a title="Vite" href=""><img height="20" alt="Vitejs-logo" src="https://vitejs.dev/logo.svg"></a>. Make sure, you understand each component before using it.
 
 ### Getting started
 
@@ -33,18 +36,18 @@ and then simply
   npm run dev
 ```
 
-You can then access the app via https://localhost:4173 in your browser.
+You can then access the app via https://localhost:5173 in your browser.
 
 ## How It's done
 
-You create SNIPPETS by using dedicated Single File Components (SFCs) à la Vue or Svelte with a ```template```, ```script``` and ```style``` tag on the top-level of the `.sfc` file.
+You create standards-conforming WebComponents in dedicated Single File Components with a ```template```, ```script``` and ```style``` tag on the top-level of the `.sfc` file.
 
 You combine standard HTML templates vith vanilla JS. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.sfc)
 
 ![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
 
-This is AI-ready.
-Say to the AI, for instance Copilot in VS Code: *Learn how to create sfc components with vanillaspa and create a single file component for a donate paypal button.*
+This is AI-ready. VS Code is recommended.
+Just clone the boilerplate repo and tell your C-L-AI for instance: *Learn how to create sfc components with vanillaspa and create a single file component for a donate paypal button.*
 
 This is a no-brainer.
 
