@@ -1,7 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
 import basicSsl from '@vitejs/plugin-basic-ssl';
 import tailwindcss from '@tailwindcss/vite';
-import { sfcPlugin } from '@vanillaspa/web-components/vite-plugin-sfc';
 
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), '');
 
@@ -17,6 +16,7 @@ export default defineConfig({
             'Cross-Origin-Opener-Policy': 'same-origin', // for sqlite OPFS
             'Cross-Origin-Embedder-Policy': 'require-corp', // for sqlite OPFS
             // 'Content-Security-Policy': "script-src 'wasm-unsafe-eval'",
+            ContentSecurityPolicy: "trusted-types 'sfc-policy';",
             'X-Frame-Options': 'DENY',
             'X-Content-Type-Options': 'nosniff',
             'Referrer-Policy': 'strict-origin-when-cross-origin',
@@ -31,7 +31,6 @@ export default defineConfig({
     },
     plugins: [
         env.VITE_USE_SSL === 'true' && basicSsl(),
-        tailwindcss(),
-        sfcPlugin()
+        tailwindcss()
     ]
 })

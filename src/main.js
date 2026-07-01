@@ -26,7 +26,10 @@ import { registerComponents } from '@vanillaspa/web-components';
 const tailwindSheet = new CSSStyleSheet();
 tailwindSheet.replaceSync(tailwindCss.replaceAll(':root', ':host')); // patch known Tailwind issue with :root selector in shadow DOM
 
-registerComponents(import.meta.glob('/src/components/**/*.sfc', { eager: true }), tailwindSheet);
+const rawComponents = import.meta.glob('/src/components/**/*.sfc', { eager: true, query: '?raw' });
+console.debug('Booting Vanilla SPA...', rawComponents);
+
+registerComponents(rawComponents, tailwindSheet);
 
 let root = 'router-app';
 
@@ -44,6 +47,5 @@ try {
         window[module.name] = Object.freeze({ ...module });
     });
 } finally {
-    document.body.replaceChildren();
-    document.body.appendChild(document.createElement(root));
+    document.body.replaceChildren(document.createElement(root));
 };
