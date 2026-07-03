@@ -1,148 +1,174 @@
-Hello and Welcome!
+# Vanilla SPA Boilerplate
 
-I am glad, You have found this and I hope it is of some value to You!
+A minimal, modern starter for WebComponents-based single page applications using Vite, Tailwind, an event bus, and a local SQLite-powered data layer.
 
-If you don't know how to use <a title="NodeJS" href="https://nodejs.org"><img height="20" alt="NodeJS-logo" src="https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg"></a>, can still try out [@vanillaspa/boilerplate](https://github.com/vanillaspa/boilerplate) live [@Stackblitz](https://stackblitz.com/github/vanillaspa/boilerplate?file=README.md)! Make sure, your browser is supporting latest web technology.
-You can run a complete AI-ready website and look how it is build in the Terminal. Stackblitz may be a little bit laggy though..
+This repository demonstrates how to build a real browser-first app with:
+- standard HTML custom elements in `.sfc` single file components
+- shadow DOM-based component isolation with `shadowDocument`
+- `@vanillaspa/event-bus` for app-wide messaging
+- `@vanillaspa/sqlite-database` backed by OPFS and web workers
+- fast Vite development and HTTPS support
 
-This is a boilerplate project for @vanillaspa, a JavaScript micro-framework with the latest web-components, event-bus and sqlite-database module.
+---
 
-# Vanilla SPA
+## Why this boilerplate?
 
-With Vanilla SPA your web development experience can become a dream. There is nothing so complicated that it can't be made simple. Vanilla SPA is an AI-ready micro-framework with a fraction of the complexity of established JavaScript-Frameworks.
+Vanilla SPA is designed for developers who want more control than a framework offers, without losing modern app capabilities.
 
-I kid You not: Vanilla SPA is an advanced, yet minimalistic WebComponents framework featuring most of the functionality of popular JavaScript frameworks, but in a fraction of their complexity. It is written in vanilla JavaScript.
+It is:
+- small and dependency-light
+- standards-based and framework-agnostic
+- AI-ready for prompt-driven component creation
+- built for offline-friendly local-first data access
+- compatible with Tailwind, global CSS, and modern browser runtime modules
 
-This is free and unencumbered software released into the public domain. [The Unlicense](https://choosealicense.com/licenses/unlicense/)
+---
 
-## Installation
+## Quick Start
 
-### Prerequisites
-
-
-The Vanilla SPA boilerplate consists of [web-components](https://github.com/vanillaspa/web-components), an [event-bus](https://github.com/vanillaspa/event-bus), and a [sqlite-database](https://github.com/vanillaspa/sqlite-database) (<a title="SQLite" href="https://sqlite.org/wasm"><img height="20" alt="SQLite-logo" src="https://sqlite.org/images/sqlite370_banner.gif"></a>) within the [Origin Private Filesystem (OPFS)](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API/Origin_private_file_system)
-on top of a[Vite-build](https://vitejs.dev)<a title="Vite" href=""><img height="20" alt="Vitejs-logo" src="https://vitejs.dev/logo.svg"></a>. Make sure, you understand each component before using it.
-
-### Getting started
-
-Running Vanilla SPA is as easy as cloning the boilerplate repository.
 ```bash
-  git clone https://github.com/vanillaspa/boilerplate.git
-  cd boilerplate
-  npm install
-```
-and then simply 
-```bash
-  npm run dev
+git clone https://github.com/vanillaspa/boilerplate.git
+cd boilerplate
+npm install
+npm run dev
 ```
 
-You can then access the app via https://localhost:5173 in your browser.
+Then open:
 
-## How It's done
+`https://localhost:5173`
 
-You create standards-conforming WebComponents in dedicated Single File Components with a ```template```, ```script``` and ```style``` tag on the top-level of the `.sfc` file.
+### Production build
 
-You combine standard HTML templates vith vanilla JS. [SEE THE EXAMPLE](https://github.com/vanillaspa/boilerplate/blob/main/src/components/please/please-donate.sfc)
+```bash
+npm run build
+npm run preview
+```
 
-![Conceptual graphic](https://github.com/vanillaspa/boilerplate/blob/main/assets/conceptual.png)
+---
 
-This is AI-ready. VS Code is recommended.
-Just clone the boilerplate repo and tell your C-L-AI for instance: *Learn how to create sfc components with vanillaspa and create a single file component for a donate paypal button.*
+## What’s included
 
-This is a no-brainer.
+- `src/main.js` – app entry point
+- `src/components/` – collection of `.sfc` web component files
+- `src/styles/` – global CSS and Tailwind styles
+- `@vanillaspa/web-components` – automatic component registration
+- `@vanillaspa/event-bus` – app-wide event messaging
+- `@vanillaspa/sqlite-database` – SQLite OPFS persistence with worker support
+- HTTPS support via `@vitejs/plugin-basic-ssl`
+
+---
+
+## How it works
+
+`src/main.js` bootstraps the app by:
+1. importing the shared web-components runtime
+2. converting Tailwind CSS into a shadow-safe stylesheet
+3. auto-registering every `src/components/**/*.sfc` file
+4. rendering the root component `router-app`
+5. loading runtime modules and exposing them on `window`
+
+This project uses `import.meta.glob('/src/components/**/*.sfc', { eager: true, query: '?raw' })` to register file-based components automatically.
+
+---
+
+## Component authoring
+
+Each `.sfc` file contains a top-level `<template>`, `<script>`, and `<style>` block.
+
+Example:
 
 ```html
 <template>
-  <button id="donate-btn">
-    Donate to VanillaSPA
-  </button>
+  <button id="donate-btn">Donate to VanillaSPA</button>
 </template>
 
 <script>
-  function sendDonation(email, currency) {
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = 'https://www.paypal.com/cgi-bin/webscr';
-    
-    const params = {
-      cmd: '_donations',
-      business: email,
-      currency_code: currency,
-      item_name: 'Support VanillaSPA Development'
-    };
+function sendDonation(email, currency) {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://www.paypal.com/cgi-bin/webscr';
 
-    for (const [key, value] of Object.entries(params)) {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = key;
-      input.value = value;
-      form.appendChild(input);
-    }
-
-    document.body.appendChild(form);
-    form.submit();
-    document.body.removeChild(form);
+  const params = {
+    cmd: '_donations',
+    business: email,
+    currency_code: currency,
+    item_name: 'Support VanillaSPA Development',
   };
 
-  const button = shadowDocument.querySelector("#donate-btn");
-    button.addEventListener("click", () => {
-      sendDonation('robert.meissner@outlook.com', 'EUR')";
-    }
+  for (const [key, value] of Object.entries(params)) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = value;
+    form.appendChild(input);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+}
+
+const button = shadowDocument.querySelector('#donate-btn');
+button.addEventListener('click', () => {
+  sendDonation('robert.meissner@outlook.com', 'EUR');
+});
 </script>
 
 <style>
-  button {
-    background: #0070ba;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
+button {
+  background: #0070ba;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
 </style>
 ```
 
-**Important!** Only restriction: Each component must be located in your project under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components). For a component named `<app-start></app-start>` it should be `src/components/app/app-start.sfc`. While the `app` folder is optional, the [import.meta.glob Wildcard-Pattern](https://github.com/vanillaspa/web-components/blob/881048a70a58854eb364f30c03b5b12483f47307/index.js#L1) will work for any components using [custom elements naming conventions](https://html.spec.whatwg.org/multipage/custom-elements.html#valid-custom-element-name).
+### Component location
 
-All the `.sfc` files under [./src/components/](https://github.com/vanillaspa/boilerplate/blob/main/src/components) are automagically defined as web-components in the customElements registry, see [./src/main.js](https://github.com/vanillaspa/boilerplate/blob/main/src/main.js). You just have to register your elements in the CustomElements registry. Your custom elements can be instantiated immediately without further ado.
+Place components under `src/components/`.
+A custom element named `<app-start>` can live at `src/components/app/app-start.sfc`, but the folder structure is flexible as long as the file name follows custom element conventions.
 
-## API description
+---
 
-- `shadowDocument` is the private scope DOM on each of your custom `HTMLElement`s. Most methods available on the `document` are also available on the `shadowDocument`, for instance `getElementById` or  `querySelector`.
-- The EventBus implements `EventTarget`. `addEventListener`, `removeEventListener`, `dispatchEvent` are available on the `eventbus` object.
-- `getWorkers`, `createDB`, `closeDB`, `deleteDB`, `executeQuery`, `executeStatement`, `uploadDB`, `downloadDB` are available on the `sqlite` object.
+## Runtime APIs
 
-## Features
+- `shadowDocument` – the private shadow DOM scope for each component
+- `eventbus` – implements `EventTarget` with `addEventListener`, `removeEventListener`, and `dispatchEvent`
+- `sqlite` – includes `getWorkers`, `createDB`, `closeDB`, `deleteDB`, `executeQuery`, `executeStatement`, `uploadDB`, and `downloadDB`
 
-- written in vanilla JavaScript
-- support for custom elements in dedicated .sfc single file components (SFCs). Now you can create or use your own library of custom-elements!
-- following [W3C standards and MDN-recommended best practices](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) where people claim: *"This is impossible with WebComponents"*
-- direct access to ShadowDOM in each component's script (via `shadowDocument`)
-- out of the box SCSS support
-- Event-Bus!!!!
-- local first SQLite database for global state management with the Origin Private File System (OPFS). Your data stays private.
-- dedicated workers for database pooling
-- offline capabilities
-- history-driven sitemap router [navigation module](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app.sfc)
-- support for Tailwind CSS or other global stylesheets
-- support for containerized builds. Docker ready.
-- https support out of the box ([@vitejs/plugin-basic-ssl](https://github.com/vitejs/vite-plugin-basic-ssl))
-- basic functionality in under <100LOC
+These APIs are exposed globally from the modules imported in `src/main.js`.
 
-## Component Lifecycle
+---
 
-In case you want some deeper insights you should learn and understand how the [WebComponents lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_custom_elements#custom_element_lifecycle_callbacks) is working.
+## Key features
 
-## Feedback
+- vanilla JavaScript WebComponents
+- single-file component authoring with `.sfc`
+- automatic component registration
+- Tailwind CSS + global stylesheet support
+- event bus for message-driven architecture
+- local-first SQLite persistence in OPFS
+- worker-based database pooling
+- built-in router example with `router-app`
+- HTTPS dev server support
+- low complexity, high clarity
 
-If you still have questions please let me know. Your opinion is valuable to me and sharing what you think is higly appreciated! If you have any feedback and want to share your suggestions please consider the contribution guidelines and reach out to @jahro_me
+---
 
-## Example
+## Recommended workflow
 
-Adding a router navigation is very easy. [As the example shows](https://github.com/vanillaspa/boilerplate/blob/main/src/components/router/router-app.sfc) You can have an entire navigation in one single sfc file defined as just another custom element. After having it integrated into your app with a single tag (`<router-app></router-app>`), you can have routing support and all the things you would expect.
+- Use VS Code for editing and live reload
+- Add components under `src/components/`
+- Keep styles inside each `.sfc` for scoped behavior
+- Use `eventbus` for cross-component communication
+- Use `sqlite` for persistent local data
 
-Of course you are completely free to customize the themes, modules and components and make them whatever you want them to become!
+---
+
+## License
+
+This project is released under the public domain via [The Unlicense](https://choosealicense.com/licenses/unlicense/).

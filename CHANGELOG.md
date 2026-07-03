@@ -1,4 +1,6 @@
-LATEST goes here
+LATEST goes here. This isn't perfect.
+202607032146 ADDED owasp.html, SECURITY.md
+202607032125 UPDATED README.md
 202607031740 REMOVED requirements for TrustedTypes and unsave-eval CSP
 202607011948 UPDATED to @vanillaspa/web-components 1.6.1 with TrustedTypes
 202606302233 UPDATED .gitignore in order to accept .env.development
