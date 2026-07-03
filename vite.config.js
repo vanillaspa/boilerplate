@@ -13,10 +13,9 @@ export default defineConfig({
         host: '0.0.0.0', // Allow access from outside the container
         strictPort: true,
         headers: {
-            'Cross-Origin-Opener-Policy': 'same-origin', // for sqlite OPFS
-            'Cross-Origin-Embedder-Policy': 'require-corp', // for sqlite OPFS
-            // 'Content-Security-Policy': "script-src 'wasm-unsafe-eval'",
-            ContentSecurityPolicy: "trusted-types 'sfc-policy';",
+            'Cross-Origin-Opener-Policy': 'same-origin',
+            'Cross-Origin-Embedder-Policy': 'require-corp',
+            'Content-Security-Policy': "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline';",
             'X-Frame-Options': 'DENY',
             'X-Content-Type-Options': 'nosniff',
             'Referrer-Policy': 'strict-origin-when-cross-origin',
