@@ -3,7 +3,7 @@
 A minimal, modern starter for WebComponents-based single page applications using Vite, Tailwind, an event bus, and a local SQLite-powered data layer.
 
 This repository demonstrates how to build a real browser-first app with:
-- standard HTML custom elements in `.sfc` single file components
+- standard HTML custom elements in `.sfc.html` single file components
 - shadow DOM-based component isolation with `shadowDocument`
 - `@vanillaspa/event-bus` for app-wide messaging
 - `@vanillaspa/sqlite-database` backed by OPFS and web workers
@@ -49,7 +49,7 @@ npm run preview
 ## What’s included
 
 - `src/main.js` – app entry point
-- `src/components/` – collection of `.sfc` web component files
+- `src/components/` – collection of `.sfc.html` web component files
 - `src/styles/` – global CSS and Tailwind styles
 - `@vanillaspa/web-components` – automatic component registration
 - `@vanillaspa/event-bus` – app-wide event messaging
@@ -63,17 +63,17 @@ npm run preview
 `src/main.js` bootstraps the app by:
 1. importing the shared web-components runtime
 2. converting Tailwind CSS into a shadow-safe stylesheet
-3. auto-registering every `src/components/**/*.sfc` file
+3. auto-registering every `src/components/**/*.sfc.html` file
 4. rendering the root component `router-app`
 5. loading runtime modules and exposing them on `window`
 
-This project uses `import.meta.glob('/src/components/**/*.sfc', { eager: true, query: '?raw' })` to register file-based components automatically.
+This project uses `import.meta.glob('/src/components/**/*.sfc.html', { eager: true, query: '?raw' })` to register file-based components automatically.
 
 ---
 
 ## Component authoring
 
-Each `.sfc` file contains a top-level `<template>`, `<script>`, and `<style>` block.
+Each `.sfc.html` file contains a top-level `<template>`, `<script>`, and `<style>` block.
 
 Example:
 
@@ -130,7 +130,7 @@ button {
 ### Component location
 
 Place components under `src/components/`.
-A custom element named `<app-start>` can live at `src/components/app/app-start.sfc`, but the folder structure is flexible as long as the file name follows custom element conventions.
+A custom element named `<app-start>` can live at `src/components/app/app-start.sfc.html`, but the folder structure is flexible as long as the file name follows custom element conventions.
 
 ---
 
@@ -147,7 +147,7 @@ These APIs are exposed globally from the modules imported in `src/main.js`.
 ## Key features
 
 - vanilla JavaScript WebComponents
-- single-file component authoring with `.sfc`
+- single-file component authoring with `.sfc.html`
 - automatic component registration
 - Tailwind CSS + global stylesheet support
 - event bus for message-driven architecture
@@ -163,7 +163,7 @@ These APIs are exposed globally from the modules imported in `src/main.js`.
 
 - Use VS Code for editing and live reload
 - Add components under `src/components/`
-- Keep styles inside each `.sfc` for scoped behavior
+- Keep styles inside each `.sfc.html` for scoped behavior
 - Use `eventbus` for cross-component communication
 - Use `sqlite` for persistent local data
 

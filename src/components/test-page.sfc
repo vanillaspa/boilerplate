@@ -1,4 +1,0 @@
-<template>
-    <datepicker-input></datepicker-input>
-    <tailwind-test></tailwind-test>
-</template>

@@ -13,12 +13,14 @@ export default defineConfig({
         host: '0.0.0.0', // Allow access from outside the container
         strictPort: true,
         headers: {
-            'Cross-Origin-Opener-Policy': 'same-origin',
-            'Cross-Origin-Embedder-Policy': 'require-corp',
-            'Content-Security-Policy': "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline';",
-            'X-Frame-Options': 'DENY',
-            'X-Content-Type-Options': 'nosniff',
+            'Content-Security-Policy': "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; script-src-elem 'self' blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline';",
+            'Cross-Origin-Embedder-Policy': 'require-corp', // for SQLite WASM (OPFS)
+            'Cross-Origin-Opener-Policy': 'same-origin', // for SQLite WASM (OPFS)
             'Referrer-Policy': 'strict-origin-when-cross-origin',
+            'Strict-Transport-Security': 'max-age=86400; includeSubDomains;', // Enforces secure (HTTP over SSL/TLS) connections to the server
+            'X-Content-Type-Options': 'nosniff', // Prevents the browser from interpreting files as a different MIME type than what is specified in the Content-Type HTTP header
+            'X-Frame-Options': 'DENY', // Stops clickjacking attacks by preventing the page from being displayed in an iframe
+            'X-XSS-Protection': '1; mode=block' // Enables the Cross-Site Scripting (XSS) filter built into most browsers
         },
         hmr: {
             host: 'localhost',
