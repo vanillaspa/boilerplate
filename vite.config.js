@@ -13,7 +13,7 @@ export default defineConfig({
         host: '0.0.0.0', // Allow access from outside the container
         strictPort: true,
         headers: {
-            'Content-Security-Policy': "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; script-src-elem 'self' blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline';",
+            'Content-Security-Policy': "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; script-src-elem 'self' blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src 'self' ws: wss:;",
             'Cross-Origin-Embedder-Policy': 'require-corp', // for SQLite WASM (OPFS)
             'Cross-Origin-Opener-Policy': 'same-origin', // for SQLite WASM (OPFS)
             'Referrer-Policy': 'strict-origin-when-cross-origin',
