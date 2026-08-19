@@ -2,42 +2,40 @@
  * @fileoverview Application entry point for the @vanillaspa/boilerplate.
  *
  * Boot sequence:
- * 1. The shared web-components runtime is imported so every `.sfc.html` component
- *    under `/src/components` can be registered as a custom element.
+ * 1. The shared @vanillaspa/web-components runtime is imported. Every raw
+ *    component from the @vanillaspa/components-library will be registered.
  * 2. The Tailwind stylesheet is converted into a `CSSStyleSheet` and passed to
  *    the component registry.
- * 3. All `.sfc.html` files are discovered with `import.meta.glob(...)`, registered,
- *    and the root component is mounted into the document body.
+ * 3. All custom `.sfc.html` files under `/src/components` are discovered with
+ *    `import.meta.glob(...)` and registered with the tailwindSheet.
  * 4. Optional runtime modules are loaded in parallel and exposed on `window`
  *    under their exported `name` value or alias.
- *
- * Every module exposed on `window` must export a `name` string. Missing names
- * fail fast during boot so configuration mistakes are visible immediately.
  *
  * @module main
  */
 import tailwindCss from '/src/styles/tailwind.css?inline';
 import { registerComponents } from '@vanillaspa/web-components';
 import { rawComponents } from '@vanillaspa/components-library';
+const myComponents = import.meta.glob('/src/components/**/*.sfc.html', { eager: true, query: '?raw' });
 
-// 1. register Web Components
 const tailwindSheet = new CSSStyleSheet();
 tailwindSheet.replaceSync(tailwindCss.replaceAll(':root', ':host')); // patch known Tailwind issue with :root selector in shadow DOM
 registerComponents(rawComponents, tailwindSheet);
+registerComponents(myComponents, tailwindSheet);
 
 let root = 'router-app'; // the root element to replace body children with 
 await customElements.whenDefined(root);
 
-// 2. load modules with optional configuration that tells, how it should be named on 'window'
+// use optional name to tell, how it should be named on 'window'
 const modulesToLoad = [
     { load: () => import('@vanillaspa/event-bus') },
     { load: () => import('@vanillaspa/sqlite-database') },
-    { load: () => import('@vanillaspa/sqlite-database/contract') }
+    { load: () => import('@vanillaspa/sqlite-database/contract') },
+    { load: () => import('graphql'), name: 'graphqlmod' }
 ]
 
 try {
-    // 2. Parallel load (Promise.allSettled saves from blocking on error) 
-    const results = await Promise.allSettled(
+    const results = await Promise.allSettled( // Promise.allSettled saves from blocking on error
         modulesToLoad.map(m => m.load())
     );
 
@@ -50,12 +48,11 @@ try {
         const module = result.value;
         const name = modulesToLoad[index].name || module.name; // use defined alias OR exported name 
         if (name) { // OR ignore
-            console.log(`not ignoring module ${name}`);
             window[name] = Object.freeze({ ...module });
         }
     });
 } catch (error) {
     console.error('Critical error during module initialization:', error);
-} finally { // guaranteed rendering
+} finally {
     document.body.replaceChildren(document.createElement(root));
 };

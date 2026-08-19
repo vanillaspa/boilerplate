@@ -4,7 +4,8 @@
     "@tailwindcss/vite": "latest",
     "@vitejs/plugin-basic-ssl": "latest",
     "tailwindcss": "latest",
-    "vite": "latest"
+    "vite": "latest",
+    "graphql": "latest"
   },
   "dependencies": {
     "@vanillaspa/event-bus": "latest",
